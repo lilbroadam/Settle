@@ -44,6 +44,7 @@ class SettleHomePage extends StatefulWidget {
 
 class _SettleHomePageState extends State<SettleHomePage> {
 
+  // Called when 'Create a Settle' button is pressed
   void _createASettlePressed() {
     Navigator.push(
       context,
@@ -51,6 +52,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
     );
   }
 
+  // Called when 'Join a Settle' button is pressed
   void _joinASettlePressed() {
     Navigator.push(
       context,
@@ -58,29 +60,38 @@ class _SettleHomePageState extends State<SettleHomePage> {
     );
   }
 
+  // Called when the information button is pressed
   void _informationPressed() {
     // TODO
   }
 
+  // Called when the settings button is pressed
   void _settingsPressed() {
     // TODO
   }
 
   @override
+  // This method is rerun every time setState is called.
+  //
+  // The Flutter framework has been optimized to make rerunning build methods
+  // fast, so that you can just rebuild anything that needs updating rather
+  // than having to individually change instances of widgets.
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-
+    
     final createSettleButton = ElevatedButton(
-        onPressed: _createASettlePressed, child: Text('Create a Settle'));
+        child: Text('Create a Settle'), onPressed: _createASettlePressed);
     final joinSettleButton = ElevatedButton(
-        onPressed: _joinASettlePressed, child: Text('Join a Settle'));
+        child: Text('Join a Settle'), onPressed: _joinASettlePressed);
     final settleButtonMargin = EdgeInsets.all(15.0);
     final miscButtonSize = 30.0;
 
+    /**
+     * The home screen is made of an expanded stack that takes up the entire 
+     * screen and draws widgets in the center of the screen by default. The 
+     * Settle buttons are drawn in a column in the center of the stack/screen,
+     * the info button is drawn in the bottom left of the stack/screen, and the
+     * settings button is drawn in the bottom right of the stack/screen.
+     */
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -89,7 +100,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                Column(
+                Column( // Settle buttons in the center
                   mainAxisSize: MainAxisSize.min, // Size to only needed space
                   children: <Widget>[
                     Container(
@@ -102,7 +113,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     )
                   ],
                 ),
-                Align(
+                Align( // Info button in the bottom left
                   alignment: Alignment.bottomLeft,
                   child: IconButton(
                     icon: Icon(Icons.info),
@@ -111,7 +122,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     onPressed: _informationPressed,
                   ),
                 ),
-                Align(
+                Align( // Settings button in the bottom right
                   alignment: Alignment.bottomRight,
                   child: IconButton(
                     icon: Icon(Icons.settings),
