@@ -5,9 +5,6 @@ class JoinSettle extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(
-        //   title: Text("Second Route"),
-        // ),
         body: Center(
           child: ElevatedButton(
             onPressed: () {
