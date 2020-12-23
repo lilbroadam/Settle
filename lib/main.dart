@@ -77,32 +77,38 @@ class _SettleHomePageState extends State<SettleHomePage> {
     final buttonMargin = EdgeInsets.all(15.0);
 
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Column(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Stack(
+              alignment: Alignment.center,
               children: <Widget>[
-                Container(
-                  margin: buttonMargin,
-                  child: createSettleButton,
+                Column(
+                  mainAxisSize: MainAxisSize.min, // Size to only needed space
+                  children: <Widget>[
+                    Container(
+                      margin: buttonMargin,
+                      child: createSettleButton,
+                    ),
+                    Container(
+                      margin: buttonMargin,
+                      child: joinSettleButton,
+                    )
+                  ],
                 ),
-                Container(
-                  margin: buttonMargin,
-                  child: joinSettleButton,
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: IconButton(
+                    icon: Icon(Icons.info),
+                    tooltip: 'Information about Settle',
+                    onPressed: _informationPressed,
+                  ),
                 ),
               ],
             ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: IconButton(
-                icon: Icon(Icons.info),
-                tooltip: 'Information about Settle',
-                onPressed: _informationPressed,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
