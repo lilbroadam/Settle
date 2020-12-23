@@ -62,6 +62,10 @@ class _SettleHomePageState extends State<SettleHomePage> {
     // TODO
   }
 
+  void _settingsPressed() {
+    // TODO
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called.
@@ -74,7 +78,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
         onPressed: _createASettlePressed, child: Text('Create a Settle'));
     final joinSettleButton = ElevatedButton(
         onPressed: _joinASettlePressed, child: Text('Join a Settle'));
-    final buttonMargin = EdgeInsets.all(15.0);
+    final settleButtonMargin = EdgeInsets.all(15.0);
+    final miscButtonSize = 30.0;
 
     return Scaffold(
       body: Column(
@@ -88,11 +93,11 @@ class _SettleHomePageState extends State<SettleHomePage> {
                   mainAxisSize: MainAxisSize.min, // Size to only needed space
                   children: <Widget>[
                     Container(
-                      margin: buttonMargin,
+                      margin: settleButtonMargin,
                       child: createSettleButton,
                     ),
                     Container(
-                      margin: buttonMargin,
+                      margin: settleButtonMargin,
                       child: joinSettleButton,
                     )
                   ],
@@ -101,8 +106,18 @@ class _SettleHomePageState extends State<SettleHomePage> {
                   alignment: Alignment.bottomLeft,
                   child: IconButton(
                     icon: Icon(Icons.info),
+                    iconSize: miscButtonSize,
                     tooltip: 'Information about Settle',
                     onPressed: _informationPressed,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: IconButton(
+                    icon: Icon(Icons.settings),
+                    iconSize: miscButtonSize,
+                    tooltip: 'Settle settings',
+                    onPressed: _settingsPressed,
                   ),
                 ),
               ],
