@@ -76,11 +76,29 @@ class _SettleHomePageState extends State<SettleHomePage> {
   // than having to individually change instances of widgets.
   Widget build(BuildContext context) {
 
-    final createSettleButton = ElevatedButton(
-        child: Text('Create a Settle'), onPressed: _createASettlePressed);
-    final joinSettleButton = ElevatedButton(
-        child: Text('Join a Settle'), onPressed: _joinASettlePressed);
-    final settleButtonMargin = EdgeInsets.all(15.0);
+    final settleButtonWidth = 150.0;
+    final settleButtonHeight = 45.0;
+    final settleButtonTextStyle = new TextStyle(fontSize: 16.4,);
+
+    final createSettleButton = SizedBox(
+      width: settleButtonWidth,
+      height: settleButtonHeight,
+      child: ElevatedButton(
+        onPressed: _createASettlePressed,
+        child: Text('Create a Settle',
+          style: settleButtonTextStyle),
+      ),
+    );
+    final joinSettleButton = SizedBox(
+      width: settleButtonWidth,
+      height: settleButtonHeight,
+      child: ElevatedButton(
+        onPressed: _joinASettlePressed,
+        child: Text('Join a Settle',
+          style: settleButtonTextStyle),
+      ),
+    );
+    final settleButtonMargin = EdgeInsets.all(18.0);
     final miscButtonSize = 30.0;
 
     /**
