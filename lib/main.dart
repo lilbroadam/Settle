@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'create.dart';
-import 'join.dart';
+import 'CreateSettle.dart';
+import 'JoinSettle.dart';
 
 void main() {
   runApp(MyApp());
