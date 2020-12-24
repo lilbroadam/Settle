@@ -1,0 +1,59 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>war</packaging>
+  <version>1.0</version>
+  <!-- <groupId>com.example.appengine</groupId> -->
+  <!-- <artifactId>appengine-remote-server-j8</artifactId> -->
+  <groupId>com.settle.server</groupId>
+  <artifactId>server</artifactId>
+
+  <properties>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+  </properties>
+
+  <!-- List of dependencies: https://repo.maven.apache.org/maven2/ -->
+  <dependencies>
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-api-1.0-sdk</artifactId>
+      <version>1.9.84</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.13</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- for hot reload of the web application -->
+    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+    <plugins>
+
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>appengine-maven-plugin</artifactId>
+        <version>2.4.0</version>
+        <configuration>
+          <!-- <projectId>GCLOUD_CONFIG</projectId> -->
+          <!-- <version>GCLOUD_CONFIG</version> -->
+          <!-- <deploy.promote>true</deploy.promote> -->
+          <!-- <deploy.stopPreviousVersion>true</deploy.stopPreviousVersion> -->
+          <deploy.projectId>settle-299603</deploy.projectId>
+          <deploy.version>1</deploy.version>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>

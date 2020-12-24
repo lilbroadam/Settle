@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+  <!-- [START web] -->
+  <servlet>
+    <display-name>Remote API Servlet</display-name>
+    <servlet-name>RemoteApiServlet</servlet-name>
+    <servlet-class>com.google.apphosting.utils.remoteapi.RemoteApiServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <!-- <servlet-name>RemoteApiServlet</servlet-name>
+    <url-pattern>/remote_api</url-pattern> -->
+  </servlet-mapping>
+  <!-- [END web] -->
+
+  <welcome-file-list>
+    <welcome-file>remote</welcome-file>
+  </welcome-file-list>
+</web-app>
