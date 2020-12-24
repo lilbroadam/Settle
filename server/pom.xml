@@ -1,5 +1,6 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
+  
   <packaging>war</packaging>
   <version>1.0</version>
   <!-- <groupId>com.example.appengine</groupId> -->
@@ -10,9 +11,10 @@
   <properties>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
 
-  <!-- List of dependencies: https://repo.maven.apache.org/maven2/ -->
+  <!-- Dependencies: https://repo.maven.apache.org/maven2/ -->
   <dependencies>
     <dependency>
       <groupId>com.google.appengine</groupId>

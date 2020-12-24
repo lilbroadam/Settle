@@ -3,6 +3,6 @@
   <runtime>java8</runtime>
   <threadsafe>true</threadsafe>
   <static-files>
-    <include path="**" expiration="0s" />
+    <include path="/**" expiration="0s" />
   </static-files>
 </appengine-web-app>
