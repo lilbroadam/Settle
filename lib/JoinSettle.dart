@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:http/http.dart' as http;
+import 'Server.dart';
 
 class SettleApp extends StatelessWidget {
   // This widget is the root of the app.
@@ -15,32 +20,37 @@ class SettleApp extends StatelessWidget {
 }
 
 class JoinSettle extends StatelessWidget {
+
+  final joinCodeController = TextEditingController();
+
+  // Read the Settle code that the user types and ask the server to join this
+  // user to that Settle session
+  void _joinASettlePressed() async {
+    var joinSettleCode = joinCodeController.text;
+
+    final http.Response response = await Server.joinSettle(joinSettleCode);
+    if (response.statusCode == 200) {
+      print('it worked');
+    } else {
+      print('it didn\'t work');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final myController = TextEditingController();
     final settleButtonWidth = 150.0;
     final settleButtonHeight = 45.0;
     final settleButtonTextStyle = new TextStyle(fontSize: 16.4,);
 
-    final createSettleButton = SizedBox(
-      width: settleButtonWidth,
-      height: settleButtonHeight,
-      child: ElevatedButton(
-        // onPressed: _createASettlePressed,
-        child: Text('Create a Settle',
-          style: settleButtonTextStyle),
-      ),
-    );
     final joinSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
       child: ElevatedButton(
-        // onPressed: _joinASettlePressed,
+        onPressed: _joinASettlePressed,
         child: Text('Join a Settle',
           style: settleButtonTextStyle),
       ),
     );
-    // final textField = 
     final settleButtonMargin = EdgeInsets.all(18.0);
     final miscButtonSize = 30.0;
 
@@ -75,7 +85,7 @@ class JoinSettle extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: TextField(
-                          controller: myController,
+                          controller: joinCodeController,
                         ),
                       ),
                       Container(
