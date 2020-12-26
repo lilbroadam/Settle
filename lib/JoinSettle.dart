@@ -22,15 +22,6 @@ class JoinSettle extends StatelessWidget {
     final settleButtonHeight = 45.0;
     final settleButtonTextStyle = new TextStyle(fontSize: 16.4,);
 
-    final createSettleButton = SizedBox(
-      width: settleButtonWidth,
-      height: settleButtonHeight,
-      child: ElevatedButton(
-        // onPressed: _createASettlePressed,
-        child: Text('Create a Settle',
-          style: settleButtonTextStyle),
-      ),
-    );
     final joinSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
@@ -40,7 +31,7 @@ class JoinSettle extends StatelessWidget {
           style: settleButtonTextStyle),
       ),
     );
-    // final textField = 
+    // final textField =
     final settleButtonMargin = EdgeInsets.all(18.0);
     final miscButtonSize = 30.0;
 
@@ -66,9 +57,9 @@ class JoinSettle extends StatelessWidget {
                       Container(
                         child: Column(
                           children: <Widget>[
-                            Text('Enter a'),
-                            Text('code to join'),
-                            Text('a Settle'),
+                            Text('Enter a', style: TextStyle(fontSize: 25),),
+                            Text('code to join', style: TextStyle(fontSize: 25),),
+                            Text('a Settle', style: TextStyle(fontSize: 25),),
                           ],
                         ),
                       ),
