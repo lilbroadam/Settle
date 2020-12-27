@@ -84,13 +84,15 @@ public class SettleSessionManager {
     }
 
     // Create a Settle session and return it's session code
-    public static String createSettleSession() {
+    public static String createSettleSession(String hostName, SettleSession.SettleType settleType,
+            boolean customChoicesAllowed) {
+
         synchronized(settleSessionMapLock) {
             String newSessionCode = SettleSessionCodeManager.generateSettleSessionCode();
 
-            settleSessionsMap.put(newSessionCode, new SettleSession(newSessionCode));
-            printSettleSessions();
-
+            SettleSession session = 
+                new SettleSession(newSessionCode, hostName, settleType, customChoicesAllowed);
+            settleSessionsMap.put(newSessionCode, session);
             return newSessionCode;
         }
     }

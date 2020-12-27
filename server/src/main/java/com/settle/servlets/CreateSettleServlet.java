@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.sling.commons.json.JSONObject;
 import org.apache.sling.commons.json.JSONException;
 import com.settle.SettleSessionManager;
+import com.settle.SettleSession;
 
 @WebServlet("/createsettle")
 public class CreateSettleServlet extends HttpServlet {
@@ -22,7 +23,12 @@ public class CreateSettleServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // boolean isRunning = SettleSessionManager.isSessionManagerRunning();
-        String settleCode = SettleSessionManager.createSettleSession();
+
+        String hostName = "host name";
+        SettleSession.SettleType settleType = SettleSession.SettleType.CUSTOM;
+        boolean customChoicesAllowed = true;
+
+        String settleCode = SettleSessionManager.createSettleSession(hostName, settleType, customChoicesAllowed);
 
         String json = "";
         try {

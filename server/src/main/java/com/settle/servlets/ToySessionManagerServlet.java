@@ -22,12 +22,12 @@ public class ToySessionManagerServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         java.lang.System.out.println("/toysessionmanager.doGet()");
         boolean isRunning = SettleSessionManager.isSessionManagerRunning();
-        String sessionCode = SettleSessionManager.createSettleSession();
+        // String sessionCode = SettleSessionManager.createSettleSession();
 
         response.setContentType("text/html;");
         response.getWriter().println("/toysessionmanager GET");
         response.getWriter().println("SettleSessionManager.isSessionManagerRunning(): " + isRunning);
-        response.getWriter().println("Your session code is: " + sessionCode);
+        // response.getWriter().println("Your session code is: " + sessionCode);
     }
 
     @Override
