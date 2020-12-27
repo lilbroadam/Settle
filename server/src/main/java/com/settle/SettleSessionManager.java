@@ -2,7 +2,12 @@ package com.settle;
 
 import java.lang.Runnable;
 import java.lang.Thread;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
+import java.util.HashSet;
+import com.settle.SettleSession;
+import com.settle.SettleSessionCodeManager;
 
 public class SettleSessionManager {
 
@@ -10,6 +15,8 @@ public class SettleSessionManager {
     private static Thread sessionManagerThread = null;
     private static boolean stopRequested = false;
     private static final Object lock = new Object();
+    private static Map<String, SettleSession> settleSessionsMap = new HashMap<>();
+    private static final Object settleSessionMapLock = new Object();
 
     public static class SettleSessionManagerRunnable implements Runnable {
 
@@ -31,6 +38,7 @@ public class SettleSessionManager {
         }
     }
 
+    // Start the Settle Session Manager if it isn't already running
     public static void startSessionManager() {
         synchronized(lock) {
             java.lang.System.out.println("SettleSessionManager.startSessionManager()");
@@ -51,6 +59,7 @@ public class SettleSessionManager {
         }
     }
 
+    // Stop the Settle Session Manager as soon as it can.
     public static void requestStopSessionManager() {
         synchronized(lock) {
             stopRequested = true;
@@ -58,6 +67,7 @@ public class SettleSessionManager {
         }
     }
 
+    // Return true if the Settle Session Manager is running, false if it isn't
     public static boolean isSessionManagerRunning() {
         synchronized(lock) {
             System.out.println("SessionManager.isSessionManagerRunning()");
@@ -70,6 +80,27 @@ public class SettleSessionManager {
             }
             
             return sessionManagerThread != null && sessionManagerThread.isAlive();
+        }
+    }
+
+    // Create a Settle session and return it's session code
+    public static String createSettleSession() {
+        synchronized(settleSessionMapLock) {
+            String newSessionCode = SettleSessionCodeManager.generateSettleSessionCode();
+
+            settleSessionsMap.put(newSessionCode, new SettleSession(newSessionCode));
+            printSettleSessions();
+
+            return newSessionCode;
+        }
+    }
+
+    private static void printSettleSessions() {
+        synchronized(settleSessionMapLock) {
+            java.lang.System.out.println("Settle sessions:");
+            for (String settleCode: settleSessionsMap.keySet()) {
+                java.lang.System.out.println("\t" + settleCode);
+            }
         }
     }
 }
