@@ -24,7 +24,7 @@ public class ToySessionManagerServlet extends HttpServlet {
         boolean isRunning = SettleSessionManager.isSessionManagerRunning();
         // String sessionCode = SettleSessionManager.createSettleSession();
 
-        response.setContentType("text/html;");
+        response.setContentType("text/html");
         response.getWriter().println("/toysessionmanager GET");
         response.getWriter().println("SettleSessionManager.isSessionManagerRunning(): " + isRunning);
         // response.getWriter().println("Your session code is: " + sessionCode);

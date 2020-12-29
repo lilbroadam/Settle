@@ -32,13 +32,13 @@ public class ToyCreateSettleServlet extends HttpServlet {
             System.out.println(e);
         }
 
-        response.setContentType("application/json;");
+        response.setContentType("application/json");
         response.getWriter().println(json);
 
         // java.lang.System.out.println("/toycreatesettle.doGet()");
         // boolean isRunning = SettleSessionManager.isSessionManagerRunning();
 
-        // response.setContentType("text/html;");
+        // response.setContentType("text/html");
         // response.getWriter().println("/toysessionmanager GET");
         // response.getWriter().println("SettleSessionManager.isSessionManagerRunning(): " + isRunning);
     }

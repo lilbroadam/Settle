@@ -42,7 +42,7 @@ public class CreateSettleServlet extends HttpServlet {
         }
 
         // Response with a JSON
-        response.setContentType("application/json;");
+        response.setContentType("application/json");
         response.getWriter().println(json);
     }
 }
