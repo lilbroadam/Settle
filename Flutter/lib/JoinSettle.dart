@@ -20,7 +20,6 @@ class SettleApp extends StatelessWidget {
 }
 
 class JoinSettle extends StatelessWidget {
-
   final joinCodeController = TextEditingController();
 
   // Read the Settle code that the user types and ask the server to join this
@@ -47,8 +46,12 @@ class JoinSettle extends StatelessWidget {
       height: settleButtonHeight,
       child: ElevatedButton(
         onPressed: _joinASettlePressed,
+<<<<<<< Updated upstream
         child: Text('Join a Settle',
           style: settleButtonTextStyle),
+=======
+        child: Text('Join a Settle', style: settleButtonTextStyle),
+>>>>>>> Stashed changes
       ),
     );
     final settleButtonMargin = EdgeInsets.all(18.0);
