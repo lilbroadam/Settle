@@ -15,20 +15,29 @@ class SettleApp extends StatelessWidget {
 }
 
 class JoinSettle extends StatelessWidget {
+  final String name;
+
+  JoinSettle(this.name);
+
   @override
   Widget build(BuildContext context) {
     final myController = TextEditingController();
     final settleButtonWidth = 150.0;
     final settleButtonHeight = 45.0;
-    final settleButtonTextStyle = new TextStyle(fontSize: 16.4,);
+    final settleButtonTextStyle = new TextStyle(
+      fontSize: 16.4,
+    );
 
     final joinSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
       child: ElevatedButton(
         // onPressed: _joinASettlePressed,
-        child: Text('Join a Settle',
-          style: settleButtonTextStyle),
+        onPressed: () {
+          // print for testing purposes
+          print(name);
+        },
+        child: Text('Join a Settle', style: settleButtonTextStyle),
       ),
     );
     // final textField =
@@ -51,15 +60,25 @@ class JoinSettle extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
-                  Column( // Settle buttons in the center
+                  Column(
+                    // Settle buttons in the center
                     mainAxisSize: MainAxisSize.min, // Size to only needed space
                     children: <Widget>[
                       Container(
                         child: Column(
                           children: <Widget>[
-                            Text('Enter a', style: TextStyle(fontSize: 25),),
-                            Text('code to join', style: TextStyle(fontSize: 25),),
-                            Text('a Settle', style: TextStyle(fontSize: 25),),
+                            Text(
+                              'Enter a',
+                              style: TextStyle(fontSize: 25),
+                            ),
+                            Text(
+                              'code to join',
+                              style: TextStyle(fontSize: 25),
+                            ),
+                            Text(
+                              'a Settle',
+                              style: TextStyle(fontSize: 25),
+                            ),
                           ],
                         ),
                       ),
@@ -75,7 +94,8 @@ class JoinSettle extends StatelessWidget {
                       )
                     ],
                   ),
-                  Align( // Info button in the bottom left
+                  Align(
+                    // Info button in the bottom left
                     alignment: Alignment.bottomLeft,
                     child: IconButton(
                       icon: Icon(Icons.info),
@@ -84,7 +104,8 @@ class JoinSettle extends StatelessWidget {
                       // onPressed: _informationPressed,
                     ),
                   ),
-                  Align( // Settings button in the bottom right
+                  Align(
+                    // Settings button in the bottom right
                     alignment: Alignment.bottomRight,
                     child: IconButton(
                       icon: Icon(Icons.settings),

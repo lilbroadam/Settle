@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+// import 'JoinSettlePressed.dart';
+import 'package:flutter_button/custom/like_button.dart';
+// import 'JoinSettlePressed.dart';
 
 class SettleApp extends StatelessWidget {
   // This widget is the root of the app.
@@ -15,20 +18,28 @@ class SettleApp extends StatelessWidget {
 }
 
 class CreateSettle extends StatelessWidget {
+  final String name;
+
+  CreateSettle(this.name);
+
   @override
   Widget build(BuildContext context) {
     final myController = TextEditingController();
     final settleButtonWidth = 180.0;
     final settleButtonHeight = 45.0;
-    final settleButtonTextStyle = new TextStyle(fontSize: 16.4,);
+    final settleButtonTextStyle = new TextStyle(
+      fontSize: 16.4,
+    );
 
     final joinSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
       child: ElevatedButton(
-        // onPressed: _joinASettlePressed,
-        child: Text('Create this Settle',
-          style: settleButtonTextStyle),
+        // onPressed: joinSettlePressed,
+        onPressed: () {
+          print(name);
+        },
+        child: Text('Create this Settle', style: settleButtonTextStyle),
       ),
     );
     // final textField =
@@ -51,14 +62,21 @@ class CreateSettle extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
-                  Column( // Settle buttons in the center
+                  Column(
+                    // Settle buttons in the center
                     mainAxisSize: MainAxisSize.min, // Size to only needed space
                     children: <Widget>[
                       Container(
                         child: Column(
                           children: <Widget>[
-                            Text('What are y\'all', style: TextStyle(fontSize: 25),),
-                            Text('Settling ?', style: TextStyle(fontSize: 25),),
+                            Text(
+                              'What are y\'all',
+                              style: TextStyle(fontSize: 25),
+                            ),
+                            Text(
+                              'Settling ?',
+                              style: TextStyle(fontSize: 25),
+                            ),
                           ],
                         ),
                       ),
@@ -93,7 +111,8 @@ class CreateSettle extends StatelessWidget {
                       )
                     ],
                   ),
-                  Align( // Info button in the bottom left
+                  Align(
+                    // Info button in the bottom left
                     alignment: Alignment.bottomLeft,
                     child: IconButton(
                       icon: Icon(Icons.info),
@@ -102,7 +121,8 @@ class CreateSettle extends StatelessWidget {
                       // onPressed: _informationPressed,
                     ),
                   ),
-                  Align( // Settings button in the bottom right
+                  Align(
+                    // Settings button in the bottom right
                     alignment: Alignment.bottomRight,
                     child: IconButton(
                       icon: Icon(Icons.settings),
@@ -137,8 +157,7 @@ class _CheckBox extends State<CheckBox> {
   Widget build(BuildContext context) {
     return CheckboxListTile(
       title: Text("Custom"),
-      controlAffinity:
-        ListTileControlAffinity.leading,
+      controlAffinity: ListTileControlAffinity.leading,
       value: _customOption,
       onChanged: (bool value) {
         setState(() {
