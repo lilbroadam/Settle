@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'Server.dart';
+// import 'JoinSettlePressed.dart';
+import 'package:flutter_button/custom/like_button.dart';
+// import 'JoinSettlePressed.dart';
 
 enum DefaultOptions { movies, restaurants }
 typedef void DefaultOptionPressedCallback(DefaultOptions defaultOption);
@@ -7,6 +10,10 @@ typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
 
 
 class CreateSettle extends StatefulWidget {
+  final String hostName;
+
+  CreateSettle(this.hostName);
+
   @override
   _CreateSettle createState() => _CreateSettle();
 }
@@ -73,7 +80,8 @@ class _CreateSettle extends State<CreateSettle> {
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
-                  Column( // Settle buttons in the center
+                  Column(
+                    // Settle buttons in the center
                     mainAxisSize: MainAxisSize.min, // Size to only needed space
                     children: <Widget>[
                       Text('What is your', style: TextStyle(fontSize: 25)),

@@ -20,7 +20,10 @@ class SettleApp extends StatelessWidget {
 }
 
 class JoinSettle extends StatelessWidget {
+  final String hostName;
   final joinCodeController = TextEditingController();
+
+  JoinSettle(this.hostName);
 
   // Read the Settle code that the user types and ask the server to join this
   // user to that Settle session
@@ -39,7 +42,9 @@ class JoinSettle extends StatelessWidget {
   Widget build(BuildContext context) {
     final settleButtonWidth = 150.0;
     final settleButtonHeight = 45.0;
-    final settleButtonTextStyle = new TextStyle(fontSize: 16.4,);
+    final settleButtonTextStyle = new TextStyle(
+      fontSize: 16.4,
+    );
 
     final joinSettleButton = SizedBox(
       width: settleButtonWidth,
