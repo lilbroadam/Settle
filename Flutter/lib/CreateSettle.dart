@@ -31,7 +31,10 @@ class _CreateSettle extends State<CreateSettle> {
   // Call this function when the "Create this Settle" button is pressed.
   // This function will ask the server to create a new Settle.
   void _createSettleButtonPressed() async {
-    var settleCode = await Server.createSettle();
+    String hostName = "host name"; // TODO passed from previous screen
+
+    var settleCode = 
+      await Server.createSettle(hostName, _defaultOption, _customOptionsAllowed);
     if (settleCode != null) {
       print('got settle code: ' + settleCode);
     } else {

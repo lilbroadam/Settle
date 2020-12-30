@@ -3,24 +3,43 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
+import 'CreateSettle.dart';
 
 // A class to handle communications with the backend server
 class Server {
-  static const serverInfoFile = 'assets/serverInfo.json';
+  static const server_info_file = 'assets/serverInfo.json';
   static const create_settle = 'createsettle';
   static const join_settle = 'toyjoinsettle';
-  static const default_header = <String, String>{
+  static const http_default_header = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
+  static const default_option_movies = 'movies';
+  static const default_option_restaurants = 'restaurants';
+  static const param_host_name = 'hostName';
+  static const param_default_option = 'defaultOption';
+  static const param_custom_allowed = 'customAllowed';
   static const response_new_settle_code = 'newSettleCode';
 
   // TODO add support to pass Settle settings to server
   // Ask the server to create a new Settle. Return the Settle code if the server
   // responds with OK (status 200), return null otherwise.
-  static Future<String> createSettle() async {
+  static Future<String> createSettle(
+        String hostName, DefaultOptions option, bool customAllowed) async {
+    String optionString;
+    if (option == DefaultOptions.movies)
+      optionString = default_option_movies;
+    else if (option == DefaultOptions.restaurants)
+      optionString = default_option_restaurants;
+    String customString = customAllowed ? 'true' : 'false';
+    
+    String createSettleUri = (await _getCreateSettleUrl()) + '?';
+    createSettleUri += param_host_name + '=' + hostName + '&';
+    createSettleUri += param_default_option + '=' + optionString + '&';
+    createSettleUri += param_custom_allowed + '=' + customString;
+
     http.Response response = await http.get(
-      await _getCreateSettleUrl(),
-      headers: default_header,
+      createSettleUri,
+      headers: http_default_header,
     );
 
     String newSettleCode;
@@ -39,7 +58,7 @@ class Server {
   static Future<http.Response> joinSettle(String joinSettleCode) async {
     return http.post(
       await _getJoinASettleUrl(),
-      headers: default_header,
+      headers: http_default_header,
       body: jsonEncode(<String, String>{
         'joinSettleCode': joinSettleCode,
       }),
@@ -64,7 +83,7 @@ class Server {
 
   // Read in the server info file
   static Future<Map<String, dynamic>> getServerInfoJson() async {
-    var jsonString = await rootBundle.loadString(serverInfoFile);
+    var jsonString = await rootBundle.loadString(server_info_file);
     Map<String, dynamic> serverInfoJson = jsonDecode(jsonString);
     return serverInfoJson;
   }  
