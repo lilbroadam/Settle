@@ -1,8 +1,35 @@
 import 'package:flutter/material.dart';
 import 'Server.dart';
 
-class CreateSettle extends StatelessWidget {
+enum DefaultOptions { movies, restaurants }
+typedef void DefaultOptionPressedCallback(DefaultOptions defaultOption);
+typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
 
+
+class CreateSettle extends StatefulWidget {
+  @override
+  _CreateSettle createState() => _CreateSettle();
+}
+
+class _CreateSettle extends State<CreateSettle> {
+
+  DefaultOptions _defaultOption;
+  bool _customOptionsAllowed = false;
+
+  // Call this function when a default option is pressed.
+  void _defaultOptionPressed(DefaultOptions defaultOption) {
+    _defaultOption = defaultOption;
+    setState((){});
+  }
+
+  // Call this function when the "custom options allowed" checkbox is pressed.
+  void _customOptionsPressed(bool customOptionsAllowed) {
+    _customOptionsAllowed = customOptionsAllowed;
+    setState((){});
+  }
+
+  // Call this function when the "Create this Settle" button is pressed.
+  // This function will ask the server to create a new Settle.
   void _createSettleButtonPressed() async {
     var settleCode = await Server.createSettle();
     if (settleCode != null) {
@@ -13,26 +40,26 @@ class CreateSettle extends StatelessWidget {
     }
   }
 
+  // Return true if at least one option has been selected.
+  bool _isAnOptionSelected() {
+    return (_defaultOption != null) || _customOptionsAllowed;
+  }
+
   @override
   Widget build(BuildContext context) {
     final settleButtonWidth = 180.0;
     final settleButtonHeight = 45.0;
     final settleButtonTextStyle = new TextStyle(fontSize: 16.4,);
-
     final createSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
       child: ElevatedButton(
-        onPressed: _createSettleButtonPressed,
-        child: Text('Create this Settle',
-          style: settleButtonTextStyle
-        ),
+        // Only enable this button when at least 1 option has been selected
+        onPressed: _isAnOptionSelected() ? _createSettleButtonPressed : null,
+        child: Text('Create this Settle', style: settleButtonTextStyle),
       ),
     );
-
-
     final settleButtonMargin = EdgeInsets.all(18.0);
-    final miscButtonSize = 30.0;
 
     return Scaffold(
       body: SafeArea(
@@ -46,43 +73,15 @@ class CreateSettle extends StatelessWidget {
                   Column( // Settle buttons in the center
                     mainAxisSize: MainAxisSize.min, // Size to only needed space
                     children: <Widget>[
-                      Container(
-                        child: Column(
-                          children: <Widget>[
-                            Text('What is your', style: TextStyle(fontSize: 25),),
-                            Text('group Settling?', style: TextStyle(fontSize: 25),),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: RadioButton(),
-                      ),
-                      Container(
-                        child: CheckBox(),
-                      ),
+                      Text('What is your', style: TextStyle(fontSize: 25)),
+                      Text('group Settling?', style: TextStyle(fontSize: 25)),
+                      RadioButton(_defaultOptionPressed),
+                      CheckBox('Allow custom choices', _customOptionsPressed),
                       Container(
                         margin: settleButtonMargin,
                         child: createSettleButton,
                       )
                     ],
-                  ),
-                  Align( // Info button in the bottom left
-                    alignment: Alignment.bottomLeft,
-                    child: IconButton(
-                      icon: Icon(Icons.info),
-                      iconSize: miscButtonSize,
-                      tooltip: 'Information about Settle',
-                      // onPressed: _informationPressed,
-                    ),
-                  ),
-                  Align( // Settings button in the bottom right
-                    alignment: Alignment.bottomRight,
-                    child: IconButton(
-                      icon: Icon(Icons.settings),
-                      iconSize: miscButtonSize,
-                      tooltip: 'Settle settings',
-                      // onPressed: _settingsPressed,
-                    ),
                   ),
                 ],
               ),
@@ -94,29 +93,34 @@ class CreateSettle extends StatelessWidget {
   }
 }
 
-/// This is the stateful widget that the main application instantiates.
+
 class CheckBox extends StatefulWidget {
-  CheckBox({Key key}) : super(key: key);
+  final String buttonTitle;
+  final CustomOptionsPressedCallback callback;
+  
+  CheckBox(this.buttonTitle, this.callback, {Key key}) : super(key: key);
 
   @override
-  _CheckBox createState() => _CheckBox();
+  _CheckBox createState() => _CheckBox(buttonTitle, callback);
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
 class _CheckBox extends State<CheckBox> {
+  final String buttonTitle;
+  final CustomOptionsPressedCallback callback;
   bool _customOption = false;
+  
+  _CheckBox(this.buttonTitle, this.callback);
 
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
-      title: Text("Custom"),
+      title: Text(buttonTitle),
       controlAffinity:
         ListTileControlAffinity.leading,
       value: _customOption,
       onChanged: (bool value) {
-        setState(() {
-          _customOption = value;
-        });
+        setState(() => _customOption = value);
+        callback(value);
       },
       activeColor: Colors.blue,
       checkColor: Colors.black,
@@ -124,19 +128,20 @@ class _CheckBox extends State<CheckBox> {
   }
 }
 
-enum Options { movies, restaurants }
 
-/// This is the stateful widget that the main application instantiates.
 class RadioButton extends StatefulWidget {
-  RadioButton({Key key}) : super(key: key);
+  final DefaultOptionPressedCallback callback;
+  RadioButton(this.callback, {Key key}) : super(key: key);
 
   @override
-  _RadioButton createState() => _RadioButton();
+  _RadioButton createState() => _RadioButton(callback);
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
 class _RadioButton extends State<RadioButton> {
-  Options _currentOption = null;
+  final DefaultOptionPressedCallback callback;
+  DefaultOptions _currentOption;
+
+  _RadioButton(this.callback);
 
   @override
   Widget build(BuildContext context) {
@@ -145,24 +150,22 @@ class _RadioButton extends State<RadioButton> {
         ListTile(
           title: const Text('Movies'),
           leading: Radio(
-            value: Options.movies,
+            value: DefaultOptions.movies,
             groupValue: _currentOption,
-            onChanged: (Options value) {
-              setState(() {
-                _currentOption = value;
-              });
+            onChanged: (DefaultOptions value) {
+              setState(() => _currentOption = value);
+              callback(value);
             },
           ),
         ),
         ListTile(
           title: const Text('Restaurants'),
           leading: Radio(
-            value: Options.restaurants,
+            value: DefaultOptions.restaurants,
             groupValue: _currentOption,
-            onChanged: (Options value) {
-              setState(() {
-                _currentOption = value;
-              });
+            onChanged: (DefaultOptions value) {
+              setState(() => _currentOption = value);
+              callback(value);
             },
           ),
         ),

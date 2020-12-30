@@ -15,8 +15,8 @@ class Server {
   static const response_new_settle_code = 'newSettleCode';
 
   // TODO add support to pass Settle settings to server
-  // Ask the server to create a new Settle, return the Settle code returned
-  // by the server.
+  // Ask the server to create a new Settle. Return the Settle code if the server
+  // responds with OK (status 200), return null otherwise.
   static Future<String> createSettle() async {
     http.Response response = await http.get(
       await _getCreateSettleUrl(),
