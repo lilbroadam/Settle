@@ -30,7 +30,7 @@
 .pub-cache/
 .pub/
 /build/
-**/ios/Runner.xcodeproj/project.pbxproj
+/ios/Runner.xcodeproj/project.pbxproj
 
 # Web related
 lib/generated_plugin_registrant.dart
