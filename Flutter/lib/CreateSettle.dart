@@ -1,47 +1,39 @@
 import 'package:flutter/material.dart';
-
-class SettleApp extends StatelessWidget {
-  // This widget is the root of the app.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Settle',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-    );
-  }
-}
+import 'Server.dart';
 
 class CreateSettle extends StatelessWidget {
+
+  void _createSettleButtonPressed() async {
+    var settleCode = await Server.createSettle();
+    if (settleCode != null) {
+      print('got settle code: ' + settleCode);
+    } else {
+      // TODO handle
+      print('There was an error creating a Settle');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final myController = TextEditingController();
     final settleButtonWidth = 180.0;
     final settleButtonHeight = 45.0;
     final settleButtonTextStyle = new TextStyle(fontSize: 16.4,);
 
-    final joinSettleButton = SizedBox(
+    final createSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
       child: ElevatedButton(
-        // onPressed: _joinASettlePressed,
+        onPressed: _createSettleButtonPressed,
         child: Text('Create this Settle',
-          style: settleButtonTextStyle),
+          style: settleButtonTextStyle
+        ),
       ),
     );
-    // final textField =
+
+
     final settleButtonMargin = EdgeInsets.all(18.0);
     final miscButtonSize = 30.0;
 
-    /**
-     * The home screen is made of an expanded stack that takes up the entire
-     * screen and draws widgets in the center of the screen by default. The
-     * Settle buttons are drawn in a column in the center of the stack/screen,
-     * the info button is drawn in the bottom left of the stack/screen, and the
-     * settings button is drawn in the bottom right of the stack/screen.
-     */
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -57,8 +49,8 @@ class CreateSettle extends StatelessWidget {
                       Container(
                         child: Column(
                           children: <Widget>[
-                            Text('What are y\'all', style: TextStyle(fontSize: 25),),
-                            Text('Settling ?', style: TextStyle(fontSize: 25),),
+                            Text('What is your', style: TextStyle(fontSize: 25),),
+                            Text('group Settling?', style: TextStyle(fontSize: 25),),
                           ],
                         ),
                       ),
@@ -68,28 +60,9 @@ class CreateSettle extends StatelessWidget {
                       Container(
                         child: CheckBox(),
                       ),
-                      // CheckboxListTile(
-                      //   title: Text("Movies"),
-                      //   controlAffinity:
-                      //     ListTileControlAffinity.leading,
-                      //   value: _customOption,
-                      //   onChanged: (bool value) {
-                      //     setState(() {
-                      //       _customOption = value;
-                      //     });
-                      //   },
-                      //   activeColor: Colors.black,
-                      //   checkColor: Colors.grey,
-                      // ),
-                      // Padding(
-                      //   padding: const EdgeInsets.all(16.0),
-                      //   child: TextField(
-                      //     controller: myController,
-                      //   ),
-                      // ),
                       Container(
                         margin: settleButtonMargin,
-                        child: joinSettleButton,
+                        child: createSettleButton,
                       )
                     ],
                   ),
@@ -151,7 +124,7 @@ class _CheckBox extends State<CheckBox> {
   }
 }
 
-enum Options { movies, restaurants, alcohol }
+enum Options { movies, restaurants }
 
 /// This is the stateful widget that the main application instantiates.
 class RadioButton extends StatefulWidget {
@@ -185,18 +158,6 @@ class _RadioButton extends State<RadioButton> {
           title: const Text('Restaurants'),
           leading: Radio(
             value: Options.restaurants,
-            groupValue: _currentOption,
-            onChanged: (Options value) {
-              setState(() {
-                _currentOption = value;
-              });
-            },
-          ),
-        ),
-        ListTile(
-          title: const Text('Alcohol'),
-          leading: Radio(
-            value: Options.alcohol,
             groupValue: _currentOption,
             onChanged: (Options value) {
               setState(() {
