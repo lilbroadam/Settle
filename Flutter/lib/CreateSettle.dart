@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'Server.dart';
-// import 'JoinSettlePressed.dart';
-import 'package:flutter_button/custom/like_button.dart';
-// import 'JoinSettlePressed.dart';
 
 enum DefaultOptions { movies, restaurants }
 typedef void DefaultOptionPressedCallback(DefaultOptions defaultOption);
 typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
-
 
 class CreateSettle extends StatefulWidget {
   final String hostName;
@@ -15,13 +11,16 @@ class CreateSettle extends StatefulWidget {
   CreateSettle(this.hostName);
 
   @override
-  _CreateSettle createState() => _CreateSettle();
+  _CreateSettle createState() => _CreateSettle(hostName);
 }
 
 class _CreateSettle extends State<CreateSettle> {
 
+  final String hostName;
   DefaultOptions _defaultOption;
   bool _customOptionsAllowed = false;
+
+  _CreateSettle(this.hostName);
 
   // Call this function when a default option is pressed.
   void _defaultOptionPressed(DefaultOptions defaultOption) {
@@ -38,8 +37,6 @@ class _CreateSettle extends State<CreateSettle> {
   // Call this function when the "Create this Settle" button is pressed.
   // This function will ask the server to create a new Settle.
   void _createSettleButtonPressed() async {
-    String hostName = "host name"; // TODO passed from previous screen
-
     var settleCode = 
       await Server.createSettle(hostName, _defaultOption, _customOptionsAllowed);
     if (settleCode != null) {
@@ -76,26 +73,18 @@ class _CreateSettle extends State<CreateSettle> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(
-              child: Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  Column(
-                    // Settle buttons in the center
-                    mainAxisSize: MainAxisSize.min, // Size to only needed space
-                    children: <Widget>[
-                      Text('What is your', style: TextStyle(fontSize: 25)),
-                      Text('group Settling?', style: TextStyle(fontSize: 25)),
-                      RadioButton(_defaultOptionPressed),
-                      CheckBox('Allow custom choices', _customOptionsPressed),
-                      Container(
-                        margin: settleButtonMargin,
-                        child: createSettleButton,
-                      )
-                    ],
-                  ),
-                ],
-              ),
+            Column(
+              mainAxisSize: MainAxisSize.min, // Size to only needed space
+              children: <Widget>[
+                Text('What is your', style: TextStyle(fontSize: 25)),
+                Text('group Settling?', style: TextStyle(fontSize: 25)),
+                RadioButton(_defaultOptionPressed),
+                CheckBox('Allow custom choices', _customOptionsPressed),
+                Container(
+                  margin: settleButtonMargin,
+                  child: createSettleButton,
+                )
+              ],
             ),
           ],
         ),

@@ -1,7 +1,5 @@
 import 'package:Settle/NameScreen.dart';
 import 'package:flutter/material.dart';
-import 'CreateSettle.dart';
-import 'JoinSettle.dart';
 
 void main() {
   runApp(SettleApp());
@@ -42,13 +40,9 @@ class SettleHomePage extends StatefulWidget {
 }
 
 class _SettleHomePageState extends State<SettleHomePage> {
+
   // Called when 'Create a Settle' button is pressed
   void _createASettlePressed() {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => CreateSettle()),
-    // );
-
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => NameScreen(true, context)),
@@ -57,11 +51,6 @@ class _SettleHomePageState extends State<SettleHomePage> {
 
   // Called when 'Join a Settle' button is pressed
   void _joinASettlePressed() {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => JoinSettle()),
-    // );
-
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => NameScreen(false, context)),
@@ -70,10 +59,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
 
   // Called when the information button is pressed
   void _informationPressed() {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => NameScreen()),
-    // );
+    // TODO
   }
 
   // Called when the settings button is pressed

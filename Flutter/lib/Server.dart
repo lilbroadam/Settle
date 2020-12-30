@@ -37,7 +37,7 @@ class Server {
     createSettleUri += param_default_option + '=' + optionString + '&';
     createSettleUri += param_custom_allowed + '=' + customString;
 
-    http.Response response = await http.get(
+    final http.Response response = await http.get(
       createSettleUri,
       headers: http_default_header,
     );
@@ -55,29 +55,32 @@ class Server {
   }
 
   // Given a joinSettleCode, ask the server to join the user to that Settle.
-  static Future<http.Response> joinSettle(String joinSettleCode) async {
-    return http.post(
+  // TODO not sure if this method should return something or not
+  static Future<String> joinSettle(String joinSettleCode) async {
+    final http.Response response = await http.post(
       await _getJoinASettleUrl(),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
         'joinSettleCode': joinSettleCode,
       }),
     );
+
+    if (response.statusCode == 200) {
+      print('it worked');
+    } else {
+      print('it didn\'t work');
+    }
+
+    return Future<String>.value(null); 
   }
 
   // Get the "create a settle" URL
   static Future<String> _getCreateSettleUrl() async {
-    // var jsonString = await rootBundle.loadString(serverInfoFile);
-    // Map<String, dynamic> serverInfoJson = jsonDecode(jsonString);
-    // return serverInfoJson[create_settle];
     return (await getServerInfoJson())[create_settle];
   }
 
   // Get the "join a settle" URL
   static Future<String> _getJoinASettleUrl() async {
-    // var jsonString = await rootBundle.loadString(serverInfoFile);
-    // Map<String, dynamic> serverInfoJson = jsonDecode(jsonString);
-    // return serverInfoJson[join_settle];
     return (await getServerInfoJson())[join_settle];
   }
 
