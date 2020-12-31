@@ -13,7 +13,12 @@ import com.settle.SettleSession;
 
 @WebServlet("/createsettle")
 public class CreateSettleServlet extends HttpServlet {
-    private final String NEW_SETTLE_CODE = "newSettleCode";
+    private final String PARAM__HOST_NAME = "hostName";
+    private final String PARAM_DEFAULT_OPTION = "defaultOption";
+    private final String PARAM_CUSTOM_ALLOWED = "customAllowed"
+    private final String DEFAULT_OPTION_MOVIES = "movies";
+    private final String DEFAULT_OPTION_RESTAURANTS = "restaurants";
+    private final String RESPONSE_NEW_SETTLE_CODE = "newSettleCode";
 
     @Override
     public void init() {
@@ -24,16 +29,30 @@ public class CreateSettleServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // boolean isRunning = SettleSessionManager.isSessionManagerRunning();
 
-        String hostName = "host name";
         SettleSession.SettleType settleType = SettleSession.SettleType.CUSTOM;
-        boolean customChoicesAllowed = true;
+        boolean customChoicesAllowed = false;
+
+        String hostName = request.getParameter(PARAM__HOST_NAME);
+        String defaultOption = request.getParameter(PARAM_DEFAULT_OPTION);
+        String customAllowedString = request.getParameter(PARAM_CUSTOM_ALLOWED);
+        if (defaultOption.equals(DEFAULT_OPTION_MOVIES))
+            settleType = SettleSession.SettleType.MOVIES;
+        else if (defaultOption.equals(DEFAULT_OPTION_RESTAURANTS))
+            settleType = SettleSession.SettleType.RESTAURANTS;
+        else {
+            // TODO
+        }
+        if (!customAllowedString.equals("true") && !customAllowedString.equals("false")) {
+            // TODO
+        } else
+            customChoicesAllowed = customAllowedString.equals("true") ? true : false;
 
         String settleCode = SettleSessionManager.createSettleSession(hostName, settleType, customChoicesAllowed);
 
         String json = "";
         try {
             JSONObject jsonBuilder = new JSONObject();
-            jsonBuilder.put(NEW_SETTLE_CODE, settleCode);
+            jsonBuilder.put(RESPONSE_NEW_SETTLE_CODE, settleCode);
             json = jsonBuilder.toString();
         } catch (JSONException e) {
             System.out.println("Error while building JSON file.");
