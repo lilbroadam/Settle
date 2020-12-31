@@ -20,11 +20,11 @@ public class TemplateServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // Respond with HTML
-        response.setContentType("text/html;");
+        response.setContentType("text/html");
         response.getWriter().println("This is the template servlet responding with HTML");
 
         // Response with a JSON
-        // response.setContentType("application/json;");
+        // response.setContentType("application/json");
         // String json = <json-formatted string>;
         // response.getWriter().println(json);
     }
