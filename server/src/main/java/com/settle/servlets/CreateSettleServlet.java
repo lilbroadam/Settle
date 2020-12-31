@@ -15,9 +15,10 @@ import com.settle.SettleSession;
 public class CreateSettleServlet extends HttpServlet {
     private final String PARAM__HOST_NAME = "hostName";
     private final String PARAM_DEFAULT_OPTION = "defaultOption";
-    private final String PARAM_CUSTOM_ALLOWED = "customAllowed"
+    private final String PARAM_CUSTOM_ALLOWED = "customAllowed";
     private final String DEFAULT_OPTION_MOVIES = "movies";
     private final String DEFAULT_OPTION_RESTAURANTS = "restaurants";
+    private final String DEFAULT_OPTION_CUSTOM = "custom";
     private final String RESPONSE_NEW_SETTLE_CODE = "newSettleCode";
 
     @Override
@@ -39,6 +40,8 @@ public class CreateSettleServlet extends HttpServlet {
             settleType = SettleSession.SettleType.MOVIES;
         else if (defaultOption.equals(DEFAULT_OPTION_RESTAURANTS))
             settleType = SettleSession.SettleType.RESTAURANTS;
+        else if (defaultOption.equals(DEFAULT_OPTION_CUSTOM))
+            settleType = SettleSession.SettleType.CUSTOM;
         else {
             // TODO
         }
