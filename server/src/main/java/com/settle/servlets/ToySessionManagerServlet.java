@@ -15,18 +15,27 @@ public class ToySessionManagerServlet extends HttpServlet {
 
     @Override
     public void init() {
-        SettleSessionManager.startSessionManager();
+        // SettleSessionManager.startSessionManager();
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         java.lang.System.out.println("/toysessionmanager.doGet()");
+        java.lang.System.out.println(request.getRemoteAddr());
         boolean isRunning = SettleSessionManager.isSessionManagerRunning();
         // String sessionCode = SettleSessionManager.createSettleSession();
 
         response.setContentType("text/html");
         response.getWriter().println("/toysessionmanager GET");
         response.getWriter().println("SettleSessionManager.isSessionManagerRunning(): " + isRunning);
+        // response.getWriter().println("Your IP address: " + request.getRemoteAddr());
+
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");  
+        if (ipAddress == null) {
+            response.getWriter().println("not forwarded IP: " + request.getRemoteAddr());
+        } else {
+            response.getWriter().println("forwarded IP: " + ipAddress);
+        }
         // response.getWriter().println("Your session code is: " + sessionCode);
     }
 

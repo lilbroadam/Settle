@@ -2,12 +2,14 @@ package com.settle;
 
 import java.lang.Runnable;
 import java.lang.Thread;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import com.settle.SettleSession;
 import com.settle.SettleSessionCodeManager;
+import com.settle.User;
 
 public class SettleSessionManager {
 
@@ -84,16 +86,44 @@ public class SettleSessionManager {
     }
 
     // Create a Settle session and return it's session code
-    public static String createSettleSession(String hostName, SettleSession.SettleType settleType,
-            boolean customChoicesAllowed) {
+    public static String createSettleSession(
+            User hostUser, SettleSession.SettleType settleType, boolean customChoicesAllowed) {
 
         synchronized(settleSessionMapLock) {
             String newSessionCode = SettleSessionCodeManager.generateSettleSessionCode();
 
             SettleSession session = 
-                new SettleSession(newSessionCode, hostName, settleType, customChoicesAllowed);
+                new SettleSession(newSessionCode, hostUser, settleType, customChoicesAllowed);
             settleSessionsMap.put(newSessionCode, session);
+
             return newSessionCode;
+        }
+    }
+
+    // Join a User to a Settle session. 
+    // Return the settleCode if user was added to the session, return null if not.
+    public static String joinSettleSession(String settleCode, User user) {
+        synchronized(settleSessionMapLock) {
+            SettleSession session = settleSessionsMap.get(settleCode);
+            if (session != null) {
+                session.addUser(user);
+                return settleCode;
+            } else {
+                // TODO throw custom exception
+                return null;
+            }
+        }
+    }
+
+    // Return a List of Users in the given Settle session, return null if session not found
+    public static List<User> getUsers(String settleCode) {
+        synchronized(settleSessionMapLock) {
+            SettleSession session = settleSessionsMap.get(settleCode);
+            if (session != null) {
+                return session.getUsers();
+            } else {
+                return null;
+            }
         }
     }
 

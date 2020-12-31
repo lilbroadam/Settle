@@ -10,10 +10,11 @@ import org.apache.sling.commons.json.JSONObject;
 import org.apache.sling.commons.json.JSONException;
 import com.settle.SettleSessionManager;
 import com.settle.SettleSession;
+import com.settle.User;
 
 @WebServlet("/createsettle")
 public class CreateSettleServlet extends HttpServlet {
-    private final String PARAM__HOST_NAME = "hostName";
+    private final String PARAM_HOST_NAME = "hostName";
     private final String PARAM_DEFAULT_OPTION = "defaultOption";
     private final String PARAM_CUSTOM_ALLOWED = "customAllowed";
     private final String DEFAULT_OPTION_MOVIES = "movies";
@@ -30,13 +31,14 @@ public class CreateSettleServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // boolean isRunning = SettleSessionManager.isSessionManagerRunning();
 
-        SettleSession.SettleType settleType = SettleSession.SettleType.CUSTOM;
-        boolean customChoicesAllowed = false;
-
-        String hostName = request.getParameter(PARAM__HOST_NAME);
+        // Parse request parameters
+        String hostName = request.getParameter(PARAM_HOST_NAME);
+        String hostId = "id123"; // TODO request.getParameter();
         String defaultOption = request.getParameter(PARAM_DEFAULT_OPTION);
         String customAllowedString = request.getParameter(PARAM_CUSTOM_ALLOWED);
-        if (defaultOption.equals(DEFAULT_OPTION_MOVIES))
+        SettleSession.SettleType settleType = SettleSession.SettleType.CUSTOM;
+        boolean customChoicesAllowed = false;
+        if (defaultOption.equals(DEFAULT_OPTION_MOVIES)) // TODO change to switch/case
             settleType = SettleSession.SettleType.MOVIES;
         else if (defaultOption.equals(DEFAULT_OPTION_RESTAURANTS))
             settleType = SettleSession.SettleType.RESTAURANTS;
@@ -50,8 +52,11 @@ public class CreateSettleServlet extends HttpServlet {
         } else
             customChoicesAllowed = customAllowedString.equals("true") ? true : false;
 
-        String settleCode = SettleSessionManager.createSettleSession(hostName, settleType, customChoicesAllowed);
+        // Do request
+        User hostUser = new User(hostId, hostName);
+        String settleCode = SettleSessionManager.createSettleSession(hostUser, settleType, customChoicesAllowed);
 
+        // Build response
         String json = "";
         try {
             JSONObject jsonBuilder = new JSONObject();
@@ -63,7 +68,6 @@ public class CreateSettleServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
-        // Response with a JSON
         response.setContentType("application/json");
         response.getWriter().println(json);
     }
