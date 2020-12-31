@@ -15,21 +15,27 @@ class Server {
   };
   static const default_option_movies = 'movies';
   static const default_option_restaurants = 'restaurants';
+  static const default_option_custom = 'custom';
   static const param_host_name = 'hostName';
   static const param_default_option = 'defaultOption';
   static const param_custom_allowed = 'customAllowed';
   static const response_new_settle_code = 'newSettleCode';
 
-  // TODO add support to pass Settle settings to server
   // Ask the server to create a new Settle. Return the Settle code if the server
   // responds with OK (status 200), return null otherwise.
   static Future<String> createSettle(
         String hostName, DefaultOptions option, bool customAllowed) async {
+    // TODO Change to String optionString = theDay.toString().split('.').last;
     String optionString;
     if (option == DefaultOptions.movies)
       optionString = default_option_movies;
     else if (option == DefaultOptions.restaurants)
       optionString = default_option_restaurants;
+    else if (option == DefaultOptions.custom)
+      optionString = default_option_custom;
+    else {
+      // TODO
+    }
     String customString = customAllowed ? 'true' : 'false';
     
     String createSettleUri = (await _getCreateSettleUrl()) + '?';

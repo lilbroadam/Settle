@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Server.dart';
 
-enum DefaultOptions { movies, restaurants }
+enum DefaultOptions { movies, restaurants, custom }
 typedef void DefaultOptionPressedCallback(DefaultOptions defaultOption);
 typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
 
@@ -25,6 +25,11 @@ class _CreateSettle extends State<CreateSettle> {
   // Call this function when a default option is pressed.
   void _defaultOptionPressed(DefaultOptions defaultOption) {
     _defaultOption = defaultOption;
+
+    if (defaultOption == DefaultOptions.custom) {
+      // TODO make checkbox checked if 'Custom choices only' is clicked
+    }
+
     setState((){});
   }
 
@@ -99,7 +104,7 @@ class CheckBox extends StatefulWidget {
   final CustomOptionsPressedCallback callback;
   
   CheckBox(this.buttonTitle, this.callback, {Key key}) : super(key: key);
-
+    
   @override
   _CheckBox createState() => _CheckBox(buttonTitle, callback);
 }
@@ -167,6 +172,17 @@ class _RadioButton extends State<RadioButton> {
               setState(() => _currentOption = value);
               callback(value);
             },
+          ),
+        ),
+        ListTile(
+          title: const Text('Custom choices only'),
+          leading: Radio(
+            value: DefaultOptions.custom,
+            groupValue: _currentOption,
+            onChanged: (DefaultOptions value) {
+              setState(() => _currentOption = value);
+              callback(value);
+            }
           ),
         ),
       ],
