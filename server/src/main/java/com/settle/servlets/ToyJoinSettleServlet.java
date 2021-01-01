@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.sling.commons.json.JSONObject;
 import com.settle.SettleSessionManager;
+import com.settle.servlets.ServletUtils;
 
 @WebServlet("/toyjoinsettle")
 public class ToyJoinSettleServlet extends HttpServlet {
@@ -26,6 +27,10 @@ public class ToyJoinSettleServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println(request.getParameter(JOIN_SETTLE_CODE));
+        String body = ServletUtils.getBody(request);
+        String joinCode = ServletUtils.getJsonProperty(body, "joinSettleCode");
+        
+        response.setContentType("text/html");
+        response.getWriter().println("extracted settle code: " + joinCode);
     }
 }
