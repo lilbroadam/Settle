@@ -105,9 +105,10 @@ class Server {
       print("Error getting device info");
     }
 
+    String id = deviceName + "-" + deviceVersion + "-" + identifier;
     // print for testing and debugging
-    print(deviceName + "-" + deviceVersion + "-" + identifier);
-    return deviceName + "-" + deviceVersion + "-" + identifier;
+    print(id);
+    return id.hashCode.toString();
   }
 
   // Get the "create a settle" URL
