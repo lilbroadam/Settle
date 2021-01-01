@@ -6,7 +6,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.sling.commons.json.JSONObject;
 import com.settle.SettleSessionManager;
 
 @WebServlet("/toycreatesettle")
@@ -23,14 +22,6 @@ public class ToyCreateSettleServlet extends HttpServlet {
         String toySettleCode = "abcxyz123";
 
         String json = "";
-        try {
-            JSONObject jsonBuilder = new JSONObject();
-            jsonBuilder.put(NEW_SETTLE_CODE, toySettleCode);
-            json = jsonBuilder.toString();
-        } catch (Exception e) {
-            System.out.println("Error while processing JSON file.");
-            System.out.println(e);
-        }
 
         response.setContentType("application/json");
         response.getWriter().println(json);

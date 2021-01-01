@@ -6,8 +6,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.sling.commons.json.JSONObject;
-import org.apache.sling.commons.json.JSONException;
 import com.settle.SettleSessionManager;
 import com.settle.SettleSession;
 import com.settle.User;

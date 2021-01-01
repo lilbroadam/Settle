@@ -1,13 +1,13 @@
 package com.settle.servlets;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.sling.commons.json.JSONObject;
-import org.apache.sling.commons.json.JSONException;
 import com.settle.SettleSessionManager;
 import com.settle.SettleSession;
 import com.settle.User;
@@ -57,17 +57,10 @@ public class CreateSettleServlet extends HttpServlet {
         String settleCode = SettleSessionManager.createSettleSession(hostUser, settleType, customChoicesAllowed);
 
         // Build response
-        String json = "";
-        try {
-            JSONObject jsonBuilder = new JSONObject();
-            jsonBuilder.put(RESPONSE_NEW_SETTLE_CODE, settleCode);
-            json = jsonBuilder.toString();
-        } catch (JSONException e) {
-            System.out.println("Error while building JSON file.");
-            System.out.println(e);
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(RESPONSE_NEW_SETTLE_CODE, settleCode);
+        String json = (new Gson()).toJson(jsonObject);
+        
         response.setContentType("application/json");
         response.getWriter().println(json);
     }
