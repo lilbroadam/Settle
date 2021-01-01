@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'CreateSettle.dart';
+import 'package:device_info/device_info.dart';
+import 'package:flutter/services.dart';
 
 // A class to handle communications with the backend server
 class Server {
@@ -21,10 +23,12 @@ class Server {
   static const param_custom_allowed = 'customAllowed';
   static const response_new_settle_code = 'newSettleCode';
 
+  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+
   // Ask the server to create a new Settle. Return the Settle code if the server
   // responds with OK (status 200), return null otherwise.
   static Future<String> createSettle(
-        String hostName, DefaultOptions option, bool customAllowed) async {
+      String hostName, DefaultOptions option, bool customAllowed) async {
     // TODO Change to String optionString = theDay.toString().split('.').last;
     String optionString;
     if (option == DefaultOptions.movies)
@@ -37,7 +41,7 @@ class Server {
       // TODO
     }
     String customString = customAllowed ? 'true' : 'false';
-    
+
     String createSettleUri = (await _getCreateSettleUrl()) + '?';
     createSettleUri += param_host_name + '=' + hostName + '&';
     createSettleUri += param_default_option + '=' + optionString + '&';
@@ -56,7 +60,7 @@ class Server {
       // TODO handle
       print('there was an error trying to create a settle on the server');
     }
-    
+    _getUniqueID();
     return Future<String>.value(newSettleCode);
   }
 
@@ -77,7 +81,34 @@ class Server {
       print('it didn\'t work');
     }
 
-    return Future<String>.value(null); 
+    return Future<String>.value(null);
+  }
+
+  static Future<String> _getUniqueID() async {
+    String deviceName;
+    String deviceVersion;
+    String identifier;
+
+    try {
+      if (Platform.isAndroid) {
+        var device = await deviceInfoPlugin.androidInfo;
+        deviceName = device.model;
+        deviceVersion = device.version.toString();
+        identifier = device.androidId;
+      } else if (Platform.isIOS) {
+        var device = await deviceInfoPlugin.iosInfo;
+        deviceName = device.name;
+        deviceVersion = device.systemVersion;
+        identifier = device.identifierForVendor;
+      }
+    } on PlatformException {
+      print("Error getting device info");
+    }
+
+    String id = deviceName + "-" + deviceVersion + "-" + identifier;
+    // print for testing and debugging
+    print(id);
+    return id.hashCode.toString();
   }
 
   // Get the "create a settle" URL
@@ -95,5 +126,5 @@ class Server {
     var jsonString = await rootBundle.loadString(server_info_file);
     Map<String, dynamic> serverInfoJson = jsonDecode(jsonString);
     return serverInfoJson;
-  }  
+  }
 }
