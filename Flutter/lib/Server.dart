@@ -42,14 +42,15 @@ class Server {
     }
     String customString = customAllowed ? 'true' : 'false';
 
-    String createSettleUri = (await _getCreateSettleUrl()) + '?';
-    createSettleUri += param_host_name + '=' + hostName + '&';
-    createSettleUri += param_default_option + '=' + optionString + '&';
-    createSettleUri += param_custom_allowed + '=' + customString;
-
-    final http.Response response = await http.get(
-      createSettleUri,
+    final http.Response response = await http.post(
+      await _getCreateSettleUrl(),
       headers: http_default_header,
+      body: jsonEncode(<String, String>{
+        'hostName': hostName,
+        'hostId': await _getUniqueID(),
+        'defaultOption': optionString,
+        'customAllowed': customString,
+      }),
     );
 
     String newSettleCode;
@@ -60,7 +61,7 @@ class Server {
       // TODO handle
       print('there was an error trying to create a settle on the server');
     }
-    _getUniqueID();
+    
     return Future<String>.value(newSettleCode);
   }
 
@@ -77,8 +78,10 @@ class Server {
 
     if (response.statusCode == 200) {
       print('it worked');
+      print(response.body);
     } else {
       print('it didn\'t work');
+      print(response.body);
     }
 
     return Future<String>.value(null);
@@ -106,8 +109,6 @@ class Server {
     }
 
     String id = deviceName + "-" + deviceVersion + "-" + identifier;
-    // print for testing and debugging
-    print(id);
     return id.hashCode.toString();
   }
 
