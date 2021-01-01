@@ -64,4 +64,48 @@ public class CreateSettleServlet extends HttpServlet {
         response.setContentType("application/json");
         response.getWriter().println(json);
     }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Parse request parameters
+        String bodyJson = ServletUtils.getBody(request);
+
+        String hostName = ServletUtils.getJsonProperty(bodyJson, PARAM_HOST_NAME);
+        String hostId = ServletUtils.getJsonProperty(bodyJson, "hostId");
+        String defaultOption = ServletUtils.getJsonProperty(bodyJson, PARAM_DEFAULT_OPTION);
+        String customAllowedString = ServletUtils.getJsonProperty(bodyJson, PARAM_CUSTOM_ALLOWED);
+
+        SettleSession.SettleType settleType = SettleSession.SettleType.CUSTOM;
+        boolean customChoicesAllowed = false;
+        if (defaultOption.equals(DEFAULT_OPTION_MOVIES)) // Convert defaultOption into a SettleSession.SettleType
+            settleType = SettleSession.SettleType.MOVIES;
+        else if (defaultOption.equals(DEFAULT_OPTION_RESTAURANTS))
+            settleType = SettleSession.SettleType.RESTAURANTS;
+        else if (defaultOption.equals(DEFAULT_OPTION_CUSTOM))
+            settleType = SettleSession.SettleType.CUSTOM;
+        else {
+            // TODO
+            response.getWriter().println("error when parsing defaultOption. Received: " + defaultOption);
+        }
+        if (customAllowedString.equals(true + "")) // Convert customAllowedString into a boolean
+            customChoicesAllowed = true;
+        else if (customAllowedString.equals(false + ""))
+            customChoicesAllowed = false;
+        else {
+            // TODO
+            response.getWriter().println("error when parsing customAllowed. Received: " + customAllowedString);
+        }
+
+        // Do request
+        User hostUser = new User(hostId, hostName);
+        String settleCode = SettleSessionManager.createSettleSession(hostUser, settleType, customChoicesAllowed);
+
+        // Build response
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(RESPONSE_NEW_SETTLE_CODE, settleCode);
+        String json = (new Gson()).toJson(jsonObject);
+        
+        response.setContentType("application/json");
+        response.getWriter().println(json);
+    }
 }
