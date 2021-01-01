@@ -14,7 +14,8 @@ import com.settle.User;
 
 @WebServlet("/createsettle")
 public class CreateSettleServlet extends HttpServlet {
-    private final String PARAM_HOST_NAME = "hostName";
+    private final String PARAM_USER_NAME = "userName";
+    private final String PARAM_USER_ID = "userId";
     private final String PARAM_DEFAULT_OPTION = "defaultOption";
     private final String PARAM_CUSTOM_ALLOWED = "customAllowed";
     private final String DEFAULT_OPTION_MOVIES = "movies";
@@ -32,7 +33,7 @@ public class CreateSettleServlet extends HttpServlet {
         // boolean isRunning = SettleSessionManager.isSessionManagerRunning();
 
         // Parse request parameters
-        String hostName = request.getParameter(PARAM_HOST_NAME);
+        String hostName = request.getParameter(PARAM_USER_NAME);
         String hostId = "id123"; // TODO request.getParameter();
         String defaultOption = request.getParameter(PARAM_DEFAULT_OPTION);
         String customAllowedString = request.getParameter(PARAM_CUSTOM_ALLOWED);
@@ -70,8 +71,8 @@ public class CreateSettleServlet extends HttpServlet {
         // Parse request parameters
         String bodyJson = ServletUtils.getBody(request);
 
-        String hostName = ServletUtils.getJsonProperty(bodyJson, PARAM_HOST_NAME);
-        String hostId = ServletUtils.getJsonProperty(bodyJson, "hostId");
+        String hostName = ServletUtils.getJsonProperty(bodyJson, PARAM_USER_NAME);
+        String hostId = ServletUtils.getJsonProperty(bodyJson, PARAM_USER_ID);
         String defaultOption = ServletUtils.getJsonProperty(bodyJson, PARAM_DEFAULT_OPTION);
         String customAllowedString = ServletUtils.getJsonProperty(bodyJson, PARAM_CUSTOM_ALLOWED);
 
