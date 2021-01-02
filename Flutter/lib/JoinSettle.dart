@@ -12,7 +12,7 @@ class JoinSettle extends StatelessWidget {
   void _joinASettlePressed() async {
     var joinSettleCode = joinCodeController.text;
 
-    await Server.joinSettle(joinSettleCode);
+    await Server.joinSettle(hostName, joinSettleCode);
   }
 
   @override

@@ -11,7 +11,7 @@ import 'package:flutter/services.dart';
 class Server {
   static const server_info_file = 'assets/serverInfo.json';
   static const create_settle = 'createsettle';
-  static const join_settle = 'toyjoinsettle';
+  static const join_settle = 'joinsettle';
   static const http_default_header = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
@@ -46,8 +46,8 @@ class Server {
       await _getCreateSettleUrl(),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
-        'hostName': hostName,
-        'hostId': await _getUniqueID(),
+        'userName': hostName,
+        'userId': await _getUniqueID(),
         'defaultOption': optionString,
         'customAllowed': customString,
       }),
@@ -67,21 +67,24 @@ class Server {
 
   // Given a joinSettleCode, ask the server to join the user to that Settle.
   // TODO not sure if this method should return something or not
-  static Future<String> joinSettle(String joinSettleCode) async {
+  // TODO how to tell caller when join fails?
+  static Future<String> joinSettle(String userName, String joinSettleCode) async {
     final http.Response response = await http.post(
       await _getJoinASettleUrl(),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
+        'userName': userName,
+        'userId': await _getUniqueID(),
         'joinSettleCode': joinSettleCode,
       }),
     );
 
     if (response.statusCode == 200) {
-      print('it worked');
-      print(response.body);
+      print('Joined user to Settle #' + joinSettleCode);
     } else {
-      print('it didn\'t work');
-      print(response.body);
+      Map<String, dynamic> responseJson = jsonDecode(response.body);
+      String error = responseJson['error'];
+      print(error);
     }
 
     return Future<String>.value(null);
