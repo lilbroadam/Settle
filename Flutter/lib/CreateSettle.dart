@@ -1,7 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'Server.dart';
 
 enum DefaultOptions { movies, restaurants, custom }
+extension DefaultOptionsExt on DefaultOptions {
+  String get name => describeEnum(this);
+}
 typedef void DefaultOptionPressedCallback(DefaultOptions defaultOption);
 typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
 
