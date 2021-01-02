@@ -11,9 +11,10 @@ import 'Settle.dart';
 // A class to handle communications with the backend server
 class Server {
   static const server_info_file = 'assets/serverInfo.json';
-  static const create_settle = 'createsettle';
-  static const join_settle = 'joinsettle';
-  static const info = 'info';
+  static const server_create_path = 'createsettle';
+  static const server_join_path = 'joinsettle';
+  static const server_info_path = 'info';
+  static const server_options_path = 'options';
   static const http_default_header = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
@@ -45,7 +46,7 @@ class Server {
     String customString = customAllowed ? 'true' : 'false';
 
     final http.Response response = await http.post(
-      await _getCreateSettleUrl(),
+      await _getUrl(server_create_path),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
         'userName': hostName,
@@ -73,7 +74,7 @@ class Server {
   // TODO how to tell caller when join fails?
   static Future<String> joinSettle(String userName, String joinSettleCode) async {
     final http.Response response = await http.post(
-      await _getJoinASettleUrl(),
+      await _getUrl(server_join_path),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
         'userName': userName,
@@ -84,19 +85,20 @@ class Server {
 
     if (response.statusCode == HttpStatus.ok) {
       print('Joined user to Settle #' + joinSettleCode);
+      print('current state of the Settle: ' 
+        + (await getSettleInfo(joinSettleCode)).toString());
     } else {
       Map<String, dynamic> responseJson = jsonDecode(response.body);
       String error = responseJson['error'];
       print(error);
     }
-    await getSettleInfo(joinSettleCode);
 
     return Future<String>.value(null);
   }
 
   // Return a Settle object representing the Settle
   static Future<Settle> getSettleInfo(String settleCode) async {
-    String uri = (await _getInfoUrl()) + '?';
+    String uri = (await _getUrl(server_info_path)) + '?';
     uri += 'settleCode=' + settleCode + '&';
     uri += 'userId=' + await _getUniqueID();
     
@@ -112,7 +114,35 @@ class Server {
       print(responseJson['error']);
       return Future<Settle>.value(null);
     }
+  }
 
+  // Ask the server to add an Option to the Settle. Return a List of all the 
+  // options in the Settle after the request was handled.
+  static Future<List<String>> addOption(String settleCode, String option) async {
+    String uri = (await _getUrl(server_options_path)) + '?';
+    uri += 'settleCode=' + settleCode + '&';
+    uri += 'userId=' + await _getUniqueID();
+    
+    final http.Response response = await http.post(
+      uri,
+      headers: http_default_header,
+      body: jsonEncode(<String, String>{
+        'addOption': option,
+      }),
+    );
+
+    Map<String, dynamic> responseJson = jsonDecode(response.body);
+    if (response.statusCode == HttpStatus.ok) {
+      List<String> options = new List<String>();
+      responseJson['optionPool'].forEach((option){
+        options.add(option);
+      });
+      return Future<List<String>>.value(options);
+    } else {
+      // TODO error handling
+      print('ERROR: ' + responseJson['error']);
+      return Future<List<String>>.value(null);
+    }
   }
 
   // Return a unique hash that this device can be identified by
@@ -141,19 +171,9 @@ class Server {
     return id.hashCode.toString();
   }
 
-  // Get the "create a settle" URL
-  static Future<String> _getCreateSettleUrl() async {
-    return (await getServerInfoJson())[create_settle];
-  }
-
-  // Get the "join a settle" URL
-  static Future<String> _getJoinASettleUrl() async {
-    return (await getServerInfoJson())[join_settle];
-  }
-
-  // Get the "info" URL
-  static Future<String> _getInfoUrl() async {
-    return (await getServerInfoJson())[info];
+  // Return the URL for the given path
+  static Future<String> _getUrl(String path) async {
+    return (await getServerInfoJson())[path];
   }
 
   // Read in the server info file
