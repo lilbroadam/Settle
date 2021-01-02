@@ -44,10 +44,8 @@ class _CreateSettle extends State<CreateSettle> {
   void _createSettleButtonPressed() async {
     var settleCode = 
       await Server.createSettle(hostName, _defaultOption, _customOptionsAllowed);
-    if (settleCode != null) {
-      print('got settle code: ' + settleCode);
-    } else {
-      // TODO handle
+    if (settleCode == null) {
+      // TODO error handling
       print('There was an error creating a Settle');
     }
   }
