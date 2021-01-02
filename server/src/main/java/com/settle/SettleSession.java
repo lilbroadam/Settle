@@ -12,9 +12,16 @@ public class SettleSession {
         RESTAURANTS
     }
 
+    public enum SettleState {
+        LOBBY,
+        SETTLING,
+        COMPLETE
+    }
+
     private String settleCode;
     private User hostUser;
     private SettleType settleType;
+    private SettleState settleState;
     private boolean customChoicesAllowed;
     private List<User> users = new ArrayList<>();
 
@@ -25,6 +32,7 @@ public class SettleSession {
         this.settleCode = settleCode;
         this.hostUser = hostUser;
         this.settleType = settleType;
+        this.settleState = SettleState.LOBBY;
         this.customChoicesAllowed = customChoicesAllowed;
 
         addUser(hostUser);
@@ -32,6 +40,10 @@ public class SettleSession {
 
     public void addUser(User user) {
         users.add(user);
+    }
+
+    public void setSettleState(SettleState state) {
+        settleState = state;
     }
 
     public User getHostUser() {
@@ -44,6 +56,10 @@ public class SettleSession {
 
     public SettleType getSettleType() {
         return settleType;
+    }
+
+    public SettleState getSettleState() {
+        return settleState;
     }
 
     public boolean getCustomChoicesAllowed() {

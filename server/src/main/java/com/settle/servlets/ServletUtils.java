@@ -1,5 +1,7 @@
 package com.settle.servlets;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,5 +27,16 @@ public class ServletUtils {
             property = property.substring(0, property.length() - 1);
 
         return property;
+    }
+
+    public static void setErrorJsonResponse(HttpServletResponse response, int statusCode, 
+            String errorMessage) throws IOException {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("error", errorMessage);
+        String json = (new Gson()).toJson(jsonObject);
+
+        response.setStatus(statusCode);
+        response.setContentType("application/json");
+        response.getWriter().println(json);
     }
 }

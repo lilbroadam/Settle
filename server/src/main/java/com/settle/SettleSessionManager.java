@@ -127,6 +127,18 @@ public class SettleSessionManager {
         }
     }
 
+    public static SettleSession.SettleState getSettleState(String settleCode) {
+        synchronized(settleSessionMapLock) {
+            return settleSessionsMap.get(settleCode).getSettleState();
+        }
+    }
+
+    public static boolean settleSessionExists(String settleCode) {
+        synchronized(settleSessionMapLock) {
+            return settleSessionsMap.get(settleCode) != null;
+        }
+    }
+
     private static void printSettleSessions() {
         synchronized(settleSessionMapLock) {
             java.lang.System.out.println("Settle sessions:");
