@@ -28,6 +28,7 @@ public class CreateSettleServlet extends HttpServlet {
         // SettleSessionManager.startSessionManager();
     }
 
+    // TODO delete
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // boolean isRunning = SettleSessionManager.isSessionManagerRunning();

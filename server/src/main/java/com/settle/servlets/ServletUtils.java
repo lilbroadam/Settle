@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.util.stream.Collectors;
+import com.settle.SettleSessionManager;
 
 public class ServletUtils {
 
@@ -29,8 +30,9 @@ public class ServletUtils {
         return property;
     }
 
-    public static void setErrorJsonResponse(HttpServletResponse response, int statusCode, 
-            String errorMessage) throws IOException {
+    // Set the status code and body error message of the given HttpServletResponse.
+    public static void setErrorJsonResponse(
+            HttpServletResponse response, int statusCode, String errorMessage) throws IOException {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("error", errorMessage);
         String json = (new Gson()).toJson(jsonObject);
@@ -38,5 +40,30 @@ public class ServletUtils {
         response.setStatus(statusCode);
         response.setContentType("application/json");
         response.getWriter().println(json);
+    }
+
+    // Return a String array of length 2 with the Settle code in index 0 and the user ID in index 1.
+    // If either query parameter is missing, the requested Settle code doesn't exist, or the given 
+    // user ID is not apart of the given Settle, return null and set the error message response.
+    public static String[] getAndVerifyParameters(
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String settleCode = request.getParameter("settleCode");
+        String userId = request.getParameter("userId");
+        if (settleCode == null || userId == null) {
+            ServletUtils.setErrorJsonResponse(response, HttpServletResponse.SC_BAD_REQUEST,
+                "1 or more query parameters are missing");
+            return null;
+        }
+
+        // Verify settle code
+        if (!SettleSessionManager.settleSessionExists(settleCode)) {
+            ServletUtils.setErrorJsonResponse(response, HttpServletResponse.SC_BAD_REQUEST,
+                "The requested Settle session does not exist");
+            return null;
+        }
+
+        // TODO Verify that the user is part of the Settle
+
+        return new String[]{settleCode, userId};
     }
 }

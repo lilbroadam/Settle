@@ -19,22 +19,12 @@ public class InfoServlet extends HttpServlet {
     
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String settleCode = request.getParameter("settleCode");
-        String userId = request.getParameter("userId");
-        if (settleCode == null || userId == null) {
-            ServletUtils.setErrorJsonResponse(response, HttpServletResponse.SC_BAD_REQUEST,
-                "1 or more query parameters are missing");
+        // Parse request parameters
+        String[] parameters = ServletUtils.getAndVerifyParameters(request, response);
+        if (parameters == null)
             return;
-        }
-
-        // Verify settle code
-        if (!SettleSessionManager.settleSessionExists(settleCode)) {
-            ServletUtils.setErrorJsonResponse(response, HttpServletResponse.SC_BAD_REQUEST,
-                "The requested Settle session does not exist");
-            return;
-        }
-
-        // TODO Verify that the user is part of the Settle
+        String settleCode = parameters[0];
+        String userId = parameters[1];
 
         // Build response
         JsonObject jsonObject = new JsonObject();

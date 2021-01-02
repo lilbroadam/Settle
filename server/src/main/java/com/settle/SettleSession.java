@@ -44,7 +44,12 @@ public class SettleSession {
     }
 
     public void addOption(String option) {
-        optionPool.add(option);
+        // Options can only be added when in the lobby state
+        if (settleState == SettleState.LOBBY) {
+            // TODO check for duplicated
+
+            optionPool.add(option);
+        }
     }
 
     public void setSettleState(SettleState state) {

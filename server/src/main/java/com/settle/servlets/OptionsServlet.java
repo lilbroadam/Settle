@@ -19,22 +19,12 @@ public class OptionsServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String settleCode = request.getParameter("settleCode");
-        String userId = request.getParameter("userId");
-        if (settleCode == null || userId == null) {
-            ServletUtils.setErrorJsonResponse(response, HttpServletResponse.SC_BAD_REQUEST,
-                "1 or more query parameters are missing");
+        // Parse request parameters
+        String[] parameters = ServletUtils.getAndVerifyParameters(request, response);
+        if (parameters == null)
             return;
-        }
-
-        // Verify settle code
-        if (!SettleSessionManager.settleSessionExists(settleCode)) {
-            ServletUtils.setErrorJsonResponse(response, HttpServletResponse.SC_BAD_REQUEST,
-                "The requested Settle session does not exist");
-            return;
-        }
-
-        // TODO Verify that the user is part of the Settle
+        String settleCode = parameters[0];
+        String userId = parameters[1];
 
         // Build response
         JsonArray optionsArray = new JsonArray();
@@ -44,12 +34,36 @@ public class OptionsServlet extends HttpServlet {
         jsonObject.add("optionPool", optionsArray);
         String json = (new Gson()).toJson(jsonObject);
 
-        // response.setContentType("application/json");
-        response.setContentType("text/html");
+        response.setContentType("application/json");
         response.getWriter().println(json);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Parse request parameters
+        String[] parameters = ServletUtils.getAndVerifyParameters(request, response);
+        if (parameters == null)
+            return;
+        String settleCode = parameters[0];
+        String userId = parameters[1];
+        String addOption = ServletUtils.getJsonProperty(ServletUtils.getBody(request), "addOption");
+        
+        // Do request
+        SettleSessionManager.addOption(settleCode, addOption);
+
+        // Build response
+        JsonObject jsonObject = new JsonObject();
+
+        // Add Settle options to response
+        List<String> optionPool = SettleSessionManager.getOptionPool(settleCode);
+        JsonArray jsonArray = new JsonArray();
+        for (String option : optionPool)
+            jsonArray.add(option);
+        jsonObject.add("optionPool", jsonArray);
+        
+        String json = (new Gson()).toJson(jsonObject);
+
+        response.setContentType("application/json");
+        response.getWriter().println(json);
     }
 }
