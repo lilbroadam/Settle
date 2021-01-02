@@ -1,6 +1,5 @@
+import 'package:Settle/NameScreen.dart';
 import 'package:flutter/material.dart';
-import 'CreateSettle.dart';
-import 'JoinSettle.dart';
 
 void main() {
   runApp(SettleApp());
@@ -46,7 +45,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
   void _createASettlePressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => CreateSettle()),
+      MaterialPageRoute(builder: (context) => NameScreen(true, context)),
     );
   }
 
@@ -54,7 +53,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
   void _joinASettlePressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => JoinSettle()),
+      MaterialPageRoute(builder: (context) => NameScreen(false, context)),
     );
   }
 
@@ -75,18 +74,18 @@ class _SettleHomePageState extends State<SettleHomePage> {
   // fast, so that you can just rebuild anything that needs updating rather
   // than having to individually change instances of widgets.
   Widget build(BuildContext context) {
-
     final settleButtonWidth = 150.0;
     final settleButtonHeight = 45.0;
-    final settleButtonTextStyle = new TextStyle(fontSize: 16.4,);
+    final settleButtonTextStyle = new TextStyle(
+      fontSize: 16.4,
+    );
 
     final createSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
       child: ElevatedButton(
         onPressed: _createASettlePressed,
-        child: Text('Create a Settle',
-          style: settleButtonTextStyle),
+        child: Text('Create a Settle', style: settleButtonTextStyle),
       ),
     );
     final joinSettleButton = SizedBox(
@@ -94,8 +93,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
       height: settleButtonHeight,
       child: ElevatedButton(
         onPressed: _joinASettlePressed,
-        child: Text('Join a Settle',
-          style: settleButtonTextStyle),
+        child: Text('Join a Settle', style: settleButtonTextStyle),
       ),
     );
     final settleButtonMargin = EdgeInsets.all(18.0);
@@ -117,7 +115,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
-                  Column( // Settle buttons in the center
+                  Column(
+                    // Settle buttons in the center
                     mainAxisSize: MainAxisSize.min, // Size to only needed space
                     children: <Widget>[
                       Container(
@@ -130,7 +129,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       )
                     ],
                   ),
-                  Align( // Info button in the bottom left
+                  Align(
+                    // Info button in the bottom left
                     alignment: Alignment.bottomLeft,
                     child: IconButton(
                       icon: Icon(Icons.info),
@@ -139,7 +139,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       onPressed: _informationPressed,
                     ),
                   ),
-                  Align( // Settings button in the bottom right
+                  Align(
+                    // Settings button in the bottom right
                     alignment: Alignment.bottomRight,
                     child: IconButton(
                       icon: Icon(Icons.settings),
