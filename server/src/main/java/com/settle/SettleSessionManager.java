@@ -115,6 +115,13 @@ public class SettleSessionManager {
         }
     }
 
+    public static void addOption(String settleCode, String option) {
+        synchronized(settleSessionMapLock) {
+            SettleSession session = settleSessionsMap.get(settleCode);
+            session.addOption(option);
+        }
+    }
+
     // Return a List of Users in the given Settle session, return null if session not found
     public static List<User> getUsers(String settleCode) {
         synchronized(settleSessionMapLock) {
@@ -127,12 +134,21 @@ public class SettleSessionManager {
         }
     }
 
+    // Return the current state of the Settle session.
     public static SettleSession.SettleState getSettleState(String settleCode) {
         synchronized(settleSessionMapLock) {
             return settleSessionsMap.get(settleCode).getSettleState();
         }
     }
 
+    // Return the option pool of the given Settle session
+    public static List<String> getOptionPool(String settleCode) {
+        synchronized(settleSessionMapLock) {
+            return settleSessionsMap.get(settleCode).getOptionPool();
+        }
+    }
+
+    // Return true if a Settle session with the given Settle code exists, false if not.
     public static boolean settleSessionExists(String settleCode) {
         synchronized(settleSessionMapLock) {
             return settleSessionsMap.get(settleCode) != null;

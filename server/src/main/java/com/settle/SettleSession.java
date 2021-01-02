@@ -24,6 +24,7 @@ public class SettleSession {
     private SettleState settleState;
     private boolean customChoicesAllowed;
     private List<User> users = new ArrayList<>();
+    private List<String> optionPool = new ArrayList<>();
 
     // Create a Settle session with settle code settleCode
     public SettleSession(String settleCode, User hostUser, 
@@ -40,6 +41,10 @@ public class SettleSession {
 
     public void addUser(User user) {
         users.add(user);
+    }
+
+    public void addOption(String option) {
+        optionPool.add(option);
     }
 
     public void setSettleState(SettleState state) {
@@ -60,6 +65,11 @@ public class SettleSession {
 
     public SettleState getSettleState() {
         return settleState;
+    }
+
+    // TODO change from String to custom objects
+    public List<String> getOptionPool() {
+        return optionPool;
     }
 
     public boolean getCustomChoicesAllowed() {

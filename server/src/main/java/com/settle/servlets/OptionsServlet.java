@@ -14,9 +14,9 @@ import com.settle.SettleSessionManager;
 import com.settle.SettleSession;
 import com.settle.User;
 
-@WebServlet("/info")
-public class InfoServlet extends HttpServlet {
-    
+@WebServlet("/options")
+public class OptionsServlet extends HttpServlet {
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String settleCode = request.getParameter("settleCode");
@@ -37,28 +37,19 @@ public class InfoServlet extends HttpServlet {
         // TODO Verify that the user is part of the Settle
 
         // Build response
+        JsonArray optionsArray = new JsonArray();
+        for (String option : SettleSessionManager.getOptionPool(settleCode))
+            optionsArray.add(option);
         JsonObject jsonObject = new JsonObject();
-
-        // Add users to response
-        JsonArray jsonArray = new JsonArray();
-        for (User user : SettleSessionManager.getUsers(settleCode))
-            jsonArray.add(user.getName());
-        jsonObject.add("users", jsonArray);
-
-        // Add Settle state to response
-        SettleSession.SettleState state = SettleSessionManager.getSettleState(settleCode);
-        jsonObject.addProperty("state", state.name().toLowerCase());
-
-        // Add Settle options to response
-        List<String> optionPool = SettleSessionManager.getOptionPool(settleCode);
-        jsonArray = new JsonArray();
-        for (String option : optionPool)
-            jsonArray.add(option);
-        jsonObject.add("optionPool", jsonArray);
-        
+        jsonObject.add("optionPool", optionsArray);
         String json = (new Gson()).toJson(jsonObject);
 
-        response.setContentType("application/json");
+        // response.setContentType("application/json");
+        response.setContentType("text/html");
         response.getWriter().println(json);
+    }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     }
 }

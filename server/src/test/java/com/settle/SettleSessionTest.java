@@ -14,26 +14,42 @@ public class SettleSessionTest {
     private User hostUser = new User("id123", "First Last");
     private SettleSession.SettleType settleType = SettleSession.SettleType.CUSTOM;
     private boolean customAllowed = false;
-    private SettleSession session;
+    private SettleSession settle;
 
     @Before
     public void beforeTest() {
-        session = new SettleSession(settleCode, hostUser, settleType, customAllowed);
+        settle = new SettleSession(settleCode, hostUser, settleType, customAllowed);
     }
 
     @Test
     public void testGetSettleCode() {
-        Assert.assertEquals(session.getSettleCode(), settleCode);
+        Assert.assertEquals(settle.getSettleCode(), settleCode);
     }
 
     @Test
     public void testGetSettleType() {
-        Assert.assertEquals(session.getSettleType(), settleType);
+        Assert.assertEquals(settle.getSettleType(), settleType);
     }
 
     @Test
     public void testCustomAllowed() {
-        Assert.assertEquals(session.getCustomChoicesAllowed(), customAllowed);
+        Assert.assertEquals(settle.getCustomChoicesAllowed(), customAllowed);
+    }
+
+    @Test
+    public void testAddGetOptions() {
+        String option1 = "option1";
+        String option2 = "option2";
+
+        Assert.assertEquals(settle.getOptionPool().size(), 0);
+
+        settle.addOption(option1);
+        Assert.assertEquals(settle.getOptionPool().size(), 1);
+        Assert.assertEquals(settle.getOptionPool().get(0), option1);
+
+        settle.addOption(option2);
+        Assert.assertEquals(settle.getOptionPool().size(), 2);
+        Assert.assertEquals(settle.getOptionPool().get(1), option2);
     }
 
 }
