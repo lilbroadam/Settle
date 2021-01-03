@@ -106,8 +106,6 @@ class Server {
     }
 
     String id = deviceName + "-" + deviceVersion + "-" + identifier;
-    // print for testing and debugging
-    print(id);
     return id.hashCode.toString();
   }
 

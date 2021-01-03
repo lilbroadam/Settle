@@ -1,5 +1,10 @@
-import 'package:flutter/material.dart';
 import 'Server.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:animated_dialog_box/animated_dialog_box.dart';
+import 'package:share/share.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 enum DefaultOptions { movies, restaurants, custom }
 typedef void DefaultOptionPressedCallback(DefaultOptions defaultOption);
@@ -15,7 +20,6 @@ class CreateSettle extends StatefulWidget {
 }
 
 class _CreateSettle extends State<CreateSettle> {
-
   final String hostName;
   DefaultOptions _defaultOption;
   bool _customOptionsAllowed = false;
@@ -30,25 +34,25 @@ class _CreateSettle extends State<CreateSettle> {
       // TODO make checkbox checked if 'Custom choices only' is clicked
     }
 
-    setState((){});
+    setState(() {});
   }
 
   // Call this function when the "custom options allowed" checkbox is pressed.
   void _customOptionsPressed(bool customOptionsAllowed) {
     _customOptionsAllowed = customOptionsAllowed;
-    setState((){});
+    setState(() {});
   }
 
   // Call this function when the "Create this Settle" button is pressed.
   // This function will ask the server to create a new Settle.
-  void _createSettleButtonPressed() async {
-    var settleCode = 
-      await Server.createSettle(hostName, _defaultOption, _customOptionsAllowed);
+  Future<String> _createSettleButtonPressed() async {
+    var settleCode = await Server.createSettle(
+        hostName, _defaultOption, _customOptionsAllowed);
     if (settleCode != null) {
-      print('got settle code: ' + settleCode);
+      // print('got settle code: ' + settleCode);
+      return Future<String>.value(settleCode.toString());
     } else {
-      // TODO handle
-      print('There was an error creating a Settle');
+      return Future<String>.value("There was an error creating a Settle");
     }
   }
 
@@ -57,23 +61,105 @@ class _CreateSettle extends State<CreateSettle> {
     return (_defaultOption != null) || _customOptionsAllowed;
   }
 
+  String _code;
+
+  Future<void> showPopup() async {
+    await animated_dialog_box.showScaleAlertBox(
+        title: Center(child: Text("Here is your Settle Code:")),
+        context: context,
+        firstButton: MaterialButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40),
+          ),
+          color: Colors.blue,
+          child: Text(
+            'Go to Lobby',
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop(); // change this to go to the lobby
+          },
+        ),
+        secondButton: MaterialButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40),
+          ),
+          color: Colors.white,
+          child: Text('Share or Copy'),
+          onPressed: () {
+            // Navigator.of(context).pop();
+            Clipboard.setData(ClipboardData(text: _code));
+            Share.share(_code);
+          },
+        ),
+        icon: Icon(
+          Icons.check,
+          color: Colors.green,
+        ),
+        yourWidget: Container(
+          child: FutureBuilder(
+            future: _createSettleButtonPressed(),
+            builder: (context, snapshot) {
+              if (snapshot.data != null) {
+                _code = snapshot.data;
+                return Text(snapshot.data,
+                    style: GoogleFonts.notoSansKR(fontSize: 19));
+              } else {
+                return SpinKitDualRing(
+                  color: Colors.blue,
+                  size: 30,
+                  lineWidth: 3,
+                );
+              }
+            },
+          ),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final settleButtonWidth = 180.0;
     final settleButtonHeight = 45.0;
-    final settleButtonTextStyle = new TextStyle(fontSize: 16.4,);
+    final settleButtonTextStyle =
+        new TextStyle(fontSize: 16.4, color: Colors.white);
     final createSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
-      child: ElevatedButton(
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        color: Colors.blue,
         // Only enable this button when at least 1 option has been selected
-        onPressed: _isAnOptionSelected() ? _createSettleButtonPressed : null,
+        onPressed: !_isAnOptionSelected()
+            ? null
+            : () async {
+                await showPopup();
+              },
+
         child: Text('Create this Settle', style: settleButtonTextStyle),
       ),
     );
     final settleButtonMargin = EdgeInsets.all(18.0);
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: true,
+        elevation: 0,
+        leading: IconButton(
+          padding: EdgeInsets.only(left: 20, top: 15),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+            size: 30,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -98,13 +184,12 @@ class _CreateSettle extends State<CreateSettle> {
   }
 }
 
-
 class CheckBox extends StatefulWidget {
   final String buttonTitle;
   final CustomOptionsPressedCallback callback;
-  
+
   CheckBox(this.buttonTitle, this.callback, {Key key}) : super(key: key);
-    
+
   @override
   _CheckBox createState() => _CheckBox(buttonTitle, callback);
 }
@@ -113,15 +198,14 @@ class _CheckBox extends State<CheckBox> {
   final String buttonTitle;
   final CustomOptionsPressedCallback callback;
   bool _customOption = false;
-  
+
   _CheckBox(this.buttonTitle, this.callback);
 
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
       title: Text(buttonTitle),
-      controlAffinity:
-        ListTileControlAffinity.leading,
+      controlAffinity: ListTileControlAffinity.leading,
       value: _customOption,
       onChanged: (bool value) {
         setState(() => _customOption = value);
@@ -132,7 +216,6 @@ class _CheckBox extends State<CheckBox> {
     );
   }
 }
-
 
 class RadioButton extends StatefulWidget {
   final DefaultOptionPressedCallback callback;
@@ -177,13 +260,12 @@ class _RadioButton extends State<RadioButton> {
         ListTile(
           title: const Text('Custom choices only'),
           leading: Radio(
-            value: DefaultOptions.custom,
-            groupValue: _currentOption,
-            onChanged: (DefaultOptions value) {
-              setState(() => _currentOption = value);
-              callback(value);
-            }
-          ),
+              value: DefaultOptions.custom,
+              groupValue: _currentOption,
+              onChanged: (DefaultOptions value) {
+                setState(() => _currentOption = value);
+                callback(value);
+              }),
         ),
       ],
     );

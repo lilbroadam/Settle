@@ -24,6 +24,13 @@ dependencies:
   flutter_button: ^0.0.2
   google_fonts: ^0.2.0
   device_info: ^1.0.0
+  animated_dialog_box: ^0.0.2
+  share: ^0.6.5+4
+  groovin_widgets: ^1.6.0
+  material_design_icons_flutter: ^4.0.5755
+  url_launcher: ^5.7.10
+  flutter_spinkit: ^4.1.2+1
+
   flutter:
     sdk: flutter
   http: ^0.12.2
