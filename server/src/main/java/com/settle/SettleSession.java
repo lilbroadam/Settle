@@ -40,48 +40,68 @@ public class SettleSession {
     }
 
     public void addUser(User user) {
-        users.add(user);
+        synchronized (this) {
+            users.add(user);
+        }
     }
 
     public void addOption(String option) {
-        // Options can only be added when in the lobby state
-        if (settleState == SettleState.LOBBY) {
-            // TODO check for duplicated
+        synchronized (this) {
+            // Options can only be added when in the lobby state
+            if (settleState == SettleState.LOBBY) {
+                // TODO check for duplicated
 
-            optionPool.add(option);
+                optionPool.add(option);
+            }
         }
     }
 
     public void setSettleState(SettleState state) {
-        settleState = state;
+        synchronized (this) {
+            settleState = state;
+        }
     }
 
     public User getHostUser() {
-        return hostUser;
+        synchronized (this) {
+            return hostUser;
+        }
     }
     
     public List<User> getUsers() {
-        return users;
+        synchronized (this) {
+            return users;
+        }
     }
 
     public SettleType getSettleType() {
-        return settleType;
+        synchronized (this) {
+            return settleType;
+        }
     }
 
     public SettleState getSettleState() {
-        return settleState;
+        synchronized (this) {
+            return settleState;
+        }
     }
 
     // TODO change from String to custom objects
     public List<String> getOptionPool() {
-        return optionPool;
+        synchronized (this) {
+            return optionPool;
+        }
     }
 
     public boolean getCustomChoicesAllowed() {
-        return customChoicesAllowed;
+        synchronized (this) {
+            return customChoicesAllowed;
+        }
     }
 
     public String getSettleCode() {
-        return settleCode;
+        synchronized (this) {
+            return settleCode;
+        }
     }
 }
