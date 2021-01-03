@@ -13,11 +13,6 @@ public class ToyCreateSettleServlet extends HttpServlet {
     final String NEW_SETTLE_CODE = "newSettleCode";
 
     @Override
-    public void init() {
-        SettleSessionManager.startSessionManager();
-    }
-
-    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String toySettleCode = "abcxyz123";
 
@@ -26,12 +21,8 @@ public class ToyCreateSettleServlet extends HttpServlet {
         response.setContentType("application/json");
         response.getWriter().println(json);
 
-        // java.lang.System.out.println("/toycreatesettle.doGet()");
-        // boolean isRunning = SettleSessionManager.isSessionManagerRunning();
-
         // response.setContentType("text/html");
         // response.getWriter().println("/toysessionmanager GET");
-        // response.getWriter().println("SettleSessionManager.isSessionManagerRunning(): " + isRunning);
     }
 
     @Override

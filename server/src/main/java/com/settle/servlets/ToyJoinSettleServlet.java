@@ -14,14 +14,8 @@ public class ToyJoinSettleServlet extends HttpServlet {
     final String JOIN_SETTLE_CODE = "joinSettleCode";
 
     @Override
-    public void init() {
-        SettleSessionManager.startSessionManager();
-    }
-
-    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         java.lang.System.out.println("/toyjoinsettle.doGet()");
-        SettleSessionManager.requestStopSessionManager();
     }
 
     @Override

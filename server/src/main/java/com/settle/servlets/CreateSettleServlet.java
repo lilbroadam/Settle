@@ -23,16 +23,9 @@ public class CreateSettleServlet extends HttpServlet {
     private final String DEFAULT_OPTION_CUSTOM = "custom";
     private final String RESPONSE_NEW_SETTLE_CODE = "newSettleCode";
 
-    @Override
-    public void init() {
-        // SettleSessionManager.startSessionManager();
-    }
-
     // TODO delete
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // boolean isRunning = SettleSessionManager.isSessionManagerRunning();
-
         // Parse request parameters
         String hostName = request.getParameter(PARAM_USER_NAME);
         String hostId = "id123"; // TODO request.getParameter();
@@ -56,7 +49,8 @@ public class CreateSettleServlet extends HttpServlet {
 
         // Do request
         User hostUser = new User(hostId, hostName);
-        String settleCode = SettleSessionManager.createSettleSession(hostUser, settleType, customChoicesAllowed);
+        String settleCode = 
+            SettleSessionManager.createSettleSession(hostUser, settleType, customChoicesAllowed);
 
         // Build response
         JsonObject jsonObject = new JsonObject();
@@ -87,7 +81,8 @@ public class CreateSettleServlet extends HttpServlet {
             settleType = SettleSession.SettleType.CUSTOM;
         else {
             // TODO
-            response.getWriter().println("error when parsing defaultOption. Received: " + defaultOption);
+            response.getWriter()
+                .println("error when parsing defaultOption. Received: " + defaultOption);
         }
         if (customAllowedString.equals(true + "")) // Convert customAllowedString into a boolean
             customChoicesAllowed = true;
@@ -95,12 +90,14 @@ public class CreateSettleServlet extends HttpServlet {
             customChoicesAllowed = false;
         else {
             // TODO
-            response.getWriter().println("error when parsing customAllowed. Received: " + customAllowedString);
+            response.getWriter()
+                .println("error when parsing customAllowed. Received: " + customAllowedString);
         }
 
         // Do request
         User hostUser = new User(hostId, hostName);
-        String settleCode = SettleSessionManager.createSettleSession(hostUser, settleType, customChoicesAllowed);
+        String settleCode = 
+            SettleSessionManager.createSettleSession(hostUser, settleType, customChoicesAllowed);
 
         // Build response
         JsonObject jsonObject = new JsonObject();

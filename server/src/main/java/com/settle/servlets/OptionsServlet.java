@@ -27,8 +27,9 @@ public class OptionsServlet extends HttpServlet {
         String userId = parameters[1];
 
         // Build response
+        SettleSession settleSession = SettleSessionManager.getSettleSession(settleCode);
         JsonArray optionsArray = new JsonArray();
-        for (String option : SettleSessionManager.getOptionPool(settleCode))
+        for (String option : settleSession.getOptionPool())
             optionsArray.add(option);
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("optionPool", optionsArray);
@@ -49,13 +50,14 @@ public class OptionsServlet extends HttpServlet {
         String addOption = ServletUtils.getJsonProperty(ServletUtils.getBody(request), "addOption");
         
         // Do request
-        SettleSessionManager.addOption(settleCode, addOption);
+        SettleSession settleSession = SettleSessionManager.getSettleSession(settleCode);
+        settleSession.addOption(addOption);
 
         // Build response
         JsonObject jsonObject = new JsonObject();
 
         // Add Settle options to response
-        List<String> optionPool = SettleSessionManager.getOptionPool(settleCode);
+        List<String> optionPool = settleSession.getOptionPool();
         JsonArray jsonArray = new JsonArray();
         for (String option : optionPool)
             jsonArray.add(option);

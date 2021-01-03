@@ -27,20 +27,21 @@ public class InfoServlet extends HttpServlet {
         String userId = parameters[1];
 
         // Build response
+        SettleSession settleSession = SettleSessionManager.getSettleSession(settleCode);
         JsonObject jsonObject = new JsonObject();
 
         // Add users to response
         JsonArray jsonArray = new JsonArray();
-        for (User user : SettleSessionManager.getUsers(settleCode))
+        for (User user : settleSession.getUsers())
             jsonArray.add(user.getName());
         jsonObject.add("users", jsonArray);
 
         // Add Settle state to response
-        SettleSession.SettleState state = SettleSessionManager.getSettleState(settleCode);
+        SettleSession.SettleState state = settleSession.getSettleState();
         jsonObject.addProperty("state", state.name().toLowerCase());
 
         // Add Settle options to response
-        List<String> optionPool = SettleSessionManager.getOptionPool(settleCode);
+        List<String> optionPool = settleSession.getOptionPool();
         jsonArray = new JsonArray();
         for (String option : optionPool)
             jsonArray.add(option);
