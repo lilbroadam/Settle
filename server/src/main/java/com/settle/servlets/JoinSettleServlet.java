@@ -32,21 +32,14 @@ public class JoinSettleServlet extends HttpServlet {
         String userId = ServletUtils.getJsonProperty(bodyJson, PARAM_USER_ID);
         String joinSettleCode = ServletUtils.getJsonProperty(bodyJson, "joinSettleCode");
 
+        if (!SettleSessionManager.settleSessionExists(joinSettleCode)) {
+            ServletUtils.setErrorJsonResponse(
+                response, HttpServletResponse.SC_BAD_REQUEST, "Invalid Settle code");
+            return;
+        }
+
         // Do request
         User user = new User(userId, userName);
-        String responseCode = SettleSessionManager.joinSettleSession(joinSettleCode, user);
-
-        // Build response
-        if (responseCode == joinSettleCode) {
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("error", "Invalid Settle code");
-            String json = (new Gson()).toJson(jsonObject);
-
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.setContentType("application/json");
-            response.getWriter().println(json);
-        }
+        SettleSessionManager.getSettleSession(joinSettleCode).addUser(user);
     }
 }

@@ -18,13 +18,13 @@ public class SettleSession {
         COMPLETE
     }
 
-    private String settleCode;
-    private User hostUser;
-    private SettleType settleType;
+    private final String settleCode;
+    private final User hostUser;
+    private final SettleType settleType;
+    private final boolean customChoicesAllowed;
     private SettleState settleState;
-    private boolean customChoicesAllowed;
-    private List<User> users = new ArrayList<>();
-    private List<String> optionPool = new ArrayList<>();
+    private List<User> users;
+    private List<String> optionPool;
 
     // Create a Settle session with settle code settleCode
     public SettleSession(String settleCode, User hostUser, 
@@ -33,8 +33,11 @@ public class SettleSession {
         this.settleCode = settleCode;
         this.hostUser = hostUser;
         this.settleType = settleType;
-        this.settleState = SettleState.LOBBY;
         this.customChoicesAllowed = customChoicesAllowed;
+
+        this.settleState = SettleState.LOBBY;
+        this.users = new ArrayList<>();
+        this.optionPool = new ArrayList<>();
 
         addUser(hostUser);
     }

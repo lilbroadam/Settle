@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import com.settle.SettleSession;
 
 @RunWith(JUnit4.class)
 public class SettleSessionManagerTest {
@@ -36,10 +37,10 @@ public class SettleSessionManagerTest {
     @Test
     public void testJoinSettleSession() {
         String code1 = SettleSessionManager.createSettleSession(user1, settleType, customAllowed);
-        String code2 = SettleSessionManager.joinSettleSession(code1, user2);
-        Assert.assertEquals(code1, code2);
+        SettleSession settleSession = SettleSessionManager.getSettleSession(code1);
+        settleSession.addUser(user2);
 
-        List<User> users = SettleSessionManager.getUsers(code1);
+        List<User> users = settleSession.getUsers();
         Assert.assertEquals(users.contains(user1), true);
         Assert.assertEquals(users.contains(user2), true);
         Assert.assertEquals(users.size(), 2);
@@ -52,7 +53,9 @@ public class SettleSessionManagerTest {
         chars[0]++;
         String differentCode = new String(chars);
 
-        String code2 = SettleSessionManager.joinSettleSession(differentCode, user2);
-        Assert.assertEquals(code2, null);
+        SettleSession settleSession = SettleSessionManager.getSettleSession(differentCode);
+        Assert.assertEquals(settleSession == null, true);
+
+        Assert.assertEquals(SettleSessionManager.settleSessionExists(differentCode), false);
     }
 }

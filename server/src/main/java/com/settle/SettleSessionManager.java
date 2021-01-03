@@ -29,51 +29,11 @@ public class SettleSessionManager {
         }
     }
 
-    // Join a User to a Settle session. 
-    // Return the settleCode if user was added to the session, return null if not.
-    public static String joinSettleSession(String settleCode, User user) {
+    // Return the SettleSession associated with the given Settle code,
+    // return null if the SettleSession doesn't exist.
+    public static SettleSession getSettleSession(String settleCode) {
         synchronized(settleSessionMapLock) {
-            SettleSession session = settleSessionsMap.get(settleCode);
-            if (session != null) {
-                session.addUser(user);
-                return settleCode;
-            } else {
-                // TODO throw custom exception
-                return null;
-            }
-        }
-    }
-
-    public static void addOption(String settleCode, String option) {
-        synchronized(settleSessionMapLock) {
-            SettleSession session = settleSessionsMap.get(settleCode);
-            session.addOption(option);
-        }
-    }
-
-    // Return a List of Users in the given Settle session, return null if session not found
-    public static List<User> getUsers(String settleCode) {
-        synchronized(settleSessionMapLock) {
-            SettleSession session = settleSessionsMap.get(settleCode);
-            if (session != null) {
-                return session.getUsers();
-            } else {
-                return null;
-            }
-        }
-    }
-
-    // Return the current state of the Settle session.
-    public static SettleSession.SettleState getSettleState(String settleCode) {
-        synchronized(settleSessionMapLock) {
-            return settleSessionsMap.get(settleCode).getSettleState();
-        }
-    }
-
-    // Return the option pool of the given Settle session
-    public static List<String> getOptionPool(String settleCode) {
-        synchronized(settleSessionMapLock) {
-            return settleSessionsMap.get(settleCode).getOptionPool();
+            return settleSessionsMap.get(settleCode);
         }
     }
 
