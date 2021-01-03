@@ -27,6 +27,7 @@ class Server {
   static const response_new_settle_code = 'newSettleCode';
 
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  static String settleCode;
 
   // Ask the server to create a new Settle. Return the Settle code if the server
   // responds with OK (status 200), return null otherwise.
@@ -60,7 +61,8 @@ class Server {
     if (response.statusCode == HttpStatus.ok) {
       Map<String, dynamic> responseJson = jsonDecode(response.body);
       newSettleCode = responseJson[response_new_settle_code];
-      print('User created Settle #' + newSettleCode);
+      settleCode = newSettleCode;
+      print('User created Settle #$newSettleCode');
     } else {
       // TODO error handling
       print('there was an error trying to create a settle on the server');
@@ -84,26 +86,26 @@ class Server {
     );
 
     if (response.statusCode == HttpStatus.ok) {
-      print('Joined user to Settle #' + joinSettleCode);
-      print('current state of the Settle: ' 
-        + (await getSettleInfo(joinSettleCode)).toString());
+      settleCode = joinSettleCode;
+      print('Joined user to Settle #$joinSettleCode');
+      print('Current state of Settle: ${(await getSettleInfo()).toString()}');
     } else {
-      Map<String, dynamic> responseJson = jsonDecode(response.body);
-      String error = responseJson['error'];
-      print(error);
+      print('${jsonDecode(response.body)['error']}');
     }
 
     return Future<String>.value(null);
   }
 
   // Return a Settle object representing the Settle
-  static Future<Settle> getSettleInfo(String settleCode) async {
-    String uri = (await _getUrl(server_info_path)) + '?';
-    uri += 'settleCode=' + settleCode + '&';
-    uri += 'userId=' + await _getUniqueID();
-    
+  // createSettle() or joinSettle() must have been called before this method.
+  static Future<Settle> getSettleInfo() async {
+    if (settleCode == null) {
+      // TODO error handling
+      return Future<Settle>.value(null);
+    }
+
     final http.Response response = await http.get(
-      uri,
+      await _getUri(server_info_path, settleCode),
       headers: http_default_header,
     );
 
@@ -118,13 +120,15 @@ class Server {
 
   // Ask the server to add an Option to the Settle. Return a List of all the 
   // options in the Settle after the request was handled.
-  static Future<List<String>> addOption(String settleCode, String option) async {
-    String uri = (await _getUrl(server_options_path)) + '?';
-    uri += 'settleCode=' + settleCode + '&';
-    uri += 'userId=' + await _getUniqueID();
-    
+  // createSettle() or joinSettle() must have been called before this method.
+  static Future<List<String>> addOption(String option) async {
+    if (settleCode == null) {
+      // TODO error handling
+      return Future<List<String>>.value(null);
+    }
+
     final http.Response response = await http.post(
-      uri,
+      await _getUri(server_options_path, settleCode),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
         'addOption': option,
@@ -140,7 +144,7 @@ class Server {
       return Future<List<String>>.value(options);
     } else {
       // TODO error handling
-      print('ERROR: ' + responseJson['error']);
+      print('ERROR: ${responseJson['error']}');
       return Future<List<String>>.value(null);
     }
   }
@@ -174,6 +178,15 @@ class Server {
   // Return the URL for the given path
   static Future<String> _getUrl(String path) async {
     return (await getServerInfoJson())[path];
+  }
+
+  // Return the URI for the given path including settleCode and this device's
+  // unique ID as query parameters.
+  static Future<String> _getUri(String path, String settleCode) async {
+    String uri = (await _getUrl(path)) + '?';
+    uri += 'settleCode=' + settleCode + '&';
+    uri += 'userId=' + await _getUniqueID();
+    return Future<String>.value(uri);
   }
 
   // Read in the server info file
