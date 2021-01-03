@@ -18,7 +18,7 @@ void main() {
     var guestName = "Adam 2";
     await Server.joinSettle(guestName, settleCode);
 
-    Settle settleObject = await Server.getSettleInfo(settleCode);
+    Settle settleObject = await Server.getSettleInfo();
     List<String> users = settleObject.users;
 
     expect(users.length, 2);

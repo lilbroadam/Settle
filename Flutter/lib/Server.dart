@@ -88,13 +88,17 @@ class Server {
     if (response.statusCode == HttpStatus.ok) {
       settleCode = joinSettleCode;
       print('Joined user to Settle #$joinSettleCode');
-      print('Current state of Settle: ${(await getSettleInfo()).toString()}');
+      print('Current state of Settle: ${(await getSettleInfo())}');
     } else {
       print('${jsonDecode(response.body)['error']}');
     }
 
     return Future<String>.value(null);
   }
+
+  // static Future<Settle> getSettle() {
+
+  // }
 
   // Return a Settle object representing the Settle
   // createSettle() or joinSettle() must have been called before this method.
@@ -138,7 +142,7 @@ class Server {
     Map<String, dynamic> responseJson = jsonDecode(response.body);
     if (response.statusCode == HttpStatus.ok) {
       List<String> options = new List<String>();
-      responseJson['optionPool'].forEach((option){
+      responseJson['options'].forEach((option){
         options.add(option);
       });
       return Future<List<String>>.value(options);
@@ -177,7 +181,7 @@ class Server {
 
   // Return the URL for the given path
   static Future<String> _getUrl(String path) async {
-    return (await getServerInfoJson())[path];
+    return (await _getServerInfoJson())[path];
   }
 
   // Return the URI for the given path including settleCode and this device's
@@ -190,7 +194,7 @@ class Server {
   }
 
   // Read in the server info file
-  static Future<Map<String, dynamic>> getServerInfoJson() async {
+  static Future<Map<String, dynamic>> _getServerInfoJson() async {
     var jsonString = await rootBundle.loadString(server_info_file);
     Map<String, dynamic> serverInfoJson = jsonDecode(jsonString);
     return serverInfoJson;
