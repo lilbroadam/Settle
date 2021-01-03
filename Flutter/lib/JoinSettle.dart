@@ -19,13 +19,16 @@ class JoinSettle extends StatelessWidget {
   Widget build(BuildContext context) {
     final settleButtonWidth = 150.0;
     final settleButtonHeight = 45.0;
-    final settleButtonTextStyle = new TextStyle(
-      fontSize: 16.4,
-    );
+    final settleButtonTextStyle =
+        new TextStyle(fontSize: 16.4, color: Colors.white);
     final joinSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
-      child: ElevatedButton(
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        color: Colors.blue,
         onPressed: _joinASettlePressed,
         child: Text('Join a Settle', style: settleButtonTextStyle),
       ),
@@ -33,6 +36,23 @@ class JoinSettle extends StatelessWidget {
     final settleButtonMargin = EdgeInsets.all(18.0);
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: true,
+        elevation: 0,
+        leading: IconButton(
+          padding: EdgeInsets.only(left: 20, top: 15),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+            size: 30,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

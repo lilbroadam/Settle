@@ -1,5 +1,8 @@
 import 'package:Settle/NameScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:groovin_widgets/groovin_widgets.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(SettleApp());
@@ -40,7 +43,6 @@ class SettleHomePage extends StatefulWidget {
 }
 
 class _SettleHomePageState extends State<SettleHomePage> {
-
   // Called when 'Create a Settle' button is pressed
   void _createASettlePressed() {
     Navigator.push(
@@ -59,7 +61,68 @@ class _SettleHomePageState extends State<SettleHomePage> {
 
   // Called when the information button is pressed
   void _informationPressed() {
-    // TODO
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      builder: (builder) {
+        return Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ModalDrawerHandle(
+                  handleColor: Colors.black38,
+                  handleWidth: 35,
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.info_outline),
+                title: Text("Settle"),
+                subtitle: Text("Version 1.0"),
+              ),
+              Material(
+                child: ListTile(
+                  leading: Icon(MdiIcons.github),
+                  title: Text("View Source Code on Github"),
+                  subtitle: Text("Contribute or open issues"),
+                  onTap: () async {
+                    const url = "https://github.com/lilbroadam/Settle";
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                ),
+              ),
+              Material(
+                child: ListTile(
+                  leading: Icon(MdiIcons.email),
+                  title: Text("Contact Us"),
+                  subtitle: Text("Report bugs, suggestions, or concerns"),
+                  onTap: () async {
+                    const emailAdrees = "settleitapplication@gmail.com";
+                    const subject = "Client Request";
+                    const url = 'mailto:$emailAdrees?subject=$subject';
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 
   // Called when the settings button is pressed
@@ -78,12 +141,17 @@ class _SettleHomePageState extends State<SettleHomePage> {
     final settleButtonHeight = 45.0;
     final settleButtonTextStyle = new TextStyle(
       fontSize: 16.4,
+      color: Colors.white,
     );
 
     final createSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
-      child: ElevatedButton(
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        color: Colors.blue,
         onPressed: _createASettlePressed,
         child: Text('Create a Settle', style: settleButtonTextStyle),
       ),
@@ -91,7 +159,11 @@ class _SettleHomePageState extends State<SettleHomePage> {
     final joinSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
-      child: ElevatedButton(
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        color: Colors.blue,
         onPressed: _joinASettlePressed,
         child: Text('Join a Settle', style: settleButtonTextStyle),
       ),
