@@ -5,7 +5,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:device_info/device_info.dart';
 import 'package:flutter/services.dart';
-import 'CreateSettle.dart';
 import 'Settle.dart';
 
 // A class to handle communications with the backend server
@@ -18,9 +17,6 @@ class Server {
   static const http_default_header = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
-  static const default_option_movies = 'movies';
-  static const default_option_restaurants = 'restaurants';
-  static const default_option_custom = 'custom';
   static const param_host_name = 'hostName';
   static const param_default_option = 'defaultOption';
   static const param_custom_allowed = 'customAllowed';
@@ -32,18 +28,9 @@ class Server {
   // Ask the server to create a new Settle. Return the Settle code if the server
   // responds with OK (status 200), return null otherwise.
   static Future<String> createSettle(
-      String hostName, DefaultOptions option, bool customAllowed) async {
-    // TODO Change to String optionString = theDay.toString().split('.').last;
-    String optionString;
-    if (option == DefaultOptions.movies)
-      optionString = default_option_movies;
-    else if (option == DefaultOptions.restaurants)
-      optionString = default_option_restaurants;
-    else if (option == DefaultOptions.custom)
-      optionString = default_option_custom;
-    else {
-      // TODO
-    }
+      String hostName, SettleType option, bool customAllowed) async {
+
+    String optionString = option.name;
     String customString = customAllowed ? 'true' : 'false';
 
     final http.Response response = await http.post(
