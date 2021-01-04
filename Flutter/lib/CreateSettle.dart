@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:Settle/LobbyScreen.dart';
 import 'Server.dart';
 import 'package:flutter/services.dart';
 import 'package:animated_dialog_box/animated_dialog_box.dart';
@@ -55,10 +56,11 @@ class _CreateSettle extends State<CreateSettle> {
     var settleCode = await Server.createSettle(
         hostName, _defaultOption, _customOptionsAllowed);
     if (settleCode != null) {
-      return settleCode.toString();
+      print('got settle code: ' + settleCode);
     } else {
       return "There was an error creating a Settle";
     }
+    return settleCode.toString();
   }
 
   // Return true if at least one option has been selected.
@@ -82,7 +84,11 @@ class _CreateSettle extends State<CreateSettle> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
-            Navigator.of(context).pop(); // change this to go to the lobby
+            // Navigator.of(context).pop(); // change this to go to the lobby
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LobbyScreen(hostName, true, _customOptionsAllowed, _code)),
+            );
           },
         ),
         secondButton: MaterialButton(
