@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'Server.dart';
 
 enum SettleType { custom, movies, restaurants } // TODO delete DefaultOptions
 extension SettleTypeExt on SettleType {
@@ -25,20 +26,35 @@ extension SettleStateExt on SettleState {
 
 class Settle {
   
-  String settleCode;
-  SettleType settleType;
-  bool customAllowed;
-  SettleState settleState;
-  List<String> users = new List<String>();
-  List<String> options = new List<String>();
+  final String settleCode;
+  final SettleType settleType;
+  final bool customAllowed;
+  SettleState _settleState;
+  List<String> _users = new List<String>();
+  List<String> _options = new List<String>();
 
-  Settle.fromJson(Map json) {
-    this.settleCode = json['settleCode'];
-    this.settleType = SettleTypeExt.toSettleType(json['settleType']);
-    this.customAllowed = json['customAllowed'];
-    this.settleState = SettleStateExt.toSettleState(json['settleState']);
-    this.users = json['users'].cast<String>();
-    this.options = json['options'].cast<String>();
+  Settle.fromJson(Map<String, dynamic> json) :
+    this.settleCode = json['settleCode'],
+    this.settleType = SettleTypeExt.toSettleType(json['settleType']),
+    this.customAllowed = json['customAllowed'],
+    this._settleState = SettleStateExt.toSettleState(json['settleState']),
+    this._users = json['users'].cast<String>(),
+    this._options = json['options'].cast<String>();
+
+  static Future<Settle> fromCode(String code) {
+    return Server.getSettle(code);
+  }
+
+  SettleState get settleState => _settleState;
+  List<String> get users => _users;
+  List<String> get options => _options;
+
+  // TODO make option it's own object
+  // TODO make this method not async so caller doesn't have to await
+  // Add an option to this Settle.
+  Future<Settle> addOption(String option) async {
+    await Server.addOption(option, settleCode);
+    return await Server.getSettle(settleCode);
   }
 
   @override

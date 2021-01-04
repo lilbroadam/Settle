@@ -27,6 +27,7 @@ class Server {
 
   // Ask the server to create a new Settle. Return the Settle code if the server
   // responds with OK (status 200), return null otherwise.
+  // TODO change to return Settle object
   static Future<String> createSettle(
       String hostName, SettleType option, bool customAllowed) async {
 
@@ -59,7 +60,7 @@ class Server {
   }
 
   // Given a joinSettleCode, ask the server to join the user to that Settle.
-  // TODO not sure if this method should return something or not
+  // TODO change to return a Settle object
   // TODO how to tell caller when join fails?
   static Future<String> joinSettle(String userName, String joinSettleCode) async {
     final http.Response response = await http.post(
@@ -75,7 +76,7 @@ class Server {
     if (response.statusCode == HttpStatus.ok) {
       settleCode = joinSettleCode;
       print('Joined user to Settle #$joinSettleCode');
-      print('Current state of Settle: ${(await getSettleInfo())}');
+      print('Current state of Settle: ${(await getSettle())}');
     } else {
       print('${jsonDecode(response.body)['error']}');
     }
@@ -83,20 +84,14 @@ class Server {
     return Future<String>.value(null);
   }
 
-  // static Future<Settle> getSettle() {
-
-  // }
-
-  // Return a Settle object representing the Settle
-  // createSettle() or joinSettle() must have been called before this method.
-  static Future<Settle> getSettleInfo() async {
-    if (settleCode == null) {
-      // TODO error handling
-      return Future<Settle>.value(null);
-    }
+  // If a code parameter is provided, return the Settle object for that code.
+  // Otherwrise return the Settle object for the Settle created by the calls 
+  // to createSettle() or joinSettle().
+  static Future<Settle> getSettle([String code]) async {
+    code = code ?? settleCode;
 
     final http.Response response = await http.get(
-      await _getUri(server_info_path, settleCode),
+      await _getUri(server_info_path, code),
       headers: http_default_header,
     );
 
@@ -112,14 +107,12 @@ class Server {
   // Ask the server to add an Option to the Settle. Return a List of all the 
   // options in the Settle after the request was handled.
   // createSettle() or joinSettle() must have been called before this method.
-  static Future<List<String>> addOption(String option) async {
-    if (settleCode == null) {
-      // TODO error handling
-      return Future<List<String>>.value(null);
-    }
+  // TODO change to return Settle object
+  static Future<List<String>> addOption(String option, [String code]) async {
+    code = code ?? settleCode;
 
     final http.Response response = await http.post(
-      await _getUri(server_options_path, settleCode),
+      await _getUri(server_options_path, code),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
         'addOption': option,
