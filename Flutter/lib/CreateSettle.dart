@@ -47,8 +47,9 @@ class _CreateSettle extends State<CreateSettle> {
   // Call this function when the "Create this Settle" button is pressed.
   // This function will ask the server to create a new Settle.
   Future<String> _createSettleButtonPressed() async {
-    var settleCode = await Server.createSettle(
-        hostName, _settleType, _customOptionsAllowed);
+    Settle settle 
+      = await Server.createSettle(hostName, _settleType, _customOptionsAllowed);
+    var settleCode = settle.settleCode;
     if (settleCode != null) {
       return settleCode.toString();
     } else {

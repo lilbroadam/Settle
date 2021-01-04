@@ -27,8 +27,7 @@ class Server {
 
   // Ask the server to create a new Settle. Return the Settle code if the server
   // responds with OK (status 200), return null otherwise.
-  // TODO change to return Settle object
-  static Future<String> createSettle(
+  static Future<Settle> createSettle(
       String hostName, SettleType option, bool customAllowed) async {
 
     String optionString = option.name;
@@ -45,24 +44,22 @@ class Server {
       }),
     );
 
-    String newSettleCode;
+    Settle responseSettle;
     if (response.statusCode == HttpStatus.ok) {
-      Map<String, dynamic> responseJson = jsonDecode(response.body);
-      newSettleCode = responseJson[response_new_settle_code];
-      settleCode = newSettleCode;
-      print('User created Settle #$newSettleCode');
+      responseSettle = Settle.fromJson(jsonDecode(response.body));
+      settleCode = responseSettle.settleCode;
+      print('User created Settle #$settleCode');
     } else {
       // TODO error handling
       print('there was an error trying to create a settle on the server');
     }
-    
-    return Future<String>.value(newSettleCode);
+
+    return responseSettle;
   }
 
   // Given a joinSettleCode, ask the server to join the user to that Settle.
-  // TODO change to return a Settle object
   // TODO how to tell caller when join fails?
-  static Future<String> joinSettle(String userName, String joinSettleCode) async {
+  static Future<Settle> joinSettle(String userName, String joinSettleCode) async {
     final http.Response response = await http.post(
       await _getUrl(server_join_path),
       headers: http_default_header,
@@ -73,15 +70,17 @@ class Server {
       }),
     );
 
+    Settle responseSettle;
     if (response.statusCode == HttpStatus.ok) {
-      settleCode = joinSettleCode;
-      print('Joined user to Settle #$joinSettleCode');
-      print('Current state of Settle: ${(await getSettle())}');
+      responseSettle = Settle.fromJson(jsonDecode(response.body));
+      settleCode = responseSettle.settleCode;
+      print('Joined user to Settle #$settleCode');
+      print('Current state of Settle: $responseSettle');
     } else {
       print('${jsonDecode(response.body)['error']}');
     }
 
-    return Future<String>.value(null);
+    return Future<Settle>.value(responseSettle);
   }
 
   // If a code parameter is provided, return the Settle object for that code.
@@ -107,8 +106,7 @@ class Server {
   // Ask the server to add an Option to the Settle. Return a List of all the 
   // options in the Settle after the request was handled.
   // createSettle() or joinSettle() must have been called before this method.
-  // TODO change to return Settle object
-  static Future<List<String>> addOption(String option, [String code]) async {
+  static Future<Settle> addOption(String option, [String code]) async {
     code = code ?? settleCode;
 
     final http.Response response = await http.post(
@@ -119,18 +117,16 @@ class Server {
       }),
     );
 
+    Settle responseSettle;
     Map<String, dynamic> responseJson = jsonDecode(response.body);
     if (response.statusCode == HttpStatus.ok) {
-      List<String> options = new List<String>();
-      responseJson['options'].forEach((option){
-        options.add(option);
-      });
-      return Future<List<String>>.value(options);
+      responseSettle = Settle.fromJson(jsonDecode(response.body));
     } else {
       // TODO error handling
       print('ERROR: ${responseJson['error']}');
-      return Future<List<String>>.value(null);
     }
+
+    return responseSettle;
   }
 
   // Return a unique hash that this device can be identified by

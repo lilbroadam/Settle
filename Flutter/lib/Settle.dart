@@ -53,8 +53,9 @@ class Settle {
   // TODO make this method not async so caller doesn't have to await
   // Add an option to this Settle.
   Future<Settle> addOption(String option) async {
-    await Server.addOption(option, settleCode);
-    return await Server.getSettle(settleCode);
+    Settle settle = await Server.addOption(option, settleCode);
+    // TODO update this settle
+    return settle;
   }
 
   @override
