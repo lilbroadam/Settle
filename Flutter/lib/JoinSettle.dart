@@ -1,18 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:Settle/LobbyScreen.dart';
 import 'Server.dart';
 
-class JoinSettle extends StatelessWidget {
+class JoinSettle extends StatefulWidget {
+  final String hostName;
+  JoinSettle(this.hostName);
+
+  @override
+  _JoinSettle createState() => _JoinSettle(hostName);
+  // Read the Settle code that the user types and ask the server to join this
+  // user to that Settle session
+
+}
+
+
+class _JoinSettle extends State<JoinSettle> {
   final String hostName;
   final joinCodeController = TextEditingController();
 
-  JoinSettle(this.hostName);
+  _JoinSettle(this.hostName);
 
-  // Read the Settle code that the user types and ask the server to join this
-  // user to that Settle session
   void _joinASettlePressed() async {
     var joinSettleCode = joinCodeController.text;
 
     await Server.joinSettle(joinSettleCode);
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LobbyScreen(hostName, false, false, joinCodeController.text)),
+     );
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:Settle/LobbyScreen.dart';
 import 'Server.dart';
 
 enum DefaultOptions { movies, restaurants, custom }
@@ -46,6 +47,10 @@ class _CreateSettle extends State<CreateSettle> {
       await Server.createSettle(hostName, _defaultOption, _customOptionsAllowed);
     if (settleCode != null) {
       print('got settle code: ' + settleCode);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LobbyScreen(hostName, true, _customOptionsAllowed, settleCode)),
+      );
     } else {
       // TODO handle
       print('There was an error creating a Settle');
