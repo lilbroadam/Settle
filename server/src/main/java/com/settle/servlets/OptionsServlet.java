@@ -52,13 +52,8 @@ public class OptionsServlet extends HttpServlet {
         SettleSession settleSession = SettleSessionManager.getSettleSession(settleCode);
         settleSession.addOption(addOption);
 
-        // Build response // TODO respond entire Settle object instead?
-        JsonObject jsonObject = new JsonObject();
-        JsonArray optionsJson = settleSession.getOptionsJson();
-        jsonObject.add("options", optionsJson);
-        
-        String json = (new Gson()).toJson(jsonObject);
-
+        // Build response
+        String json = (new Gson()).toJson(settleSession.toJson());
         response.setContentType("application/json");
         response.getWriter().println(json);
     }
