@@ -33,7 +33,9 @@ public class SettleSessionTest {
 
     @Test
     public void testCustomAllowed() {
-        Assert.assertEquals(settle.getCustomChoicesAllowed(), customAllowed);
+        // If SettleType is CUSTOM, custom choices should be allowed even if the Settle
+        // was created with custom choices set to false;
+        Assert.assertEquals(settle.getCustomChoicesAllowed(), true);
     }
 
     @Test
@@ -41,15 +43,15 @@ public class SettleSessionTest {
         String option1 = "option1";
         String option2 = "option2";
 
-        Assert.assertEquals(settle.getOptionPool().size(), 0);
+        Assert.assertEquals(settle.getOptions().size(), 0);
 
         settle.addOption(option1);
-        Assert.assertEquals(settle.getOptionPool().size(), 1);
-        Assert.assertEquals(settle.getOptionPool().get(0), option1);
+        Assert.assertEquals(settle.getOptions().size(), 1);
+        Assert.assertEquals(settle.getOptions().get(0), option1);
 
         settle.addOption(option2);
-        Assert.assertEquals(settle.getOptionPool().size(), 2);
-        Assert.assertEquals(settle.getOptionPool().get(1), option2);
+        Assert.assertEquals(settle.getOptions().size(), 2);
+        Assert.assertEquals(settle.getOptions().get(1), option2);
     }
 
 }
