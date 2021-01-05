@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Server.dart';
 import 'package:Settle/Animation.dart';
-
 
 class LobbyScreen extends StatefulWidget {
   final String hostName;
@@ -69,8 +67,7 @@ class _LobbyScreen extends State<LobbyScreen> {
         backgroundColor: Colors.transparent,
         centerTitle: true,
         elevation: 0.0,
-        title: Text('Lobby Code: $code', style: TextStyle(color: Colors.black)),
-        leading: Container()
+        title: Text('Lobby Code: $code', style: TextStyle(color: Colors.black))
       ),
       body: Center(
         child: SafeArea(
@@ -84,18 +81,20 @@ class _LobbyScreen extends State<LobbyScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      margin: const EdgeInsets.all(10.0),
-                      // height: 250,
-                      width: 180,
-                      child: scroller(guests, "Guests")
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.all(10.0),
+                        child: scroller(guests, "Guests")
+                      ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.all(10.0), 
-                      // height: 250,
-                      width: 180,
-                      child: scroller(guests, "Options")),
-                ],)
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.all(10.0),
+                        child: scroller(guests, "Options")
+                      ),
+                    ),
+                  ],
+                )
               ),
               if (isCustom)
                 customBox,
