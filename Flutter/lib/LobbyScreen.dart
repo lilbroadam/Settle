@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:Settle/Animation.dart';
+import 'Settle.dart';
 
 class LobbyScreen extends StatefulWidget {
-  final String hostName;
+  final Settle settle;
+  final String userName;
   final bool isHost;
-  final bool isCustom;
-  final String code;
 
-  const LobbyScreen(this.hostName, this.isHost, this.isCustom, this.code);
+  const LobbyScreen(this.settle, this.userName, this.isHost);
 
   @override
-  _LobbyScreen createState() => _LobbyScreen(hostName, isHost, isCustom, code);
+  _LobbyScreen createState() => _LobbyScreen(settle, userName, isHost);
 }
 
 class _LobbyScreen extends State<LobbyScreen> {
@@ -18,8 +18,13 @@ class _LobbyScreen extends State<LobbyScreen> {
   final bool isHost;
   final bool isCustom;
   final String code;
+  final Settle settle;
+  final String userName;
 
-  _LobbyScreen(this.hostName, this.isHost, this.isCustom, this.code);
+  _LobbyScreen(this.settle, this.userName, this.isHost) :
+    this.hostName = settle.users.first,
+    this.isCustom = settle.customAllowed,
+    this.code = settle.settleCode;
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +80,9 @@ class _LobbyScreen extends State<LobbyScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text('Welcome', style: TextStyle(fontSize: 30), textAlign: TextAlign.center),
-              Text('$hostName', style: TextStyle(fontSize: 30), textAlign: TextAlign.center,),
+              Text('$userName', style: TextStyle(fontSize: 30), textAlign: TextAlign.center,),
               Container(
-                height: 250,
+                height: 200,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -96,11 +101,18 @@ class _LobbyScreen extends State<LobbyScreen> {
                   ],
                 )
               ),
-              if (isCustom)
+              if (settle.customAllowed)
                 customBox,
-              Container(height: 100),
-              isHost ? standardButton('Start Settling', startSettle) : Column(children: [animation(), Container(height: 50), Text('Waiting on Host', style: TextStyle(fontSize: 15), textAlign: TextAlign.center)])]
-          ,)
+              Container(height: 75),
+              isHost ? 
+                standardButton('Start Settling', startSettle) : 
+                Column(
+                  children: [
+                    animation(), Container(height: 50), Text('Waiting on Host', style: TextStyle(fontSize: 15), textAlign: TextAlign.center)
+                  ]
+                )
+            ],
+          )
         ),
       )
     );

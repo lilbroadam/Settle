@@ -47,13 +47,16 @@ class _CreateSettle extends State<CreateSettle> {
 
   // Call this function when the "Create this Settle" button is pressed.
   // This function will ask the server to create a new Settle.
-  Future<String> _createSettleButtonPressed() async {
+  Future<Settle> _createSettleButtonPressed() async {
     Settle settle 
       = await Server.createSettle(hostName, _settleType, _customOptionsAllowed);
     
-    if (settle == null) return "There was an error creating a Settle";
+    if (settle == null) {
+      // TODO error handling
+      return Future<Settle>.value(null);
+    }
     
-    return settle.settleCode;
+    return settle;
   }
 
   // Return true if at least one option has been selected.
@@ -62,6 +65,7 @@ class _CreateSettle extends State<CreateSettle> {
   }
 
   String _code;
+  Settle settle;
 
   Future<void> showPopup() async {
     await animated_dialog_box.showScaleAlertBox(
@@ -77,10 +81,12 @@ class _CreateSettle extends State<CreateSettle> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
-            // Navigator.of(context).pop(); // change this to go to the lobby
+            // Go to the lobby
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => LobbyScreen(hostName, true, _customOptionsAllowed, _code)),
+              MaterialPageRoute(
+                builder: (context) => LobbyScreen(settle, hostName, true)
+              ),
             );
           },
         ),
@@ -91,7 +97,6 @@ class _CreateSettle extends State<CreateSettle> {
           color: Colors.white,
           child: Text('Share or Copy'),
           onPressed: () {
-            // Navigator.of(context).pop();
             Clipboard.setData(ClipboardData(text: _code));
             Share.share(_code);
           },
@@ -105,8 +110,10 @@ class _CreateSettle extends State<CreateSettle> {
             future: _createSettleButtonPressed(),
             builder: (context, snapshot) {
               if (snapshot.data != null) {
-                _code = snapshot.data;
-                return Text(snapshot.data,
+                Settle _settle = snapshot.data;
+                _code = _settle.settleCode;
+                settle = _settle;
+                return Text(_code,
                     style: GoogleFonts.notoSansKR(fontSize: 19));
               } else {
                 return SpinKitDualRing(
