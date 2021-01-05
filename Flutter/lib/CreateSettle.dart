@@ -55,7 +55,7 @@ class _CreateSettle extends State<CreateSettle> {
       // TODO error handling
       return Future<Settle>.value(null);
     }
-    _code = settle.settleCode;
+    // _code = settle.settleCode;
     return settle;
   }
 
@@ -109,6 +109,9 @@ class _CreateSettle extends State<CreateSettle> {
             future: _createSettleButtonPressed(),
             builder: (context, snapshot) {
               if (snapshot.data != null) {
+                Settle _settle = snapshot.data;
+                _code = _settle.settleCode;
+                settle = _settle;
                 return Text(
                   _code,
                   style: GoogleFonts.notoSansKR(fontSize: 19),

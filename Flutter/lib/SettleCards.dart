@@ -151,7 +151,7 @@ class _SettleCardsState extends State<SettleCards> {
                 padding: EdgeInsets.all(10),
               ),
               Text(
-                "Comming Soon...",
+                "Coming Soon...",
                 style: TextStyle(fontSize: 15),
               ),
               Padding(

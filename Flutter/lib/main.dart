@@ -168,7 +168,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
         },
         text: ["Be everyting...", "Be Settle"],
         textStyle: GoogleFonts.lobster(
-            fontSize: 40, textStyle: TextStyle(color: Colors.black)),
+            fontSize: 40, textStyle: TextStyle(color: Colors.lightBlue)),
         textAlign: TextAlign.start,
       ),
     );
