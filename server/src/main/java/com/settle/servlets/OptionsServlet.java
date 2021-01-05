@@ -28,11 +28,10 @@ public class OptionsServlet extends HttpServlet {
 
         // Build response
         SettleSession settleSession = SettleSessionManager.getSettleSession(settleCode);
-        JsonArray optionsArray = new JsonArray();
-        for (String option : settleSession.getOptionPool())
-            optionsArray.add(option);
         JsonObject jsonObject = new JsonObject();
-        jsonObject.add("optionPool", optionsArray);
+        JsonArray optionsJson = settleSession.getOptionsJson();
+        jsonObject.add("options", optionsJson);
+
         String json = (new Gson()).toJson(jsonObject);
 
         response.setContentType("application/json");
@@ -54,17 +53,7 @@ public class OptionsServlet extends HttpServlet {
         settleSession.addOption(addOption);
 
         // Build response
-        JsonObject jsonObject = new JsonObject();
-
-        // Add Settle options to response
-        List<String> optionPool = settleSession.getOptionPool();
-        JsonArray jsonArray = new JsonArray();
-        for (String option : optionPool)
-            jsonArray.add(option);
-        jsonObject.add("optionPool", jsonArray);
-        
-        String json = (new Gson()).toJson(jsonObject);
-
+        String json = (new Gson()).toJson(settleSession.toJson());
         response.setContentType("application/json");
         response.getWriter().println(json);
     }

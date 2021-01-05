@@ -5,7 +5,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:device_info/device_info.dart';
 import 'package:flutter/services.dart';
-import 'CreateSettle.dart';
 import 'Settle.dart';
 
 // A class to handle communications with the backend server
@@ -18,9 +17,6 @@ class Server {
   static const http_default_header = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
-  static const default_option_movies = 'movies';
-  static const default_option_restaurants = 'restaurants';
-  static const default_option_custom = 'custom';
   static const param_host_name = 'hostName';
   static const param_default_option = 'defaultOption';
   static const param_custom_allowed = 'customAllowed';
@@ -31,19 +27,10 @@ class Server {
 
   // Ask the server to create a new Settle. Return the Settle code if the server
   // responds with OK (status 200), return null otherwise.
-  static Future<String> createSettle(
-      String hostName, DefaultOptions option, bool customAllowed) async {
-    // TODO Change to String optionString = theDay.toString().split('.').last;
-    String optionString;
-    if (option == DefaultOptions.movies)
-      optionString = default_option_movies;
-    else if (option == DefaultOptions.restaurants)
-      optionString = default_option_restaurants;
-    else if (option == DefaultOptions.custom)
-      optionString = default_option_custom;
-    else {
-      // TODO
-    }
+  static Future<Settle> createSettle(
+      String hostName, SettleType option, bool customAllowed) async {
+
+    String optionString = option.name;
     String customString = customAllowed ? 'true' : 'false';
 
     final http.Response response = await http.post(
@@ -57,24 +44,22 @@ class Server {
       }),
     );
 
-    String newSettleCode;
+    Settle responseSettle;
     if (response.statusCode == HttpStatus.ok) {
-      Map<String, dynamic> responseJson = jsonDecode(response.body);
-      newSettleCode = responseJson[response_new_settle_code];
-      settleCode = newSettleCode;
-      print('User created Settle #$newSettleCode');
+      responseSettle = Settle.fromJson(jsonDecode(response.body));
+      settleCode = responseSettle.settleCode;
+      print('User created Settle #$settleCode');
     } else {
       // TODO error handling
       print('there was an error trying to create a settle on the server');
     }
-    
-    return Future<String>.value(newSettleCode);
+
+    return responseSettle;
   }
 
   // Given a joinSettleCode, ask the server to join the user to that Settle.
-  // TODO not sure if this method should return something or not
   // TODO how to tell caller when join fails?
-  static Future<String> joinSettle(String userName, String joinSettleCode) async {
+  static Future<Settle> joinSettle(String userName, String joinSettleCode) async {
     final http.Response response = await http.post(
       await _getUrl(server_join_path),
       headers: http_default_header,
@@ -85,27 +70,27 @@ class Server {
       }),
     );
 
+    Settle responseSettle;
     if (response.statusCode == HttpStatus.ok) {
-      settleCode = joinSettleCode;
-      print('Joined user to Settle #$joinSettleCode');
-      print('Current state of Settle: ${(await getSettleInfo()).toString()}');
+      responseSettle = Settle.fromJson(jsonDecode(response.body));
+      settleCode = responseSettle.settleCode;
+      print('Joined user to Settle #$settleCode');
+      print('Current state of Settle: $responseSettle');
     } else {
       print('${jsonDecode(response.body)['error']}');
     }
 
-    return Future<String>.value(null);
+    return Future<Settle>.value(responseSettle);
   }
 
-  // Return a Settle object representing the Settle
-  // createSettle() or joinSettle() must have been called before this method.
-  static Future<Settle> getSettleInfo() async {
-    if (settleCode == null) {
-      // TODO error handling
-      return Future<Settle>.value(null);
-    }
+  // If a code parameter is provided, return the Settle object for that code.
+  // Otherwrise return the Settle object for the Settle created by the calls 
+  // to createSettle() or joinSettle().
+  static Future<Settle> getSettle([String code]) async {
+    code = code ?? settleCode;
 
     final http.Response response = await http.get(
-      await _getUri(server_info_path, settleCode),
+      await _getUri(server_info_path, code),
       headers: http_default_header,
     );
 
@@ -121,32 +106,27 @@ class Server {
   // Ask the server to add an Option to the Settle. Return a List of all the 
   // options in the Settle after the request was handled.
   // createSettle() or joinSettle() must have been called before this method.
-  static Future<List<String>> addOption(String option) async {
-    if (settleCode == null) {
-      // TODO error handling
-      return Future<List<String>>.value(null);
-    }
+  static Future<Settle> addOption(String option, [String code]) async {
+    code = code ?? settleCode;
 
     final http.Response response = await http.post(
-      await _getUri(server_options_path, settleCode),
+      await _getUri(server_options_path, code),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
         'addOption': option,
       }),
     );
 
+    Settle responseSettle;
     Map<String, dynamic> responseJson = jsonDecode(response.body);
     if (response.statusCode == HttpStatus.ok) {
-      List<String> options = new List<String>();
-      responseJson['optionPool'].forEach((option){
-        options.add(option);
-      });
-      return Future<List<String>>.value(options);
+      responseSettle = Settle.fromJson(jsonDecode(response.body));
     } else {
       // TODO error handling
       print('ERROR: ${responseJson['error']}');
-      return Future<List<String>>.value(null);
     }
+
+    return responseSettle;
   }
 
   // Return a unique hash that this device can be identified by
@@ -177,7 +157,7 @@ class Server {
 
   // Return the URL for the given path
   static Future<String> _getUrl(String path) async {
-    return (await getServerInfoJson())[path];
+    return (await _getServerInfoJson())[path];
   }
 
   // Return the URI for the given path including settleCode and this device's
@@ -190,7 +170,7 @@ class Server {
   }
 
   // Read in the server info file
-  static Future<Map<String, dynamic>> getServerInfoJson() async {
+  static Future<Map<String, dynamic>> _getServerInfoJson() async {
     var jsonString = await rootBundle.loadString(server_info_file);
     Map<String, dynamic> serverInfoJson = jsonDecode(jsonString);
     return serverInfoJson;
