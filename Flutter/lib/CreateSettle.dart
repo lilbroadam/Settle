@@ -1,19 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'Server.dart';
 import 'package:flutter/services.dart';
-import 'package:animated_dialog_box/animated_dialog_box.dart';
-import 'package:share/share.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:animated_dialog_box/animated_dialog_box.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:share/share.dart';
+import 'LobbyScreen.dart';
+import 'Server.dart';
+import 'Settle.dart';
 
-enum DefaultOptions { movies, restaurants, custom }
-
-extension DefaultOptionsExt on DefaultOptions {
-  String get name => describeEnum(this);
-}
-
-typedef void DefaultOptionPressedCallback(DefaultOptions defaultOption);
+typedef void SettleTypePressedCallback(SettleType settleType);
 typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
 
 class CreateSettle extends StatefulWidget {
@@ -27,16 +23,16 @@ class CreateSettle extends StatefulWidget {
 
 class _CreateSettle extends State<CreateSettle> {
   final String hostName;
-  DefaultOptions _defaultOption;
+  SettleType _settleType;
   bool _customOptionsAllowed = false;
 
   _CreateSettle(this.hostName);
 
   // Call this function when a default option is pressed.
-  void _defaultOptionPressed(DefaultOptions defaultOption) {
-    _defaultOption = defaultOption;
+  void _defaultOptionPressed(SettleType settleType) {
+    _settleType = settleType;
 
-    if (defaultOption == DefaultOptions.custom) {
+    if (settleType == SettleType.custom) {
       // TODO make checkbox checked if 'Custom choices only' is clicked
     }
 
@@ -51,22 +47,25 @@ class _CreateSettle extends State<CreateSettle> {
 
   // Call this function when the "Create this Settle" button is pressed.
   // This function will ask the server to create a new Settle.
-  Future<String> _createSettleButtonPressed() async {
-    var settleCode = await Server.createSettle(
-        hostName, _defaultOption, _customOptionsAllowed);
-    if (settleCode != null) {
-      return settleCode.toString();
-    } else {
-      return "There was an error creating a Settle";
+  Future<Settle> _createSettleButtonPressed() async {
+    Settle settle =
+        await Server.createSettle(hostName, _settleType, _customOptionsAllowed);
+
+    if (settle == null) {
+      // TODO error handling
+      return Future<Settle>.value(null);
     }
+
+    return settle;
   }
 
   // Return true if at least one option has been selected.
   bool _isAnOptionSelected() {
-    return (_defaultOption != null) || _customOptionsAllowed;
+    return (_settleType != null) || _customOptionsAllowed;
   }
 
   String _code;
+  Settle settle;
 
   Future<void> showPopup() async {
     await animated_dialog_box.showScaleAlertBox(
@@ -82,7 +81,12 @@ class _CreateSettle extends State<CreateSettle> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
-            Navigator.of(context).pop(); // change this to go to the lobby
+            // Go to the lobby
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LobbyScreen(settle, hostName, true)),
+            );
           },
         ),
         secondButton: MaterialButton(
@@ -92,7 +96,6 @@ class _CreateSettle extends State<CreateSettle> {
           color: Colors.white,
           child: Text('Share or Copy'),
           onPressed: () {
-            // Navigator.of(context).pop();
             Clipboard.setData(ClipboardData(text: _code));
             Share.share(_code);
           },
@@ -226,7 +229,7 @@ class _CheckBox extends State<CheckBox> {
 }
 
 class RadioButton extends StatefulWidget {
-  final DefaultOptionPressedCallback callback;
+  final SettleTypePressedCallback callback;
   RadioButton(this.callback, {Key key}) : super(key: key);
 
   @override
@@ -234,8 +237,8 @@ class RadioButton extends StatefulWidget {
 }
 
 class _RadioButton extends State<RadioButton> {
-  final DefaultOptionPressedCallback callback;
-  DefaultOptions _currentOption;
+  final SettleTypePressedCallback callback;
+  SettleType _currentOption;
 
   _RadioButton(this.callback);
 
@@ -246,9 +249,9 @@ class _RadioButton extends State<RadioButton> {
         ListTile(
           title: const Text('Movies'),
           leading: Radio(
-            value: DefaultOptions.movies,
+            value: SettleType.movies,
             groupValue: _currentOption,
-            onChanged: (DefaultOptions value) {
+            onChanged: (SettleType value) {
               setState(() => _currentOption = value);
               callback(value);
             },
@@ -257,9 +260,9 @@ class _RadioButton extends State<RadioButton> {
         ListTile(
           title: const Text('Restaurants'),
           leading: Radio(
-            value: DefaultOptions.restaurants,
+            value: SettleType.restaurants,
             groupValue: _currentOption,
-            onChanged: (DefaultOptions value) {
+            onChanged: (SettleType value) {
               setState(() => _currentOption = value);
               callback(value);
             },
@@ -268,9 +271,9 @@ class _RadioButton extends State<RadioButton> {
         ListTile(
           title: const Text('Custom choices only'),
           leading: Radio(
-              value: DefaultOptions.custom,
+              value: SettleType.custom,
               groupValue: _currentOption,
-              onChanged: (DefaultOptions value) {
+              onChanged: (SettleType value) {
                 setState(() => _currentOption = value);
                 callback(value);
               }),

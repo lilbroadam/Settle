@@ -100,10 +100,8 @@ public class CreateSettleServlet extends HttpServlet {
             SettleSessionManager.createSettleSession(hostUser, settleType, customChoicesAllowed);
 
         // Build response
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(RESPONSE_NEW_SETTLE_CODE, settleCode);
-        String json = (new Gson()).toJson(jsonObject);
-        
+        SettleSession settle = SettleSessionManager.getSettleSession(settleCode);
+        String json = (new Gson()).toJson(settle.toJson());
         response.setContentType("application/json");
         response.getWriter().println(json);
     }

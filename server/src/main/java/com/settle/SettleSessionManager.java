@@ -14,6 +14,7 @@ public class SettleSessionManager {
     private static Map<String, SettleSession> settleSessionsMap = new HashMap<>();
     private static final Object settleSessionMapLock = new Object();
 
+    // TODO change to return a SettleSesion object
     // Create a Settle session and return it's session code
     public static String createSettleSession(
             User hostUser, SettleSession.SettleType settleType, boolean customChoicesAllowed) {

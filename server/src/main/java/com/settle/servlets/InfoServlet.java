@@ -28,26 +28,8 @@ public class InfoServlet extends HttpServlet {
 
         // Build response
         SettleSession settleSession = SettleSessionManager.getSettleSession(settleCode);
-        JsonObject jsonObject = new JsonObject();
-
-        // Add users to response
-        JsonArray jsonArray = new JsonArray();
-        for (User user : settleSession.getUsers())
-            jsonArray.add(user.getName());
-        jsonObject.add("users", jsonArray);
-
-        // Add Settle state to response
-        SettleSession.SettleState state = settleSession.getSettleState();
-        jsonObject.addProperty("state", state.name().toLowerCase());
-
-        // Add Settle options to response
-        List<String> optionPool = settleSession.getOptionPool();
-        jsonArray = new JsonArray();
-        for (String option : optionPool)
-            jsonArray.add(option);
-        jsonObject.add("optionPool", jsonArray);
-        
-        String json = (new Gson()).toJson(jsonObject);
+        JsonObject settleSessionJson = settleSession.toJson();
+        String json = (new Gson()).toJson(settleSessionJson);
 
         response.setContentType("application/json");
         response.getWriter().println(json);

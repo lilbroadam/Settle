@@ -40,6 +40,12 @@ public class JoinSettleServlet extends HttpServlet {
 
         // Do request
         User user = new User(userId, userName);
-        SettleSessionManager.getSettleSession(joinSettleCode).addUser(user);
+        SettleSession settleSession = SettleSessionManager.getSettleSession(joinSettleCode);
+        settleSession.addUser(user);
+
+        // Build response
+        String json = (new Gson()).toJson(settleSession.toJson());
+        response.setContentType("application/json");
+        response.getWriter().println(json);
     }
 }

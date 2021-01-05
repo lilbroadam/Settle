@@ -1,57 +1,84 @@
 import 'package:flutter/foundation.dart';
+import 'Server.dart';
 
+enum SettleType { custom, movies, restaurants } // TODO delete DefaultOptions
+extension SettleTypeExt on SettleType {
+  String get name => describeEnum(this);
+
+  static SettleType toSettleType(String settleType) {
+    if (settleType == 'custom') return SettleType.custom;
+    if (settleType == 'movies') return SettleType.movies;
+    if (settleType == 'restaurants') return SettleType.restaurants;
+    throw FormatException('Could not match the string to a SettleType enum');
+  }
+}
 enum SettleState { lobby, settling, complete }
 extension SettleStateExt on SettleState {
   String get name => describeEnum(this);
+
+  static SettleState toSettleState(String settleState) {
+    if (settleState == 'lobby') return SettleState.lobby;
+    if (settleState == 'settling') return SettleState.settling;
+    if (settleState == 'complete') return SettleState.complete;
+    throw FormatException('Could not match the string to a SettleState enum');
+  }
 }
 
 class Settle {
   
-  SettleState state;
-  List<String> users = new List<String>();
-  List<String> options = new List<String>();
+  final String settleCode;
+  final SettleType settleType;
+  final bool customAllowed;
+  SettleState _settleState;
+  List<String> _users = new List<String>();
+  List<String> _options = new List<String>();
 
-  Settle.fromJson(Map json) {
-    var state = json['state'];
-    if (state == 'lobby')
-      this.state = SettleState.lobby;
-    else if (state == 'settling')
-      this.state = SettleState.settling;
-    else if (state == 'complete')
-      this.state = SettleState.complete;
-    else {
-      // TODO error handling
-    }
+  Settle.fromJson(Map<String, dynamic> json) :
+    this.settleCode = json['settleCode'],
+    this.settleType = SettleTypeExt.toSettleType(json['settleType']),
+    this.customAllowed = json['customAllowed'],
+    this._settleState = SettleStateExt.toSettleState(json['settleState']),
+    this._users = json['users'].cast<String>(),
+    this._options = json['options'].cast<String>();
 
-    json['users'].forEach((user) {
-      this.users.add(user);
-    });
+  static Future<Settle> fromCode(String code) {
+    return Server.getSettle(code);
+  }
 
-    json['optionPool'].forEach((option) {
-      this.options.add(option);
-    });
+  SettleState get settleState => _settleState;
+  List<String> get users => _users;
+  List<String> get options => _options;
 
-    print(this);
+  // TODO make option it's own object
+  // TODO make this method not async so caller doesn't have to await
+  // Add an option to this Settle.
+  Future<Settle> addOption(String option) async {
+    Settle settle = await Server.addOption(option, settleCode);
+    _update(settle);
+    return settle;
+  }
+
+  // Update this Settle with the server's Settle object.
+  // TODO make this method not async so caller doesn't have to await
+  void update() async {
+    _update(await Server.getSettle(settleCode));
+  }
+
+  // Set all of the properties in this Settle to match those in the given Settle.
+  // This method should only be called on Settles that are the same Settle (i.e.
+  // have the same Settle code).
+  void _update(Settle settle) {
+    _settleState = settle.settleState;
+    _users = settle.users;
+    _options = settle.options;
   }
 
   @override
   String toString() {
-    var stringBuffer = StringBuffer();
-
-    stringBuffer.write('users:[');
-    users.forEach((user) {
-      stringBuffer.write(user + ', ');
-    });
-    stringBuffer.write('], ');
-
-    stringBuffer.write('options:[');
-    options.forEach((option) {
-      stringBuffer.write(option + ', ');
-    });
-    stringBuffer.write(']');
-
     return '['
-      + 'state:' + state.name + ', '
-      + stringBuffer.toString() + ']';
+      + 'settleCode:\'$settleCode\', settleType:${settleType.name}, '
+      + 'customAllowed:$customAllowed, settleState:${settleState.name}, '
+      + 'users:${users.toString()}, options:${options.toString()}'
+      + ']';
   }
 }
