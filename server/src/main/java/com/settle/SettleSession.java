@@ -54,6 +54,7 @@ public class SettleSession {
         }
     }
 
+    // TODO change so that SettleState can't move backwards
     public void setSettleState(SettleState state) {
         synchronized (this) {
             settleState = state;
