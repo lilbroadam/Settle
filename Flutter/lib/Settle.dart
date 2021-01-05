@@ -54,8 +54,23 @@ class Settle {
   // Add an option to this Settle.
   Future<Settle> addOption(String option) async {
     Settle settle = await Server.addOption(option, settleCode);
-    // TODO update this settle
+    _update(settle);
     return settle;
+  }
+
+  // Update this Settle with the server's Settle object.
+  // TODO make this method not async so caller doesn't have to await
+  void update() async {
+    _update(await Server.getSettle(settleCode));
+  }
+
+  // Set all of the properties in this Settle to match those in the given Settle.
+  // This method should only be called on Settles that are the same Settle (i.e.
+  // have the same Settle code).
+  void _update(Settle settle) {
+    _settleState = settle.settleState;
+    _users = settle.users;
+    _options = settle.options;
   }
 
   @override
