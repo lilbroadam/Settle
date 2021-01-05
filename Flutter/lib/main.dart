@@ -1,8 +1,11 @@
 import 'package:Settle/NameScreen.dart';
+import 'package:Settle/SettleCards.dart';
 import 'package:flutter/material.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(SettleApp());
@@ -117,6 +120,16 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     }
                   },
                 ),
+              ),
+              Material(
+                child: ListTile(
+                    leading: Icon(
+                      MdiIcons.currencyUsd,
+                      size: 25,
+                    ),
+                    title: Text("Support Us"),
+                    subtitle: Text("Buy us a coffee!"),
+                    onTap: () {}),
               )
             ],
           ),
@@ -142,6 +155,22 @@ class _SettleHomePageState extends State<SettleHomePage> {
     final settleButtonTextStyle = new TextStyle(
       fontSize: 16.4,
       color: Colors.white,
+    );
+
+    final animatedText = SizedBox(
+      width: 250.0,
+      height: 50,
+      child: TypewriterAnimatedTextKit(
+        pause: Duration(milliseconds: 500),
+        speed: Duration(milliseconds: 300),
+        onTap: () {
+          print("Tap Event");
+        },
+        text: ["Be everyting...", "Be Settle"],
+        textStyle: GoogleFonts.lobster(
+            fontSize: 40, textStyle: TextStyle(color: Colors.black)),
+        textAlign: TextAlign.start,
+      ),
     );
 
     final createSettleButton = SizedBox(
@@ -181,8 +210,12 @@ class _SettleHomePageState extends State<SettleHomePage> {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container(
+              height: 10,
+            ),
+            animatedText,
             Expanded(
               child: Stack(
                 alignment: Alignment.center,
@@ -218,7 +251,14 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       icon: Icon(Icons.settings),
                       iconSize: miscButtonSize,
                       tooltip: 'Settle settings',
-                      onPressed: _settingsPressed,
+                      // onPressed: _settingsPressed,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SettleCards()),
+                        );
+                      },
                     ),
                   ),
                 ],

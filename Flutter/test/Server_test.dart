@@ -12,13 +12,12 @@ void main() {
     DefaultOptions option = DefaultOptions.movies;
     bool customAllowed = false;
 
-    var settleCode = 
-      await Server.createSettle(hostName, option, customAllowed);
-    
+    var settleCode = await Server.createSettle(hostName, option, customAllowed);
+
     var guestName = "Adam 2";
     await Server.joinSettle(guestName, settleCode);
 
-    Settle settleObject = await Server.getSettleInfo(settleCode);
+    Settle settleObject = await Server.getSettleInfo();
     List<String> users = settleObject.users;
 
     expect(users.length, 2);

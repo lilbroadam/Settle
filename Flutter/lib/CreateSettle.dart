@@ -107,8 +107,11 @@ class _CreateSettle extends State<CreateSettle> {
             builder: (context, snapshot) {
               if (snapshot.data != null) {
                 _code = snapshot.data;
-                return Text(snapshot.data,
-                    style: GoogleFonts.notoSansKR(fontSize: 19));
+                return Text(
+                  snapshot.data,
+                  style: GoogleFonts.notoSansKR(fontSize: 19),
+                  textAlign: TextAlign.center,
+                );
               } else {
                 return SpinKitDualRing(
                   color: Colors.blue,

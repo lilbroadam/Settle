@@ -4,6 +4,8 @@ import 'CreateSettle.dart';
 import 'JoinSettle.dart';
 
 class NameScreen extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
+
   final bool newSession;
   final context;
   NameScreen(this.newSession, this.context);
@@ -39,7 +41,11 @@ class NameScreen extends StatelessWidget {
             Icons.arrow_forward_outlined,
             color: Colors.white,
           ),
-          onPressed: () => _navigate(myControler.text)),
+          onPressed: () {
+            if (_formKey.currentState.validate()) {
+              _navigate(myControler.text);
+            }
+          }),
     );
 
     return Container(
@@ -59,13 +65,15 @@ class NameScreen extends StatelessWidget {
               color: Colors.white,
               size: 30,
             ),
+            tooltip: "Back",
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
         ),
         backgroundColor: Colors.transparent,
-        body: SafeArea(
+        body: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -75,8 +83,19 @@ class NameScreen extends StatelessWidget {
                       style: GoogleFonts.notoSansKR(fontSize: 25)),
                   Padding(
                     padding: const EdgeInsets.all(16),
-                    child: TextField(
+                    child: TextFormField(
                       controller: myControler,
+                      textAlign: TextAlign.center,
+                      validator: (text) {
+                        myControler.text = text.trim();
+                        text = text.trim();
+                        if (text.isEmpty) {
+                          return "Please enter a valid name";
+                        } else {
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(),
                     ),
                   ),
                   Container(
