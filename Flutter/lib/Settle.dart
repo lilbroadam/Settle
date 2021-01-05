@@ -58,6 +58,13 @@ class Settle {
     return settle;
   }
 
+  // TODO make this method not async so caller doesn't have to await
+  Future<Settle> setState(SettleState state) async {
+    Settle settle = await Server.setState(state, settleCode);
+    _update(settle);
+    return settle;
+  }
+
   // Update this Settle with the server's Settle object.
   // TODO make this method not async so caller doesn't have to await
   void update() async {

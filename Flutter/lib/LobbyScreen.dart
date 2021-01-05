@@ -26,6 +26,21 @@ class _LobbyScreen extends State<LobbyScreen> {
     this.isCustom = settle.customAllowed,
     this.code = settle.settleCode;
 
+  // Call this function when 'Start Settle' is pressed
+  void startSettlePressed() async {
+    await settle.setState(SettleState.settling);
+    print('User started the Settle');
+    
+    // TODO Go to the Settle screen
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     context,
+    //     builder: (context) => SettleScreen();
+    //   )
+    // );
+  }
+
   @override
   Widget build(BuildContext context) {
     List <String> guests = [];
@@ -105,7 +120,7 @@ class _LobbyScreen extends State<LobbyScreen> {
                 customBox,
               Container(height: 75),
               isHost ? 
-                standardButton('Start Settling', startSettle) : 
+                standardButton('Start Settling', startSettlePressed) : 
                 Column(
                   children: [
                     animation(), Container(height: 50), Text('Waiting on Host', style: TextStyle(fontSize: 15), textAlign: TextAlign.center)
@@ -116,10 +131,6 @@ class _LobbyScreen extends State<LobbyScreen> {
         ),
       )
     );
-  }
-
-  void startSettle(){
-    print('it works');
   }
 
   Widget scroller(List<String> l, String name){
