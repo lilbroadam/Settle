@@ -25,11 +25,12 @@ class _CreateSettle extends State<CreateSettle> {
   final String hostName;
   SettleType _settleType;
   bool _customOptionsAllowed = false;
+  Settle settle;
 
   _CreateSettle(this.hostName);
 
-  // Call this function when a default option is pressed.
-  void _defaultOptionPressed(SettleType settleType) {
+  // Call this function when a Settle type is pressed.
+  void _settleTypePressed(SettleType settleType) {
     _settleType = settleType;
 
     if (settleType == SettleType.custom) {
@@ -48,8 +49,7 @@ class _CreateSettle extends State<CreateSettle> {
   // Call this function when the "Create this Settle" button is pressed.
   // This function will ask the server to create a new Settle.
   Future<Settle> _createSettleButtonPressed() async {
-    Settle settle 
-      = await Server.createSettle(hostName, _settleType, _customOptionsAllowed);
+    settle = await Server.createSettle(hostName, _settleType, _customOptionsAllowed);
     
     if (settle == null) {
       // TODO error handling
@@ -63,9 +63,6 @@ class _CreateSettle extends State<CreateSettle> {
   bool _isAnOptionSelected() {
     return (_settleType != null) || _customOptionsAllowed;
   }
-
-  String _code;
-  Settle settle;
 
   Future<void> showPopup() async {
     await animated_dialog_box.showScaleAlertBox(
@@ -97,8 +94,8 @@ class _CreateSettle extends State<CreateSettle> {
           color: Colors.white,
           child: Text('Share or Copy'),
           onPressed: () {
-            Clipboard.setData(ClipboardData(text: _code));
-            Share.share(_code);
+            Clipboard.setData(ClipboardData(text: settle.settleCode));
+            Share.share(settle.settleCode);
           },
         ),
         icon: Icon(
@@ -110,10 +107,8 @@ class _CreateSettle extends State<CreateSettle> {
             future: _createSettleButtonPressed(),
             builder: (context, snapshot) {
               if (snapshot.data != null) {
-                Settle _settle = snapshot.data;
-                _code = _settle.settleCode;
-                settle = _settle;
-                return Text(_code,
+                settle = snapshot.data;
+                return Text(settle.settleCode,
                     style: GoogleFonts.notoSansKR(fontSize: 19));
               } else {
                 return SpinKitDualRing(
@@ -180,7 +175,7 @@ class _CreateSettle extends State<CreateSettle> {
               children: <Widget>[
                 Text('What is your', style: TextStyle(fontSize: 25)),
                 Text('group Settling?', style: TextStyle(fontSize: 25)),
-                RadioButton(_defaultOptionPressed),
+                RadioButton(_settleTypePressed),
                 CheckBox('Allow custom choices', _customOptionsPressed),
                 Container(
                   margin: settleButtonMargin,
@@ -271,12 +266,13 @@ class _RadioButton extends State<RadioButton> {
         ListTile(
           title: const Text('Custom choices only'),
           leading: Radio(
-              value: SettleType.custom,
-              groupValue: _currentOption,
-              onChanged: (SettleType value) {
-                setState(() => _currentOption = value);
-                callback(value);
-              }),
+            value: SettleType.custom,
+            groupValue: _currentOption,
+            onChanged: (SettleType value) {
+              setState(() => _currentOption = value);
+              callback(value);
+            }
+          ),
         ),
       ],
     );
