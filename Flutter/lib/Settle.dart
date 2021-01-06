@@ -67,7 +67,7 @@ class Settle {
 
   // Update this Settle with the server's Settle object.
   // TODO make this method not async so caller doesn't have to await
-  void update() async {
+  Future <void> update() async {
     _update(await Server.getSettle(settleCode));
   }
 
