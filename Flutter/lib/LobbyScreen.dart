@@ -90,7 +90,7 @@ class _LobbyScreen extends State<LobbyScreen> {
           IconButton(
             color: Colors.black,
             icon: Icon(Icons.refresh), 
-            onPressed: () {/*await settle.update();*/setState((){});}
+            onPressed: () async {await settle.update();setState((){});}
         )]
       ),
       body: Center(
