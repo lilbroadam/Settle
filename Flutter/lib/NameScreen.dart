@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'CreateSettle.dart';
 import 'JoinSettle.dart';
+import 'app_localizations.dart';
 
 class NameScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -65,7 +66,7 @@ class NameScreen extends StatelessWidget {
               color: Colors.white,
               size: 30,
             ),
-            tooltip: "Back",
+            tooltip: AppLocalizations.of(context).translate("tipback"),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -79,7 +80,7 @@ class NameScreen extends StatelessWidget {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Text('Enter your name',
+                  Text(AppLocalizations.of(context).translate("getname"),
                       style: GoogleFonts.notoSansKR(fontSize: 25)),
                   Padding(
                     padding: const EdgeInsets.all(16),
@@ -90,7 +91,8 @@ class NameScreen extends StatelessWidget {
                         myControler.text = text.trim();
                         text = text.trim();
                         if (text.isEmpty) {
-                          return "Please enter a valid name";
+                          return AppLocalizations.of(context)
+                              .translate("invalidname");
                         } else {
                           return null;
                         }

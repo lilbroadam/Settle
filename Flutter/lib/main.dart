@@ -6,6 +6,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:url_launcher/url_launcher.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'app_localizations.dart';
 
 void main() {
   runApp(SettleApp());
@@ -16,6 +18,26 @@ class SettleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''), // English, no country code
+        const Locale('es', ''), // Arabic, no country code
+      ],
+      localeResolutionCallback: (locale, suportedLocales) {
+        for (var suportedLocale in suportedLocales) {
+          if (suportedLocale.languageCode == locale.languageCode &&
+              suportedLocale.countryCode == locale.countryCode) {
+            return suportedLocale;
+          }
+        }
+        return suportedLocales.elementAt(0);
+      },
       title: 'Settle',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -87,13 +109,15 @@ class _SettleHomePageState extends State<SettleHomePage> {
               ListTile(
                 leading: Icon(Icons.info_outline),
                 title: Text("Settle"),
-                subtitle: Text("Version 1.0"),
+                subtitle: Text(
+                    AppLocalizations.of(context).translate("version") + " 1.0"),
               ),
               Material(
                 child: ListTile(
                   leading: Icon(MdiIcons.github),
-                  title: Text("View Source Code on Github"),
-                  subtitle: Text("Contribute or open issues"),
+                  title: Text(AppLocalizations.of(context).translate("git")),
+                  subtitle:
+                      Text(AppLocalizations.of(context).translate("gitsub")),
                   onTap: () async {
                     const url = "https://github.com/lilbroadam/Settle";
                     if (await canLaunch(url)) {
@@ -107,8 +131,10 @@ class _SettleHomePageState extends State<SettleHomePage> {
               Material(
                 child: ListTile(
                   leading: Icon(MdiIcons.email),
-                  title: Text("Contact Us"),
-                  subtitle: Text("Report bugs, suggestions, or concerns"),
+                  title:
+                      Text(AppLocalizations.of(context).translate("contact")),
+                  subtitle: Text(
+                      AppLocalizations.of(context).translate("contactsub")),
                   onTap: () async {
                     const emailAdrees = "settleitapplication@gmail.com";
                     const subject = "Client Request";
@@ -127,8 +153,10 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       MdiIcons.currencyUsd,
                       size: 25,
                     ),
-                    title: Text("Support Us"),
-                    subtitle: Text("Buy us a coffee!"),
+                    title:
+                        Text(AppLocalizations.of(context).translate("support")),
+                    subtitle: Text(
+                        AppLocalizations.of(context).translate("supportsub")),
                     onTap: () {}),
               )
             ],
@@ -182,7 +210,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
         ),
         color: Colors.blue,
         onPressed: _createASettlePressed,
-        child: Text('Create a Settle', style: settleButtonTextStyle),
+        child: Text(AppLocalizations.of(context).translate("createsettle"),
+            style: settleButtonTextStyle),
       ),
     );
     final joinSettleButton = SizedBox(
@@ -194,7 +223,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
         ),
         color: Colors.blue,
         onPressed: _joinASettlePressed,
-        child: Text('Join a Settle', style: settleButtonTextStyle),
+        child: Text(AppLocalizations.of(context).translate("joinsettle"),
+            style: settleButtonTextStyle),
       ),
     );
     final settleButtonMargin = EdgeInsets.all(18.0);
@@ -231,7 +261,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       Container(
                         margin: settleButtonMargin,
                         child: joinSettleButton,
-                      )
+                      ),
                     ],
                   ),
                   Align(
@@ -240,7 +270,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     child: IconButton(
                       icon: Icon(Icons.info),
                       iconSize: miscButtonSize,
-                      tooltip: 'Information about Settle',
+                      tooltip:
+                          AppLocalizations.of(context).translate("settleinfo"),
                       onPressed: _informationPressed,
                     ),
                   ),
@@ -250,7 +281,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     child: IconButton(
                       icon: Icon(Icons.settings),
                       iconSize: miscButtonSize,
-                      tooltip: 'Settle settings',
+                      tooltip:
+                          AppLocalizations.of(context).translate("setting"),
                       // onPressed: _settingsPressed,
                       onPressed: () {
                         Navigator.push(

@@ -8,6 +8,7 @@ import 'package:share/share.dart';
 import 'LobbyScreen.dart';
 import 'Server.dart';
 import 'Settle.dart';
+import 'app_localizations.dart';
 
 typedef void SettleTypePressedCallback(SettleType settleType);
 typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
@@ -69,7 +70,8 @@ class _CreateSettle extends State<CreateSettle> {
 
   Future<void> showPopup() async {
     await animated_dialog_box.showScaleAlertBox(
-        title: Center(child: Text("Here is your Settle Code:")),
+        title: Center(
+            child: Text(AppLocalizations.of(context).translate("getcode"))),
         context: context,
         firstButton: MaterialButton(
           shape: RoundedRectangleBorder(
@@ -77,7 +79,7 @@ class _CreateSettle extends State<CreateSettle> {
           ),
           color: Colors.blue,
           child: Text(
-            'Go to Lobby',
+            AppLocalizations.of(context).translate("golobby"),
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
@@ -94,7 +96,7 @@ class _CreateSettle extends State<CreateSettle> {
             borderRadius: BorderRadius.circular(40),
           ),
           color: Colors.white,
-          child: Text('Share or Copy'),
+          child: Text(AppLocalizations.of(context).translate("sharecopy")),
           onPressed: () {
             Clipboard.setData(ClipboardData(text: _code));
             Share.share(_code);
@@ -150,7 +152,8 @@ class _CreateSettle extends State<CreateSettle> {
                 await showPopup();
               },
 
-        child: Text('Create this Settle', style: settleButtonTextStyle),
+        child: Text(AppLocalizations.of(context).translate("createthissettle"),
+            style: settleButtonTextStyle),
       ),
     );
     final settleButtonMargin = EdgeInsets.all(18.0);
@@ -180,10 +183,15 @@ class _CreateSettle extends State<CreateSettle> {
             Column(
               mainAxisSize: MainAxisSize.min, // Size to only needed space
               children: <Widget>[
-                Text('What is your', style: TextStyle(fontSize: 25)),
-                Text('group Settling?', style: TextStyle(fontSize: 25)),
+                Text(
+                  AppLocalizations.of(context).translate("asktype"),
+                  style: TextStyle(fontSize: 25),
+                  textAlign: TextAlign.center,
+                ),
+                // Text('group Settling?', style: TextStyle(fontSize: 25)),
                 RadioButton(_defaultOptionPressed),
-                CheckBox('Allow custom choices', _customOptionsPressed),
+                CheckBox(AppLocalizations.of(context).translate("allowcustom"),
+                    _customOptionsPressed),
                 Container(
                   margin: settleButtonMargin,
                   child: createSettleButton,
@@ -249,7 +257,7 @@ class _RadioButton extends State<RadioButton> {
     return Column(
       children: <Widget>[
         ListTile(
-          title: const Text('Movies'),
+          title: Text(AppLocalizations.of(context).translate("movies")),
           leading: Radio(
             value: SettleType.movies,
             groupValue: _currentOption,
@@ -260,7 +268,7 @@ class _RadioButton extends State<RadioButton> {
           ),
         ),
         ListTile(
-          title: const Text('Restaurants'),
+          title: Text(AppLocalizations.of(context).translate("rest")),
           leading: Radio(
             value: SettleType.restaurants,
             groupValue: _currentOption,
@@ -271,7 +279,7 @@ class _RadioButton extends State<RadioButton> {
           ),
         ),
         ListTile(
-          title: const Text('Custom choices only'),
+          title: Text(AppLocalizations.of(context).translate("customonly")),
           leading: Radio(
               value: SettleType.custom,
               groupValue: _currentOption,
