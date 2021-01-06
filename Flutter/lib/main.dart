@@ -36,6 +36,10 @@ class SettleApp extends StatelessWidget {
             return suportedLocale;
           }
         }
+        // Change to:
+        // index 0 == English
+        // index 1 == Spanish
+        // We'll later add buttons to chnage language from the app
         return suportedLocales.elementAt(0);
       },
       title: 'Settle',
