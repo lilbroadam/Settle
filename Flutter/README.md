@@ -1,23 +1,21 @@
-# Settle
-
 ![](https://img.shields.io/github/issues/lilbroadam/Settle)
 ![](https://img.shields.io/github/issues-pr/lilbroadam/Settle)
-![]()
 
 # Table of contents
 
-- [Settle](#settle)
 - [Table of contents](#table-of-contents)
+- [Settle](#settle)
 - [Authors](#authors)
-- [Contribute](#contribute)
 - [Features](#features)
-- [License](#license)
+- [Contribute](#contribute)
 - [Bugs and Requests](#bugs-and-requests)
+- [License](#license)
 - [Acknowledgment](#acknowledgment)
   - [Contributers](#contributers)
 
-A new Flutter project.
 
+# Settle
+Yo our app is lit :)
 # Authors
 
 - Adam Samuelson
@@ -28,13 +26,13 @@ A new Flutter project.
 
 - Rodrigo Estrella
 
-# Contribute
-
 # Features
 
-# License
+# Contribute
 
 # Bugs and Requests
+
+# License
 
 # Acknowledgment
 
