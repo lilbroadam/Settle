@@ -67,6 +67,34 @@ class _SettleScreenState extends State<SettleScreen> {
 
   _SettleScreenState(this.settle);
 
+  List<Widget> buildCards() {
+    List<Widget> cards = new List();
+  
+    settle.options.forEach((option) {
+      cards.add(
+        new Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            color: Colors.black,
+          ),
+          child: Align(
+            alignment: Alignment.center,
+            child: Text('$option',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontWeight: FontWeight.w700
+              ),
+            ),
+          )
+        ),
+      );
+    });
+
+    return cards;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +104,7 @@ class _SettleScreenState extends State<SettleScreen> {
             SizedBox(height: 140),
             TCard(
               size: Size(360, 480),
-              cards: cards,
+              cards: buildCards(),
               controller: _controller,
               onForward: (index, info) {
                 print(info.direction);
