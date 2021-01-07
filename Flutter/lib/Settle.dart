@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'Server.dart';
 
-enum SettleType { custom, movies, restaurants } // TODO delete DefaultOptions
+enum SettleType { custom, movies, restaurants }
 extension SettleTypeExt on SettleType {
   String get name => describeEnum(this);
 
@@ -9,7 +9,7 @@ extension SettleTypeExt on SettleType {
     if (settleType == 'custom') return SettleType.custom;
     if (settleType == 'movies') return SettleType.movies;
     if (settleType == 'restaurants') return SettleType.restaurants;
-    throw FormatException('Could not match the string to a SettleType enum');
+    throw FormatException('Could not match \'$settleType\' to a SettleType enum');
   }
 }
 enum SettleState { lobby, settling, complete }
@@ -20,7 +20,7 @@ extension SettleStateExt on SettleState {
     if (settleState == 'lobby') return SettleState.lobby;
     if (settleState == 'settling') return SettleState.settling;
     if (settleState == 'complete') return SettleState.complete;
-    throw FormatException('Could not match the string to a SettleState enum');
+    throw FormatException('Could not match \'$settleState\' to a SettleState enum');
   }
 }
 
@@ -32,7 +32,7 @@ class Settle {
   SettleState _settleState;
   List<String> _users = new List<String>();
   List<String> _options = new List<String>();
-  String _result; // TODO make null when result hasn't been determined
+  String _result;
 
   Settle.fromJson(Map<String, dynamic> json) :
     this.settleCode = json['settleCode'],
@@ -49,6 +49,7 @@ class Settle {
 
   SettleState get settleState => _settleState;
   List<String> get users => _users;
+  String get hostUser => _users.first;
   List<String> get options => _options;
   String get result => _result;
 
@@ -85,10 +86,10 @@ class Settle {
   // This method should only be called on Settles that are the same Settle (i.e.
   // have the same Settle code).
   void _update(Settle settle) {
-    _settleState = settle.settleState;
-    _users = settle.users;
-    _options = settle.options;
-    _result = settle.result;
+    this._settleState = settle.settleState;
+    this._users = settle.users;
+    this._options = settle.options;
+    this._result = settle.result;
   }
 
   @override

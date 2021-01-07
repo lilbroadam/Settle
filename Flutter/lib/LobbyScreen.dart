@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Settle/Animation.dart';
+import 'Animation.dart';
 import 'Settle.dart';
 
 class LobbyScreen extends StatefulWidget {

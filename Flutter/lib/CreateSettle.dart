@@ -78,11 +78,11 @@ class _CreateSettle extends State<CreateSettle> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
-            // Go to the lobby
-            Navigator.push(
+            Navigator.push( // Go to the lobby
               context,
               MaterialPageRoute(
-                  builder: (context) => LobbyScreen(settle, hostName, true)),
+                builder: (context) => LobbyScreen(settle, hostName, true)
+              ),
             );
           },
         ),
