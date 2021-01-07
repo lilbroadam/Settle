@@ -1,6 +1,3 @@
-import 'NameScreen.dart';
-import 'SettleCards.dart';
-import 'app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'app_localizations.dart';
+import 'NameScreen.dart';
 
 void main() {
   LicenseRegistry.addLicense(() async* {
@@ -68,7 +67,7 @@ class SettleHomePage extends StatefulWidget {
 }
 
 class _SettleHomePageState extends State<SettleHomePage> {
-  
+
   // Called when 'Create a Settle' button is pressed
   void _createASettlePressed() {
     Navigator.push(
@@ -284,14 +283,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       iconSize: miscButtonSize,
                       tooltip:
                           AppLocalizations.of(context).translate("setting"),
-                      // onPressed: _settingsPressed,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SettleCards()),
-                        );
-                      },
+                      onPressed: _settingsPressed,
                     ),
                   ),
                 ],

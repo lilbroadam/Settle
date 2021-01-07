@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcard/tcard.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
+import 'Settle.dart';
 
 List<Color> colors = [
   Colors.blue,
@@ -50,15 +51,21 @@ List<Widget> cards = List.generate(
   },
 );
 
-class SettleCards extends StatefulWidget {
+class SettleScreen extends StatefulWidget {
+  final Settle settle;
+
+  const SettleScreen(this.settle);
+  
   @override
-  _SettleCardsState createState() => _SettleCardsState();
+  _SettleScreenState createState() => _SettleScreenState(settle);
 }
 
-class _SettleCardsState extends State<SettleCards> {
+class _SettleScreenState extends State<SettleScreen> {
+  
+  Settle settle;
   TCardController _controller = TCardController();
 
-  int _index = 0;
+  _SettleScreenState(this.settle);
 
   @override
   Widget build(BuildContext context) {
@@ -72,12 +79,10 @@ class _SettleCardsState extends State<SettleCards> {
               cards: cards,
               controller: _controller,
               onForward: (index, info) {
-                _index = index;
                 print(info.direction);
                 setState(() {});
               },
               onBack: (index) {
-                _index = index;
                 setState(() {});
               },
               onEnd: () {
@@ -119,10 +124,6 @@ class _SettleCardsState extends State<SettleCards> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   child: Text(_index.toString()),
-      // ),
     );
   }
 

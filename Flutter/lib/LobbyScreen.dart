@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Animation.dart';
+import 'SettleScreen.dart';
 import 'Settle.dart';
 import 'app_localizations.dart';
 
@@ -34,14 +35,13 @@ class _LobbyScreen extends State<LobbyScreen> {
     await settle.setState(SettleState.settling);
     print('User started the Settle');
     
-    // TODO Go to the Settle screen
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     context,
-    //     builder: (context) => SettleScreen();
-    //   )
-    // );
+    // Go to the Settle screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SettleScreen(settle)
+      )
+    );
   }
 
   @override
