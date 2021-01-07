@@ -31,24 +31,39 @@ class NameScreen extends StatelessWidget {
       width: width,
       height: height,
       child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0),
-          side: BorderSide(color: Colors.white)),
-        color: Colors.blue,
-        child: Icon(
-          Icons.arrow_forward_outlined,
-          color: Colors.white,),
-        onPressed: () => _navigate(myControler.text)),
-    );    
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0),
+              side: BorderSide(color: Colors.white)),
+          color: Colors.blue,
+          child: Icon(
+            Icons.arrow_forward_outlined,
+            color: Colors.white,
+          ),
+          onPressed: () => _navigate(myControler.text)),
+    );
 
     return Container(
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/background.png'),
-          fit: BoxFit.cover
-        )
-      ),
+          image: DecorationImage(
+              image: AssetImage('assets/background.png'), fit: BoxFit.cover)),
       child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: true,
+          elevation: 0,
+          leading: IconButton(
+            padding: EdgeInsets.only(left: 20, top: 15),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
         backgroundColor: Colors.transparent,
         body: SafeArea(
           child: Column(
@@ -56,9 +71,8 @@ class NameScreen extends StatelessWidget {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Text('Enter your name', 
-                    style: GoogleFonts.notoSansKR(fontSize: 25)
-                  ),
+                  Text('Enter your name',
+                      style: GoogleFonts.notoSansKR(fontSize: 25)),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: TextField(
