@@ -1,16 +1,41 @@
 # Settle
 
+![](https://img.shields.io/github/issues/lilbroadam/Settle)
+![](https://img.shields.io/github/issues-pr/lilbroadam/Settle)
+![]()
+
+# Table of contents
+
+- [Settle](#settle)
+- [Table of contents](#table-of-contents)
+- [Authors](#authors)
+- [Contribute](#contribute)
+- [Features](#features)
+- [License](#license)
+- [Bugs and Requests](#bugs-and-requests)
+- [Acknowledgment](#acknowledgment)
+  - [Contributers](#contributers)
+
 A new Flutter project.
 
-## Getting Started
+# Authors
 
-This project is a starting point for a Flutter application.
+- Adam Samuelson
 
-A few resources to get you started if this is your first Flutter project:
+- Alejandor Balderas
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- Ali Al-Adhami
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Rodrigo Estrella
+
+# Contribute
+
+# Features
+
+# License
+
+# Bugs and Requests
+
+# Acknowledgment
+
+## Contributers
