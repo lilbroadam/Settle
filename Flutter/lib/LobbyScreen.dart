@@ -20,16 +20,31 @@ class _LobbyScreen extends State<LobbyScreen> {
   final String code;
   final Settle settle;
   final String userName;
+  var myControler = TextEditingController();
+  bool _validate = false;
 
   _LobbyScreen(this.settle, this.userName, this.isHost) :
     this.hostName = settle.users.first,
     this.isCustom = settle.customAllowed,
     this.code = settle.settleCode;
 
+  // Call this function when 'Start Settle' is pressed
+  void startSettlePressed() async {
+    await settle.setState(SettleState.settling);
+    print('User started the Settle');
+    
+    // TODO Go to the Settle screen
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     context,
+    //     builder: (context) => SettleScreen();
+    //   )
+    // );
+  }
+
   @override
   Widget build(BuildContext context) {
-    List <String> guests = [];
-
     Widget customBox = Column(
       children: [
         Container(height: 30),
@@ -37,42 +52,46 @@ class _LobbyScreen extends State<LobbyScreen> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextField(
-          controller: TextEditingController(),
-        ),
-      )]
+            controller: myControler,
+            decoration: InputDecoration(
+              errorText: _validate ? 'Value Can\'t Be Empty' : null,
+            ),
+          ),
+        ), 
+        RaisedButton(
+          shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          side: BorderSide(color: Colors.white)),
+          color: Colors.blue,
+          child: Icon(
+            Icons.arrow_forward_outlined,
+            color: Colors.white,
+          ),
+          onPressed: () async {
+            if (myControler.text.isEmpty){
+              _validate = true;
+            }else {
+              await settle.addOption(myControler.text);
+              myControler = TextEditingController();
+              _validate = false;
+            }
+            setState((){});
+          },
+        )]
     );
-
-    guests.add('Alejandro');
-    guests.add('Rodrigo');
-    guests.add('Adam');
-    guests.add('Ali');
-    guests.add('Alejandro');
-    guests.add('Rodrigo');
-    guests.add('Adam');
-    guests.add('Ali');
-    guests.add('Alejandro');
-    guests.add('Rodrigo');
-    guests.add('Adam');
-    guests.add('Ali');
-    guests.add('Alejandro');
-    guests.add('Rodrigo');
-    guests.add('Adam');
-    guests.add('Ali');
-    guests.add('Alejandro');
-    guests.add('Rodrigo');
-    guests.add('Adam');
-    guests.add('Ali');
-    guests.add('Alejandro');
-    guests.add('Rodrigo');
-    guests.add('Adam');
-    guests.add('Ali');
 
     return Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.transparent,
         centerTitle: true,
         elevation: 0.0,
-        title: Text('Lobby Code: $code', style: TextStyle(color: Colors.black))
+        title: Text('Lobby Code: $code', style: TextStyle(color: Colors.black)),
+        actions: [
+          IconButton(
+            color: Colors.black,
+            icon: Icon(Icons.refresh), 
+            onPressed: () async {await settle.update();setState((){});}
+        )]
       ),
       body: Center(
         child: SafeArea(
@@ -89,13 +108,13 @@ class _LobbyScreen extends State<LobbyScreen> {
                     Expanded(
                       child: Container(
                         margin: const EdgeInsets.all(10.0),
-                        child: scroller(guests, "Guests")
+                        child: scroller(settle.users, "Guests")
                       ),
                     ),
                     Expanded(
                       child: Container(
                         margin: const EdgeInsets.all(10.0),
-                        child: scroller(guests, "Options")
+                        child: scroller(settle.options, "Options")
                       ),
                     ),
                   ],
@@ -105,7 +124,7 @@ class _LobbyScreen extends State<LobbyScreen> {
                 customBox,
               Container(height: 75),
               isHost ? 
-                standardButton('Start Settling', startSettle) : 
+                standardButton('Start Settling', startSettlePressed) :
                 Column(
                   children: [
                     animation(), Container(height: 50), Text('Waiting on Host', style: TextStyle(fontSize: 15), textAlign: TextAlign.center)
@@ -116,10 +135,6 @@ class _LobbyScreen extends State<LobbyScreen> {
         ),
       )
     );
-  }
-
-  void startSettle(){
-    print('it works');
   }
 
   Widget scroller(List<String> l, String name){

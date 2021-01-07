@@ -54,4 +54,16 @@ public class SettleSessionTest {
         Assert.assertEquals(settle.getOptions().get(1), option2);
     }
 
+    @Test
+    public void testSetSettleState() {
+        SettleSession settle = new SettleSession(settleCode, hostUser, settleType, customAllowed);
+        Assert.assertEquals(settle.getSettleState(), SettleSession.SettleState.LOBBY);
+
+        settle.setSettleState(SettleSession.SettleState.SETTLING);
+        Assert.assertEquals(settle.getSettleState(), SettleSession.SettleState.SETTLING);
+
+        settle.setSettleState(SettleSession.SettleState.COMPLETE);
+        Assert.assertEquals(settle.getSettleState(), SettleSession.SettleState.COMPLETE);
+    }
+
 }
