@@ -32,6 +32,7 @@ class Settle {
   SettleState _settleState;
   List<String> _users = new List<String>();
   List<String> _options = new List<String>();
+  String _result; // TODO make null when result hasn't been determined
 
   Settle.fromJson(Map<String, dynamic> json) :
     this.settleCode = json['settleCode'],
@@ -39,7 +40,8 @@ class Settle {
     this.customAllowed = json['customAllowed'],
     this._settleState = SettleStateExt.toSettleState(json['settleState']),
     this._users = json['users'].cast<String>(),
-    this._options = json['options'].cast<String>();
+    this._options = json['options'].cast<String>(),
+    this._result = json['result'].isEmpty ? null : json['result'];
 
   static Future<Settle> fromCode(String code) {
     return Server.getSettle(code);
@@ -48,6 +50,7 @@ class Settle {
   SettleState get settleState => _settleState;
   List<String> get users => _users;
   List<String> get options => _options;
+  String get result => _result;
 
   // TODO make option it's own object
   // TODO make this method not async so caller doesn't have to await
@@ -65,6 +68,13 @@ class Settle {
     return settle;
   }
 
+  // TODO make this method not async so caller doesn't have to await
+  Future<Settle> submitVote(String option) async {
+    Settle settle = await Server.submitVote(option, settleCode);
+    _update(settle);
+    return settle;
+  }
+
   // Update this Settle with the server's Settle object.
   // TODO make this method not async so caller doesn't have to await
   Future <void> update() async {
@@ -78,14 +88,16 @@ class Settle {
     _settleState = settle.settleState;
     _users = settle.users;
     _options = settle.options;
+    _result = settle.result;
   }
 
   @override
   String toString() {
     return '['
-      + 'settleCode:\'$settleCode\', settleType:${settleType.name}, '
+      + 'settleCode:$settleCode, settleType:${settleType.name}, '
       + 'customAllowed:$customAllowed, settleState:${settleState.name}, '
-      + 'users:${users.toString()}, options:${options.toString()}'
+      + 'users:${users.toString()}, options:${options.toString()}, '
+      + 'result:${_result ?? 'null'}'
       + ']';
   }
 }

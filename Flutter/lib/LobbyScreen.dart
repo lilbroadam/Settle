@@ -70,7 +70,7 @@ class _LobbyScreen extends State<LobbyScreen> {
           onPressed: () async {
             if (myControler.text.isEmpty){
               _validate = true;
-            }else {
+            } else {
               await settle.addOption(myControler.text);
               myControler = TextEditingController();
               _validate = false;
