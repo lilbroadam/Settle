@@ -14,6 +14,8 @@ class Server {
   static const server_join_path = 'joinsettle';
   static const server_info_path = 'info';
   static const server_options_path = 'options';
+  static const server_state_path = 'state';
+  static const server_voting_path = 'voting';
   static const http_default_header = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
@@ -120,7 +122,53 @@ class Server {
     Settle responseSettle;
     Map<String, dynamic> responseJson = jsonDecode(response.body);
     if (response.statusCode == HttpStatus.ok) {
-      responseSettle = Settle.fromJson(jsonDecode(response.body));
+      responseSettle = Settle.fromJson(responseJson);
+    } else {
+      // TODO error handling
+      print('ERROR: ${responseJson['error']}');
+    }
+
+    return responseSettle;
+  }
+
+  static Future<Settle> setState(SettleState state, [String code]) async {
+    code = code ?? settleCode;
+
+    final http.Response response = await http.put(
+      await _getUri(server_state_path, code),
+      headers: http_default_header,
+      body: jsonEncode(<String, String>{
+        'setState': state.name,
+      })
+    );
+
+    Settle responseSettle;
+    Map<String, dynamic> responseJson = jsonDecode(response.body);
+    if (response.statusCode == HttpStatus.ok) {
+      responseSettle = Settle.fromJson(responseJson);
+    } else {
+      // TODO error handling
+      print('ERROR: ${responseJson['error']}');
+    }
+
+    return responseSettle;
+  }
+
+  static Future<Settle> submitVote(String option, [String code]) async {
+    code = code ?? settleCode;
+
+    final http.Response response = await http.post(
+      await _getUri(server_voting_path, code),
+      headers: http_default_header,
+      body: jsonEncode(<String, String>{
+        'voteOption': option
+      })
+    );
+
+    Settle responseSettle;
+    Map<String, dynamic> responseJson = jsonDecode(response.body);
+    if (response.statusCode == HttpStatus.ok) {
+      responseSettle = Settle.fromJson(responseJson);
     } else {
       // TODO error handling
       print('ERROR: ${responseJson['error']}');
