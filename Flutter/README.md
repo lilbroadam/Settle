@@ -32,13 +32,14 @@ Yo, our app is lit ;)
 # Features
 
 - A modern and simplistic design
+- Light and dark themes
 - Join and play with your friends and family members
 - Support for English and Spanish (more coming soon)
 
 # Contribute
 
 > TODO: add instructions on how others can contribute to this project
-> 
+
 # Bugs and Requests
 
 If you encounter a bug or have a suggestion or idea to implement, then please open a [GitHub issue](https://github.com/lilbroadam/Settle/issues), and our team will give its best to accommodate your requests.
@@ -47,6 +48,11 @@ If you encounter a bug or have a suggestion or idea to implement, then please op
 For any questions, concerns, or inquires that are not bugs or suggestions, please email us at settleitapplication@gmail.com.
 
 # Licenses
+Google Fonts
+> Copyright (c) 2004 Google.
+> Licensed under the [Apache](http://www.apache.org/licenses/). 
+> (see the [License](https://github.com/material-foundation/google-fonts-flutter/blob/master/LICENSE) file for the whole license text)
+
 Groven Widgets:
 > Copyright (c) 2010-2018 Google.
 > Licensed under the [MIT](https://opensource.org/licenses/MIT). 
