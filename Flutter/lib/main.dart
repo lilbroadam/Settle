@@ -1,3 +1,5 @@
+import 'package:provider/provider.dart';
+import 'DarkThemeProvider.dart';
 import 'NameScreen.dart';
 import 'SettleCards.dart';
 import 'app_localizations.dart';
@@ -19,56 +21,69 @@ void main() {
   runApp(SettleApp());
 }
 
-class SettleApp extends StatelessWidget {
+class SettleApp extends StatefulWidget {
+  _SettleAppState createState() => _SettleAppState();
+}
+
+class _SettleAppState extends State<SettleApp> {
+  DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
+  void initState() {
+    super.initState();
+    getCurrentAppTheme();
+  }
+
+  void getCurrentAppTheme() async {
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.darkThemePreference.getTheme();
+  }
+
   // This widget is the root of the app.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: [
-        // ... app-specific localization delegate[s] here
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en', ''), // English, no country code
-        const Locale('es', ''), // Arabic, no country code
-      ],
-      localeResolutionCallback: (locale, suportedLocales) {
-        for (var suportedLocale in suportedLocales) {
-          if (suportedLocale.languageCode == locale.languageCode &&
-              suportedLocale.countryCode == locale.countryCode) {
-            return suportedLocale;
-          }
-        }
-        // Change to:
-        // index 0 == English
-        // index 1 == Spanish
-        // We'll later add buttons to chnage language from the app
-        return suportedLocales.elementAt(0);
+    return ChangeNotifierProvider(
+      create: (_) {
+        return themeChangeProvider;
       },
-      title: 'Settle',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+      child: Consumer<DarkThemeProvider>(
+        builder: (BuildContext context, value, Widget child) {
+          return MaterialApp(
+            localizationsDelegates: [
+              // ... app-specific localization delegate[s] here
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              const Locale('en', ''), // English, no country code
+              const Locale('es', ''), // Arabic, no country code
+            ],
+            localeResolutionCallback: (locale, suportedLocales) {
+              for (var suportedLocale in suportedLocales) {
+                if (suportedLocale.languageCode == locale.languageCode &&
+                    suportedLocale.countryCode == locale.countryCode) {
+                  return suportedLocale;
+                }
+              }
+              // Change to:
+              // index 0 == English
+              // index 1 == Spanish
+              // We'll later add buttons to chnage language from the app
+              return suportedLocales.elementAt(0);
+            },
+            title: 'Settle',
+            theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+            home: SettleHomePage(title: 'Settle'),
+          );
+        },
       ),
-      home: SettleHomePage(title: 'Settle'),
     );
   }
 }
 
 class SettleHomePage extends StatefulWidget {
   SettleHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -78,6 +93,20 @@ class SettleHomePage extends StatefulWidget {
 }
 
 class _SettleHomePageState extends State<SettleHomePage> {
+  bool themeSwitch = false;
+
+  DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
+  void initState() {
+    super.initState();
+    getCurrentAppTheme();
+  }
+
+  void getCurrentAppTheme() async {
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.darkThemePreference.getTheme();
+  }
+
   // Called when 'Create a Settle' button is pressed
   void _createASettlePressed() {
     Navigator.push(
@@ -181,36 +210,14 @@ class _SettleHomePageState extends State<SettleHomePage> {
     // TODO
   }
 
-  @override
-  // This method is rerun every time setState is called.
-  //
-  // The Flutter framework has been optimized to make rerunning build methods
-  // fast, so that you can just rebuild anything that needs updating rather
-  // than having to individually change instances of widgets.
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     final settleButtonWidth = 150.0;
     final settleButtonHeight = 45.0;
     final settleButtonTextStyle = new TextStyle(
       fontSize: 16.4,
       color: Colors.white,
     );
-
-    final animatedText = SizedBox(
-      width: 250.0,
-      height: 50,
-      child: TypewriterAnimatedTextKit(
-        pause: Duration(milliseconds: 500),
-        speed: Duration(milliseconds: 300),
-        onTap: () {
-          print("Tap Event");
-        },
-        text: ["Be everyting...", "Be Settle"],
-        textStyle: GoogleFonts.lobster(
-            fontSize: 40, textStyle: TextStyle(color: Colors.lightBlue)),
-        textAlign: TextAlign.start,
-      ),
-    );
-
     final createSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
@@ -240,26 +247,40 @@ class _SettleHomePageState extends State<SettleHomePage> {
     final settleButtonMargin = EdgeInsets.all(18.0);
     final miscButtonSize = 30.0;
 
-    /**
-     * The home screen is made of an expanded stack that takes up the entire
-     * screen and draws widgets in the center of the screen by default. The
-     * Settle buttons are drawn in a column in the center of the stack/screen,
-     * the info button is drawn in the bottom left of the stack/screen, and the
-     * settings button is drawn in the bottom right of the stack/screen.
-     */
     return Scaffold(
       body: SafeArea(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-              height: 10,
-            ),
-            animatedText,
+            Container(),
             Expanded(
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      icon: !themeSwitch
+                          ? Icon(
+                              Icons.brightness_3,
+                              color: !themeSwitch
+                                  ? Colors.blueAccent
+                                  : Colors.grey[850],
+                            )
+                          : Icon(
+                              Icons.wb_sunny,
+                              color: !themeSwitch
+                                  ? Colors.blueAccent
+                                  : Colors.grey[850],
+                            ),
+                      color: Colors.black,
+                      onPressed: () {
+                        themeChange.darkTheme = themeSwitch;
+                        setState(() {
+                          themeSwitch = !themeSwitch;
+                        });
+                      },
+                    ),
+                  ),
                   Column(
                     // Settle buttons in the center
                     mainAxisSize: MainAxisSize.min, // Size to only needed space
@@ -308,6 +329,32 @@ class _SettleHomePageState extends State<SettleHomePage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Styles {
+  static ThemeData themeData(bool isDarkTheme, BuildContext context) {
+    return ThemeData(
+      primarySwatch: Colors.red,
+      primaryColor: isDarkTheme ? Color(0xff444444) : Colors.white,
+      backgroundColor: isDarkTheme ? Color(0xff444444) : Color(0xffF1F5FB),
+      indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
+      buttonColor: isDarkTheme ? Color(0xff3B3B3B) : Color(0xffF1F5FB),
+      hintColor: isDarkTheme ? Color(0xff280C0B) : Color(0xffEECED3),
+      highlightColor: isDarkTheme ? Color(0xff372901) : Color(0xffFCE192),
+      hoverColor: isDarkTheme ? Color(0xff3A3A3B) : Color(0xff4285F4),
+      focusColor: isDarkTheme ? Color(0xff0B2512) : Color(0xffA8DAB5),
+      disabledColor: Colors.grey,
+      textSelectionColor: isDarkTheme ? Colors.white : Colors.black,
+      cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
+      canvasColor: isDarkTheme ? Color(0xff1E1E1E) : Colors.grey[50],
+      brightness: isDarkTheme ? Brightness.dark : Brightness.light,
+      buttonTheme: Theme.of(context).buttonTheme.copyWith(
+          colorScheme: isDarkTheme ? ColorScheme.dark() : ColorScheme.light()),
+      appBarTheme: AppBarTheme(
+        elevation: 0.0,
       ),
     );
   }
