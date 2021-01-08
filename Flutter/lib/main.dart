@@ -93,7 +93,7 @@ class SettleHomePage extends StatefulWidget {
 }
 
 class _SettleHomePageState extends State<SettleHomePage> {
-  bool themeSwitch = false;
+  // bool themeSwitch = false;
 
   DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
@@ -265,24 +265,24 @@ class _SettleHomePageState extends State<SettleHomePage> {
                   Align(
                     alignment: Alignment.topRight,
                     child: IconButton(
-                      icon: !themeSwitch
+                      icon: themeChange.darkTheme
                           ? Icon(
                               Icons.brightness_3,
-                              color: !themeSwitch
+                              color: themeChange.darkTheme
                                   ? Colors.blueAccent
                                   : Colors.grey[850],
                             )
                           : Icon(
                               Icons.wb_sunny,
-                              color: !themeSwitch
+                              color: themeChange.darkTheme
                                   ? Colors.blueAccent
                                   : Colors.grey[850],
                             ),
                       color: Colors.black,
                       onPressed: () {
                         setState(() {
-                          themeChange.darkTheme = themeSwitch;
-                          themeSwitch = !themeSwitch;
+                          themeChange.darkTheme = !themeChange.darkTheme;
+                          // themeSwitch = !themeSwitch;
                         });
                       },
                     ),
