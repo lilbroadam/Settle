@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'app_localizations.dart';
 
 class AppTheme {
+  static final double boxWidth = 55;
+  static final double boxHeight = 50;
   static final settleButtonWidth = 150.0;
   static final settleButtonHeight = 45.0;
   static final settleButtonTextStyle = new TextStyle(
@@ -13,8 +15,8 @@ class AppTheme {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     return ThemeData(
       primarySwatch: Colors.blue,
-      primaryColor: isDarkTheme ? Color(0xff444444) : Colors.white,
-      backgroundColor: isDarkTheme ? Color(0xff444444) : Color(0xffF1F5FB),
+      primaryColor: isDarkTheme ? Colors.black : Colors.white,
+      backgroundColor: isDarkTheme ? Colors.black : Color(0xffF1F5FB),
       indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
       buttonColor: isDarkTheme ? Color(0xff3B3B3B) : Color(0xffF1F5FB),
       hintColor: isDarkTheme ? Color(0xff280C0B) : Color(0xffEECED3),
@@ -39,6 +41,7 @@ class AppTheme {
       width: settleButtonWidth,
       height: settleButtonHeight,
       child: RaisedButton(
+        elevation: 5,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
         ),
@@ -50,16 +53,19 @@ class AppTheme {
     );
   }
 
-  static RaisedButton nextButton(BuildContext context, Function fun) {
-    return RaisedButton(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
-        color: Colors.blue,
-        elevation: 5,
-        child: Icon(
-          Icons.arrow_forward_outlined,
-          color: Colors.white,
-        ),
-        onPressed: fun);
+  static SizedBox nextButton(BuildContext context, Function fun) {
+    return SizedBox(
+        width: boxWidth,
+        height: boxHeight,
+        child: RaisedButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0)),
+            color: Colors.blue,
+            elevation: 5,
+            child: Icon(
+              Icons.arrow_forward_outlined,
+              color: Colors.white,
+            ),
+            onPressed: fun));
   }
 }

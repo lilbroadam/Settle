@@ -1,3 +1,4 @@
+import 'package:Settle/AppTheme.dart';
 import 'package:flutter/material.dart';
 import 'app_localizations.dart';
 import 'Animation.dart';
@@ -47,7 +48,7 @@ class _LobbyScreen extends State<LobbyScreen> {
       Text('Enter your custom options',
           style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
       Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(18.0),
         child: TextField(
           controller: myControler,
           decoration: InputDecoration(
@@ -55,26 +56,16 @@ class _LobbyScreen extends State<LobbyScreen> {
           ),
         ),
       ),
-      RaisedButton(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25.0),
-            side: BorderSide(color: Colors.white)),
-        color: Colors.blue,
-        child: Icon(
-          Icons.arrow_forward_outlined,
-          color: Colors.white,
-        ),
-        onPressed: () async {
-          if (myControler.text.isEmpty) {
-            _validate = true;
-          } else {
-            await settle.addOption(myControler.text);
-            myControler = TextEditingController();
-            _validate = false;
-          }
-          setState(() {});
-        },
-      )
+      AppTheme.button(context, "addoption", () async {
+        if (myControler.text.isEmpty) {
+          _validate = true;
+        } else {
+          await settle.addOption(myControler.text);
+          myControler = TextEditingController();
+          _validate = false;
+        }
+        setState(() {});
+      }),
     ]);
 
     return Scaffold(
@@ -163,25 +154,10 @@ class _LobbyScreen extends State<LobbyScreen> {
   }
 
   Widget startButton() {
-    return SizedBox(
-        width: 150,
-        height: 45,
-        child: RaisedButton(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-          color: Colors.blue,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SettleScreen(settle)),
-            );
-          },
-          child: Text(
-            AppLocalizations.of(context).translate("startsettle"),
-            style: TextStyle(fontSize: 16.4, color: Colors.white),
-          ),
-        ));
+    return AppTheme.button(context, "startsettle", () {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => SettleScreen(settle)));
+    });
   }
 
   void startSettle() {
