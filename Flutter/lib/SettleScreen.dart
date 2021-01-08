@@ -16,18 +16,13 @@ class SettleScreen extends StatefulWidget {
 class _SettleScreenState extends State<SettleScreen> {
   
   Settle settle;
+  List<SettleCard> settleCards = List();
   TCardController _controller = TCardController();
 
-  _SettleScreenState(this.settle);
-
-  List<Widget> buildCards() {
-    List<Widget> cards = new List();
-  
+  _SettleScreenState(this.settle) {
     settle.options.forEach((option) {
-      cards.add(SettleCard(option));
+      settleCards.add(SettleCard(option));
     });
-
-    return cards;
   }
 
   @override
@@ -39,10 +34,11 @@ class _SettleScreenState extends State<SettleScreen> {
             SizedBox(height: 140),
             TCard(
               size: Size(360, 480),
-              cards: buildCards(),
+              cards: settleCards,
               controller: _controller,
               onForward: (index, info) {
                 print(info.direction);
+                settle.submitVote(settleCards[info.cardIndex].title);
                 setState(() {});
               },
               onBack: (index) {
@@ -75,8 +71,9 @@ class _SettleScreenState extends State<SettleScreen> {
                 ),
                 FloatingActionButton(
                   heroTag: Text("yep"),
-                  // needs to register user liked this
                   onPressed: () {
+                    int index = _controller.index;
+                    settle.submitVote(settleCards[index].title);
                     _controller.forward();
                   },
                   backgroundColor: Colors.white,
