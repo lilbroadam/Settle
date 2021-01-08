@@ -44,7 +44,7 @@ class _SettleScreenState extends State<SettleScreen> {
               onBack: (index) {
                 setState(() {});
               },
-              onEnd: () {
+              onEnd: () { // TODO: go to result screen
                 print('end');
               },
             ),
