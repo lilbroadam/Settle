@@ -68,7 +68,6 @@ flutter:
     - assets/serverInfo.json
     - assets/background.png
     - assets/background-dark.png
-    - assets/portrait.jpeg
     - assets/adamoo.jpg
     - lang/en.json
     - lang/es.json

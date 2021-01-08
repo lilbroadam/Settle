@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:Settle/Animation.dart';
 import 'Settle.dart';
+import 'SettleCards.dart';
 import 'app_localizations.dart';
 
 class LobbyScreen extends StatefulWidget {
@@ -69,13 +70,34 @@ class _LobbyScreen extends State<LobbyScreen> {
     guests.add('Ali');
 
     return Scaffold(
-        appBar: new AppBar(
-            backgroundColor: Colors.transparent,
-            centerTitle: true,
-            elevation: 0.0,
-            title: Text(
-                AppLocalizations.of(context).translate("lobbycode") + " $code",
-                style: TextStyle(color: Colors.black))),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: true,
+          elevation: 0,
+          centerTitle: true,
+          title: Text(
+            AppLocalizations.of(context).translate("lobbycode") + " $code",
+            style: TextStyle(fontSize: 18),
+          ),
+          leading: IconButton(
+            padding: EdgeInsets.only(left: 15),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.blue,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        // appBar: new AppBar(
+        //     backgroundColor: Colors.transparent,
+        //     centerTitle: true,
+        //     elevation: 0.0,
+        //     title: Text(
+        //       AppLocalizations.of(context).translate("lobbycode") + " $code",
+        //     )),
         body: Center(
           child: SafeArea(
               child: Column(
@@ -87,6 +109,9 @@ class _LobbyScreen extends State<LobbyScreen> {
                 '$userName',
                 style: TextStyle(fontSize: 30),
                 textAlign: TextAlign.center,
+              ),
+              Padding(
+                padding: EdgeInsets.all(20),
               ),
               Container(
                   height: 200,
@@ -114,9 +139,7 @@ class _LobbyScreen extends State<LobbyScreen> {
               if (settle.customAllowed) customBox,
               Container(height: 75),
               isHost
-                  ? standardButton(
-                      AppLocalizations.of(context).translate("startsettle"),
-                      startSettle)
+                  ? startButton()
                   : Column(children: [
                       animation(),
                       Container(height: 50),
@@ -126,6 +149,28 @@ class _LobbyScreen extends State<LobbyScreen> {
                     ])
             ],
           )),
+        ));
+  }
+
+  Widget startButton() {
+    return SizedBox(
+        width: 150,
+        height: 45,
+        child: RaisedButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+          color: Colors.blue,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettleCards()),
+            );
+          },
+          child: Text(
+            AppLocalizations.of(context).translate("startsettle"),
+            style: TextStyle(fontSize: 16.4, color: Colors.white),
+          ),
         ));
   }
 

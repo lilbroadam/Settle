@@ -318,13 +318,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       tooltip:
                           AppLocalizations.of(context).translate("setting"),
                       // onPressed: _settingsPressed,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SettleCards()),
-                        );
-                      },
+                      onPressed: () {},
                     ),
                   ),
                 ],
