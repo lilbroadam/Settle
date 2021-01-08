@@ -26,99 +26,95 @@ class _LobbyScreen extends State<LobbyScreen> {
   bool _validate = false;
 
   _LobbyScreen(this.settle, this.userName, this.isHost)
-    : this.hostName = settle.users.first,
-      this.isCustom = settle.customAllowed,
-      this.code = settle.settleCode;
+      : this.hostName = settle.users.first,
+        this.isCustom = settle.customAllowed,
+        this.code = settle.settleCode;
 
   // Call this function when 'Start Settle' is pressed
   void startSettlePressed() async {
     await settle.setState(SettleState.settling);
     print('User started the Settle');
-    
+
     // Go to the Settle screen
     Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SettleScreen(settle)
-      )
-    );
+        context, MaterialPageRoute(builder: (context) => SettleScreen(settle)));
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget customBox = Column(
-      children: [
-        Container(height: 30),
-        Text('Enter your custom options', style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            controller: myControler,
-            decoration: InputDecoration(
-              errorText: _validate ? 'Value Can\'t Be Empty' : null,
-            ),
+    Widget customBox = Column(children: [
+      Container(height: 30),
+      Text('Enter your custom options',
+          style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextField(
+          controller: myControler,
+          decoration: InputDecoration(
+            errorText: _validate ? 'Value Can\'t Be Empty' : null,
           ),
-        ), 
-        RaisedButton(
-          shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0),
-          side: BorderSide(color: Colors.white)),
-          color: Colors.blue,
-          child: Icon(
-            Icons.arrow_forward_outlined,
-            color: Colors.white,
-          ),
-          onPressed: () async {
-            if (myControler.text.isEmpty) {
-              _validate = true;
-            } else {
-              await settle.addOption(myControler.text);
-              myControler = TextEditingController();
-              _validate = false;
-            }
-            setState((){});
-          },
-        )]
-    );
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: true,
-        elevation: 0.0,
-        centerTitle: true,
-        title: Text(
-          AppLocalizations.of(context).translate("lobbycode") + " $code",
-            style: TextStyle(fontSize: 18),
-        ),
-        actions: [
-          IconButton(
-            color: Colors.black,
-            icon: Icon(Icons.refresh), 
-            onPressed: () async {await settle.update();setState((){});}
-          )
-        ],
-        leading: IconButton(
-          padding: EdgeInsets.only(left: 15),
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.blue,
-            size: 30,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
         ),
       ),
-      body: Center(
-        child: SafeArea(
-          child: Column(
+      RaisedButton(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            side: BorderSide(color: Colors.white)),
+        color: Colors.blue,
+        child: Icon(
+          Icons.arrow_forward_outlined,
+          color: Colors.white,
+        ),
+        onPressed: () async {
+          if (myControler.text.isEmpty) {
+            _validate = true;
+          } else {
+            await settle.addOption(myControler.text);
+            myControler = TextEditingController();
+            _validate = false;
+          }
+          setState(() {});
+        },
+      )
+    ]);
+
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: true,
+          elevation: 0.0,
+          centerTitle: true,
+          title: Text(
+            AppLocalizations.of(context).translate("lobbycode") + " $code",
+            style: TextStyle(fontSize: 18),
+          ),
+          actions: [
+            IconButton(
+                // color: Colors.black,
+                icon: Icon(Icons.refresh),
+                onPressed: () async {
+                  await settle.update();
+                  setState(() {});
+                })
+          ],
+          leading: IconButton(
+            padding: EdgeInsets.only(left: 15),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.blue,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        body: Center(
+          child: SafeArea(
+              child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                AppLocalizations.of(context).translate("welcome"),
-                style: TextStyle(fontSize: 30), textAlign: TextAlign.center
-              ),
+              Text(AppLocalizations.of(context).translate("welcome"),
+                  style: TextStyle(fontSize: 30), textAlign: TextAlign.center),
               Text(
                 '$userName',
                 style: TextStyle(fontSize: 30),
@@ -128,68 +124,65 @@ class _LobbyScreen extends State<LobbyScreen> {
                 padding: EdgeInsets.all(20),
               ),
               Container(
-                height: 200,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.all(10.0),
-                        child: scroller(settle.users, "Guests")
+                  height: 200,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Container(
+                            margin: const EdgeInsets.all(10.0),
+                            child: scroller(
+                                settle.users,
+                                AppLocalizations.of(context)
+                                    .translate("lobbyguests"))),
                       ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.all(10.0),
-                        child: scroller(settle.options, "Options")
-                      ),
-                    )
-                  ],
-                )
-              ),
+                      Expanded(
+                        child: Container(
+                            margin: const EdgeInsets.all(10.0),
+                            child: scroller(
+                                settle.options,
+                                AppLocalizations.of(context)
+                                    .translate("lobbyoptions"))),
+                      )
+                    ],
+                  )),
               if (settle.customAllowed) customBox,
               Container(height: 75),
               if (isHost)
                 startButton()
               else
-                Column(
-                  children: [
-                    animation(),
-                    Container(height: 50),
-                    Text(AppLocalizations.of(context).translate("waithost"),
+                Column(children: [
+                  animation(),
+                  Container(height: 50),
+                  Text(AppLocalizations.of(context).translate("waithost"),
                       style: TextStyle(fontSize: 15),
-                      textAlign: TextAlign.center
-                    )
-                  ]
-                )
+                      textAlign: TextAlign.center)
+                ])
             ],
-          )
-        ),
-      )
-    );
+          )),
+        ));
   }
 
   Widget startButton() {
     return SizedBox(
-      width: 150,
-      height: 45,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-        color: Colors.blue,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SettleScreen(settle)),
-          );
-        },
-        child: Text(
-          AppLocalizations.of(context).translate("startsettle"),
-          style: TextStyle(fontSize: 16.4, color: Colors.white),
-        ),
-      )
-    );
+        width: 150,
+        height: 45,
+        child: RaisedButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+          color: Colors.blue,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettleScreen(settle)),
+            );
+          },
+          child: Text(
+            AppLocalizations.of(context).translate("startsettle"),
+            style: TextStyle(fontSize: 16.4, color: Colors.white),
+          ),
+        ));
   }
 
   void startSettle() {
@@ -200,12 +193,11 @@ class _LobbyScreen extends State<LobbyScreen> {
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
-          title: Text('$name:', style: TextStyle(fontSize: 22)),
-          titleSpacing: 0,
-          pinned: true,
-          toolbarHeight: 30,
-          leading: Container()
-        ),
+            title: Text('$name:', style: TextStyle(fontSize: 22)),
+            titleSpacing: 0,
+            pinned: true,
+            toolbarHeight: 30,
+            leading: Container()),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
@@ -214,9 +206,8 @@ class _LobbyScreen extends State<LobbyScreen> {
                 color: Colors.lightBlue,
                 height: 22,
                 child: Text('${l[index]}',
-                  style: TextStyle(fontSize: 18),
-                  textAlign: TextAlign.center
-                ),
+                    style: TextStyle(fontSize: 18),
+                    textAlign: TextAlign.center),
               );
             },
             childCount: l.length,
