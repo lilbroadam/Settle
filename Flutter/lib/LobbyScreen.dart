@@ -32,8 +32,10 @@ class _LobbyScreen extends State<LobbyScreen> {
 
   // Call this function when 'Start Settle' is pressed
   void startSettlePressed() async {
-    await settle.setState(SettleState.settling);
-    print('User started the Settle');
+    if (isHost) {
+      await settle.setState(SettleState.settling);
+      print('User started the Settle');
+    }
     
     // Go to the Settle screen
     Navigator.push(
@@ -91,7 +93,12 @@ class _LobbyScreen extends State<LobbyScreen> {
           IconButton(
             color: Colors.black,
             icon: Icon(Icons.refresh), 
-            onPressed: () async {await settle.update();setState((){});}
+            onPressed: () async {
+              await settle.update();
+              setState((){});
+              if (settle.settleState == SettleState.settling)
+                startSettlePressed();
+            }
         )]
       ),
       body: Center(
@@ -133,7 +140,12 @@ class _LobbyScreen extends State<LobbyScreen> {
               else
                 Column(
                   children: [
-                    animation(), Container(height: 50), Text('Waiting on Host', style: TextStyle(fontSize: 15), textAlign: TextAlign.center)
+                    animation(),
+                    Container(height: 50),
+                    Text('Waiting on Host',
+                      style: TextStyle(fontSize: 15),
+                      textAlign: TextAlign.center
+                    )
                   ]
                 )
             ],
