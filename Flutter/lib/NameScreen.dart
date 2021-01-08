@@ -51,6 +51,7 @@ class _NameScreenState extends State<NameScreen> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
           color: Colors.blue,
+          elevation: 5,
           child: Icon(
             Icons.arrow_forward_outlined,
             color: Colors.white,

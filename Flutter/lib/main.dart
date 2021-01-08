@@ -1,3 +1,4 @@
+import 'package:Settle/AppTheme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -59,8 +60,8 @@ class _SettleAppState extends State<SettleApp> {
             ],
             localeResolutionCallback: (locale, suportedLocales) {
               for (var suportedLocale in suportedLocales) {
-                if (suportedLocale.languageCode == locale.languageCode
-                      && suportedLocale.countryCode == locale.countryCode) {
+                if (suportedLocale.languageCode == locale.languageCode &&
+                    suportedLocale.countryCode == locale.countryCode) {
                   return suportedLocale;
                 }
               }
@@ -71,7 +72,7 @@ class _SettleAppState extends State<SettleApp> {
               return suportedLocales.elementAt(0);
             },
             title: 'Settle',
-            theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+            theme: AppTheme.themeData(themeChangeProvider.darkTheme, context),
             home: SettleHomePage(title: 'Settle'),
           );
         },
@@ -99,19 +100,17 @@ class _SettleHomePageState extends State<SettleHomePage> {
 
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
-      await themeChangeProvider.darkThemePreference.getTheme();
+        await themeChangeProvider.darkThemePreference.getTheme();
   }
 
   // Called when 'Create a Settle' button is pressed
   void _createASettlePressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) {
-          final themeChange = Provider.of<DarkThemeProvider>(context);
-          return NameScreen(true, context, themeChange);
-        }
-      ),
+      MaterialPageRoute(builder: (context) {
+        final themeChange = Provider.of<DarkThemeProvider>(context);
+        return NameScreen(true, context, themeChange);
+      }),
     );
   }
 
@@ -119,12 +118,10 @@ class _SettleHomePageState extends State<SettleHomePage> {
   void _joinASettlePressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) {
-          final themeChange = Provider.of<DarkThemeProvider>(context);
-          return NameScreen(false, context, themeChange);
-        }
-      ),
+      MaterialPageRoute(builder: (context) {
+        final themeChange = Provider.of<DarkThemeProvider>(context);
+        return NameScreen(false, context, themeChange);
+      }),
     );
   }
 
@@ -154,8 +151,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                 leading: Icon(Icons.info_outline),
                 title: Text("Settle"),
                 subtitle: Text(
-                  AppLocalizations.of(context).translate("version") + " 1.0"
-                ),
+                    AppLocalizations.of(context).translate("version") + " 1.0"),
               ),
               Material(
                 child: ListTile(
@@ -177,9 +173,9 @@ class _SettleHomePageState extends State<SettleHomePage> {
                 child: ListTile(
                   leading: Icon(MdiIcons.email),
                   title:
-                    Text(AppLocalizations.of(context).translate("contact")),
+                      Text(AppLocalizations.of(context).translate("contact")),
                   subtitle: Text(
-                    AppLocalizations.of(context).translate("contactsub")),
+                      AppLocalizations.of(context).translate("contactsub")),
                   onTap: () async {
                     const emailAdrees = "settleitapplication@gmail.com";
                     const subject = "Client Request";
@@ -194,16 +190,15 @@ class _SettleHomePageState extends State<SettleHomePage> {
               ),
               Material(
                 child: ListTile(
-                  leading: Icon(
-                    MdiIcons.currencyUsd,
-                    size: 25,
-                  ),
-                  title:
-                    Text(AppLocalizations.of(context).translate("support")),
-                  subtitle: Text(
-                    AppLocalizations.of(context).translate("supportsub")),
-                  onTap: () {}
-                ),
+                    leading: Icon(
+                      MdiIcons.currencyUsd,
+                      size: 25,
+                    ),
+                    title:
+                        Text(AppLocalizations.of(context).translate("support")),
+                    subtitle: Text(
+                        AppLocalizations.of(context).translate("supportsub")),
+                    onTap: () {}),
               )
             ],
           ),
@@ -219,38 +214,6 @@ class _SettleHomePageState extends State<SettleHomePage> {
 
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
-    final settleButtonWidth = 150.0;
-    final settleButtonHeight = 45.0;
-    final settleButtonTextStyle = new TextStyle(
-      fontSize: 16.4,
-      color: Colors.white,
-    );
-    final createSettleButton = SizedBox(
-      width: settleButtonWidth,
-      height: settleButtonHeight,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-        color: Colors.blue,
-        onPressed: _createASettlePressed,
-        child: Text(AppLocalizations.of(context).translate("createsettle"),
-            style: settleButtonTextStyle),
-      ),
-    );
-    final joinSettleButton = SizedBox(
-      width: settleButtonWidth,
-      height: settleButtonHeight,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-        color: Colors.blue,
-        onPressed: _joinASettlePressed,
-        child: Text(AppLocalizations.of(context).translate("joinsettle"),
-            style: settleButtonTextStyle),
-      ),
-    );
     final settleButtonMargin = EdgeInsets.all(18.0);
     final miscButtonSize = 30.0;
 
@@ -267,18 +230,18 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     alignment: Alignment.topRight,
                     child: IconButton(
                       icon: themeChange.darkTheme
-                        ? Icon(
-                            Icons.brightness_3,
-                            color: themeChange.darkTheme
-                              ? Colors.blueAccent
-                              : Colors.grey[850],
-                          )
-                        : Icon(
-                            Icons.wb_sunny,
-                            color: themeChange.darkTheme
-                              ? Colors.blueAccent
-                              : Colors.grey[850],
-                          ),
+                          ? Icon(
+                              Icons.brightness_3,
+                              color: themeChange.darkTheme
+                                  ? Colors.blueAccent
+                                  : Colors.grey[850],
+                            )
+                          : Icon(
+                              Icons.wb_sunny,
+                              color: themeChange.darkTheme
+                                  ? Colors.blueAccent
+                                  : Colors.grey[850],
+                            ),
                       color: Colors.black,
                       onPressed: () {
                         setState(() {
@@ -293,11 +256,13 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     children: <Widget>[
                       Container(
                         margin: settleButtonMargin,
-                        child: createSettleButton,
+                        child: AppTheme.button(
+                            context, "createsettle", _createASettlePressed),
                       ),
                       Container(
                         margin: settleButtonMargin,
-                        child: joinSettleButton,
+                        child: AppTheme.button(
+                            context, "joinsettle", _joinASettlePressed),
                       ),
                     ],
                   ),
@@ -308,7 +273,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       icon: Icon(Icons.info),
                       iconSize: miscButtonSize,
                       tooltip:
-                        AppLocalizations.of(context).translate("settleinfo"),
+                          AppLocalizations.of(context).translate("settleinfo"),
                       onPressed: _informationPressed,
                     ),
                   ),
@@ -319,7 +284,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       icon: Icon(Icons.settings),
                       iconSize: miscButtonSize,
                       tooltip:
-                        AppLocalizations.of(context).translate("setting"),
+                          AppLocalizations.of(context).translate("setting"),
                       onPressed: _settingsPressed,
                     ),
                   ),
@@ -328,32 +293,6 @@ class _SettleHomePageState extends State<SettleHomePage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class Styles {
-  static ThemeData themeData(bool isDarkTheme, BuildContext context) {
-    return ThemeData(
-      primarySwatch: Colors.blue,
-      primaryColor: isDarkTheme ? Color(0xff444444) : Colors.white,
-      backgroundColor: isDarkTheme ? Color(0xff444444) : Color(0xffF1F5FB),
-      indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
-      buttonColor: isDarkTheme ? Color(0xff3B3B3B) : Color(0xffF1F5FB),
-      hintColor: isDarkTheme ? Color(0xff280C0B) : Color(0xffEECED3),
-      highlightColor: isDarkTheme ? Color(0xff2C949A) : Color(0xff95F0F5),
-      hoverColor: isDarkTheme ? Color(0xff3A3A3B) : Color(0xff4285F4),
-      focusColor: isDarkTheme ? Color(0xff0B2512) : Color(0xffA8DAB5),
-      disabledColor: Colors.grey,
-      textSelectionColor: isDarkTheme ? Colors.white : Colors.black,
-      cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
-      canvasColor: isDarkTheme ? Color(0xff1E1E1E) : Colors.grey[50],
-      brightness: isDarkTheme ? Brightness.dark : Brightness.light,
-      buttonTheme: Theme.of(context).buttonTheme.copyWith(
-          colorScheme: isDarkTheme ? ColorScheme.dark() : ColorScheme.light()),
-      appBarTheme: AppBarTheme(
-        elevation: 0.0,
       ),
     );
   }
