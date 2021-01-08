@@ -1,28 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'CreateSettle.dart';
+import 'DarkThemeProvider.dart';
 import 'JoinSettle.dart';
 import 'app_localizations.dart';
 
-class NameScreen extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
-
+class NameScreen extends StatefulWidget {
+  // final bool darkTheme;
+  final DarkThemeProvider themeChange;
   final bool newSession;
   final context;
-  NameScreen(this.newSession, this.context);
+  NameScreen(this.newSession, this.context, this.themeChange);
+  _NameScreenState createState() => _NameScreenState();
+}
+
+class _NameScreenState extends State<NameScreen> {
+  final _formKey = GlobalKey<FormState>();
 
   void _navigate(String name) {
-    if (newSession) {
+    if (widget.newSession) {
       Navigator.push(
-        context,
+        widget.context,
         MaterialPageRoute(builder: (context) => CreateSettle(name)),
       );
     } else {
       Navigator.push(
-        context,
+        widget.context,
         MaterialPageRoute(builder: (context) => JoinSettle(name)),
       );
     }
+  }
+
+  String getImage() {
+    setState(() {});
+    return widget.themeChange.darkTheme
+        ? 'assets/background-dark.png'
+        : 'assets/background.png';
   }
 
   Widget build(BuildContext context) {
@@ -52,7 +65,7 @@ class NameScreen extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/background.png'), fit: BoxFit.cover)),
+              image: AssetImage(getImage()), fit: BoxFit.cover)),
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(

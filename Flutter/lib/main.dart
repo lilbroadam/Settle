@@ -111,7 +111,10 @@ class _SettleHomePageState extends State<SettleHomePage> {
   void _createASettlePressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => NameScreen(true, context)),
+      MaterialPageRoute(builder: (context) {
+        final themeChange = Provider.of<DarkThemeProvider>(context);
+        return NameScreen(true, context, themeChange);
+      }),
     );
   }
 
@@ -119,7 +122,10 @@ class _SettleHomePageState extends State<SettleHomePage> {
   void _joinASettlePressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => NameScreen(false, context)),
+      MaterialPageRoute(builder: (context) {
+        final themeChange = Provider.of<DarkThemeProvider>(context);
+        return NameScreen(false, context, themeChange);
+      }),
     );
   }
 
@@ -274,8 +280,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                             ),
                       color: Colors.black,
                       onPressed: () {
-                        themeChange.darkTheme = themeSwitch;
                         setState(() {
+                          themeChange.darkTheme = themeSwitch;
                           themeSwitch = !themeSwitch;
                         });
                       },
