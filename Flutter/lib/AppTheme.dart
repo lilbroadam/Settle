@@ -49,4 +49,17 @@ class AppTheme {
       ),
     );
   }
+
+  static RaisedButton nextButton(BuildContext context, Function fun) {
+    return RaisedButton(
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
+        color: Colors.blue,
+        elevation: 5,
+        child: Icon(
+          Icons.arrow_forward_outlined,
+          color: Colors.white,
+        ),
+        onPressed: fun);
+  }
 }

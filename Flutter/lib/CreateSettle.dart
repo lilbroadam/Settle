@@ -1,3 +1,4 @@
+import 'package:Settle/AppTheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,13 +53,14 @@ class _CreateSettle extends State<CreateSettle> {
   // Call this function when the "Create this Settle" button is pressed.
   // This function will ask the server to create a new Settle.
   Future<Settle> _createSettleButtonPressed() async {
-    settle = await Server.createSettle(hostName, _settleType, _customOptionsAllowed);
-    
+    settle =
+        await Server.createSettle(hostName, _settleType, _customOptionsAllowed);
+
     if (settle == null) {
       // TODO error handling
       return Future<Settle>.value(null);
     }
-    
+
     return settle;
   }
 
@@ -70,7 +72,7 @@ class _CreateSettle extends State<CreateSettle> {
   Future<void> showPopup() async {
     await animated_dialog_box.showScaleAlertBox(
         title: Center(
-          child: Text(AppLocalizations.of(context).translate("getcode"))),
+            child: Text(AppLocalizations.of(context).translate("getcode"))),
         context: context,
         firstButton: MaterialButton(
           elevation: 4,
@@ -83,11 +85,11 @@ class _CreateSettle extends State<CreateSettle> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
-            Navigator.push( // Go to the lobby
+            Navigator.push(
+              // Go to the lobby
               context,
               MaterialPageRoute(
-                builder: (context) => LobbyScreen(settle, hostName, true)
-              ),
+                  builder: (context) => LobbyScreen(settle, hostName, true)),
             );
           },
         ),
@@ -100,7 +102,7 @@ class _CreateSettle extends State<CreateSettle> {
           child: Text(
             AppLocalizations.of(context).translate("sharecopy"),
             style: TextStyle(
-              color: themeChange.darkTheme ? Colors.white : Colors.black),
+                color: themeChange.darkTheme ? Colors.white : Colors.black),
           ),
           onPressed: () {
             Clipboard.setData(ClipboardData(text: settle.settleCode));
@@ -118,7 +120,7 @@ class _CreateSettle extends State<CreateSettle> {
               if (snapshot.data != null) {
                 settle = snapshot.data;
                 return Text(settle.settleCode,
-                  style: GoogleFonts.notoSansKR(fontSize: 19));
+                    style: GoogleFonts.notoSansKR(fontSize: 19));
               } else {
                 return SpinKitDualRing(
                   color: Colors.blue,
@@ -135,26 +137,36 @@ class _CreateSettle extends State<CreateSettle> {
   Widget build(BuildContext context) {
     final settleButtonWidth = 180.0;
     final settleButtonHeight = 45.0;
-    final settleButtonTextStyle = TextStyle(fontSize: 16.4, color: Colors.white);
+    final settleButtonTextStyle =
+        TextStyle(fontSize: 16.4, color: Colors.white);
     final createSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-        color: Colors.blue,
-        // Only enable this button when at least 1 option has been selected
-        onPressed: !_isAnOptionSelected()
-            ? null
-            : () async {
-                await showPopup();
-              },
-        child: Text(
-          AppLocalizations.of(context).translate("createthissettle"),
-          style: settleButtonTextStyle
-        ),
-      ),
+      child: AppTheme.button(
+          context,
+          "createthissettle",
+          !_isAnOptionSelected()
+              ? null
+              : () async {
+                  await showPopup();
+                })
+      // RaisedButton(
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.circular(25),
+      //   ),
+      //   color: Colors.blue,
+      //   // Only enable this button when at least 1 option has been selected
+      //   onPressed: !_isAnOptionSelected()
+      //       ? null
+      //       : () async {
+      //           await showPopup();
+      //         },
+      //   child: Text(
+      //     AppLocalizations.of(context).translate("createthissettle"),
+      //     style: settleButtonTextStyle
+      //   ),
+      // )
+      ,
     );
     final settleButtonMargin = EdgeInsets.all(18.0);
 
@@ -276,13 +288,12 @@ class _RadioButton extends State<RadioButton> {
         ListTile(
           title: Text(AppLocalizations.of(context).translate("customonly")),
           leading: Radio(
-            value: SettleType.custom,
-            groupValue: _currentOption,
-            onChanged: (SettleType value) {
-              setState(() => _currentOption = value);
-              callback(value);
-            }
-          ),
+              value: SettleType.custom,
+              groupValue: _currentOption,
+              onChanged: (SettleType value) {
+                setState(() => _currentOption = value);
+                callback(value);
+              }),
         ),
       ],
     );

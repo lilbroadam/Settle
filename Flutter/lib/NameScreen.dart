@@ -1,3 +1,4 @@
+import 'package:Settle/AppTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'CreateSettle.dart';
@@ -47,20 +48,9 @@ class _NameScreenState extends State<NameScreen> {
     final nextButton = SizedBox(
       width: width,
       height: height,
-      child: RaisedButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
-          color: Colors.blue,
-          elevation: 5,
-          child: Icon(
-            Icons.arrow_forward_outlined,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            if (_formKey.currentState.validate()) {
-              _navigate(myControler.text);
-            }
-          }),
+      child: AppTheme.nextButton(context, () {
+        if (_formKey.currentState.validate()) _navigate(myControler.text);
+      }),
     );
 
     return Container(
