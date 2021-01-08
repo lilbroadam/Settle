@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:animated_dialog_box/animated_dialog_box.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share/share.dart';
+import 'DarkThemeProvider.dart';
 import 'LobbyScreen.dart';
 import 'Server.dart';
 import 'Settle.dart';
@@ -15,19 +16,20 @@ typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
 
 class CreateSettle extends StatefulWidget {
   final String hostName;
-
-  CreateSettle(this.hostName);
+  final DarkThemeProvider themeChange;
+  CreateSettle(this.hostName, this.themeChange);
 
   @override
-  _CreateSettle createState() => _CreateSettle(hostName);
+  _CreateSettle createState() => _CreateSettle(hostName, themeChange);
 }
 
 class _CreateSettle extends State<CreateSettle> {
   final String hostName;
   SettleType _settleType;
   bool _customOptionsAllowed = false;
+  final DarkThemeProvider themeChange;
 
-  _CreateSettle(this.hostName);
+  _CreateSettle(this.hostName, this.themeChange);
 
   // Call this function when a default option is pressed.
   void _defaultOptionPressed(SettleType settleType) {
@@ -74,6 +76,7 @@ class _CreateSettle extends State<CreateSettle> {
             child: Text(AppLocalizations.of(context).translate("getcode"))),
         context: context,
         firstButton: MaterialButton(
+          elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
           ),
@@ -92,11 +95,16 @@ class _CreateSettle extends State<CreateSettle> {
           },
         ),
         secondButton: MaterialButton(
+          elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
           ),
-          color: Colors.white,
-          child: Text(AppLocalizations.of(context).translate("sharecopy")),
+          color: themeChange.darkTheme ? Color(0xff5B5B5B) : Colors.white,
+          child: Text(
+            AppLocalizations.of(context).translate("sharecopy"),
+            style: TextStyle(
+                color: themeChange.darkTheme ? Colors.white : Colors.black),
+          ),
           onPressed: () {
             Clipboard.setData(ClipboardData(text: _code));
             Share.share(_code);

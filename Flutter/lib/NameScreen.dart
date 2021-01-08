@@ -21,7 +21,8 @@ class _NameScreenState extends State<NameScreen> {
     if (widget.newSession) {
       Navigator.push(
         widget.context,
-        MaterialPageRoute(builder: (context) => CreateSettle(name)),
+        MaterialPageRoute(
+            builder: (context) => CreateSettle(name, widget.themeChange)),
       );
     } else {
       Navigator.push(
@@ -47,9 +48,8 @@ class _NameScreenState extends State<NameScreen> {
       width: width,
       height: height,
       child: RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25.0),
-              side: BorderSide(color: Colors.white)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
           color: Colors.blue,
           child: Icon(
             Icons.arrow_forward_outlined,
