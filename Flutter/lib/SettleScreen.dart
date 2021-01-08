@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:tcard/tcard.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
@@ -14,6 +15,14 @@ List<Color> colors = [
   Colors.purple,
   Colors.brown,
   Colors.teal,
+];
+
+List<Color> pastelColors = [
+  Color(0xFFBFFCC6), // green
+  Color(0xFFFFCCF9), // pink
+  Color(0xFFC2EDFF), // blue
+  Color(0xFFD6D8FF), // purple
+  Color(0xFFFFCFC2), // orange
 ];
 
 List<Widget> cards = List.generate(
@@ -76,7 +85,7 @@ class _SettleScreenState extends State<SettleScreen> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(5)),
-            color: Colors.black,
+            color: pastelColors[option.hashCode % pastelColors.length],
           ),
           child: Align(
             alignment: Alignment.center,
