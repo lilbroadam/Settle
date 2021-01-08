@@ -91,13 +91,6 @@ class _LobbyScreen extends State<LobbyScreen> {
             },
           ),
         ),
-        // appBar: new AppBar(
-        //     backgroundColor: Colors.transparent,
-        //     centerTitle: true,
-        //     elevation: 0.0,
-        //     title: Text(
-        //       AppLocalizations.of(context).translate("lobbycode") + " $code",
-        //     )),
         body: Center(
           child: SafeArea(
               child: Column(
