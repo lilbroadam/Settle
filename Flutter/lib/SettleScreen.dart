@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'dart:ui';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:tcard/tcard.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
@@ -64,23 +67,33 @@ class _SettleScreenState extends State<SettleScreen> {
   
   Settle settle;
   TCardController _controller = TCardController();
+  List<Widget> cards;
 
   _SettleScreenState(this.settle);
 
-  List<Widget> buildCards() {
+  void initState() {
+    super.initState();
+    cards = buildCards();
+  }
+
+  // List<Widget> buildCards() {
+  Future<List<Widget>> buildCards() async {
     List<Widget> cards = new List();
-  
-    settle.options.forEach((option) {
+
+    settle.options.forEach((option) async {
       cards.add(
         new Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(5)),
             color: Colors.black,
+            // image: RandomArt()
+            // image: RandomArtImage(),
+            image: await RandomArtImage.asDecorationImage(option)
           ),
           child: Align(
             alignment: Alignment.center,
-            child: Text('$option',
+            child: Text(option,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20.0,
@@ -104,7 +117,8 @@ class _SettleScreenState extends State<SettleScreen> {
             SizedBox(height: 140),
             TCard(
               size: Size(360, 480),
-              cards: buildCards(),
+              // cards: buildCards(),
+              cards: cards,
               controller: _controller,
               onForward: (index, info) {
                 print(info.direction);
@@ -192,4 +206,58 @@ class _SettleScreenState extends State<SettleScreen> {
       },
     );
   }
+}
+
+// class RandomArtImage extends DecorationImage {
+class RandomArtImage {
+
+  // Return a DecorationImage random art based on the given seed
+  static Future<DecorationImage> asDecorationImage(String seed) async {
+    PictureRecorder pictureRecorder = PictureRecorder();
+    Canvas canvas = Canvas(pictureRecorder);
+    
+    // final customPaint = CustomPaint(
+    //   painter: RandomArtPainter()
+    // );
+
+    final paint = Paint()
+      ..color = Colors.yellow
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 10;
+    canvas.drawCircle(Offset(10, 10), 10, paint);
+
+    ui.Picture picture = pictureRecorder.endRecording();
+    // ui.Image image;
+    // picture.toImage(10, 10).then((result) {
+    //   image = result;
+    // });
+    ui.Image image = await picture.toImage(10, 10);
+    // ByteData byteData;
+    // image.toByteData().then((result) {
+    //   byteData = result;
+    // });
+    ByteData byteData = await image.toByteData();
+    ByteBuffer byteBuffer = byteData.buffer;
+    Uint8List uint8List = byteBuffer.asUint8List();
+    MemoryImage memoryImage = MemoryImage(uint8List);
+    DecorationImage decorationImage = DecorationImage(image: memoryImage);
+
+    return decorationImage;
+  }
+  
+}
+
+// A CustomPainter for random art (might not be needed after all)
+class RandomArtPainter extends CustomPainter {
+  
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 10;
+    canvas.drawCircle(Offset(10, 10), 10, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
