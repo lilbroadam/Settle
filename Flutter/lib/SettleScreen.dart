@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcard/tcard.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
+import 'Settle.dart';
 
 List<Color> colors = [
   Colors.blue,
@@ -50,15 +51,49 @@ List<Widget> cards = List.generate(
   },
 );
 
-class SettleCards extends StatefulWidget {
+class SettleScreen extends StatefulWidget {
+  final Settle settle;
+
+  const SettleScreen(this.settle);
+  
   @override
-  _SettleCardsState createState() => _SettleCardsState();
+  _SettleScreenState createState() => _SettleScreenState(settle);
 }
 
-class _SettleCardsState extends State<SettleCards> {
+class _SettleScreenState extends State<SettleScreen> {
+  
+  Settle settle;
   TCardController _controller = TCardController();
 
-  int _index = 0;
+  _SettleScreenState(this.settle);
+
+  List<Widget> buildCards() {
+    List<Widget> cards = new List();
+  
+    settle.options.forEach((option) {
+      cards.add(
+        new Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            color: Colors.black,
+          ),
+          child: Align(
+            alignment: Alignment.center,
+            child: Text('$option',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontWeight: FontWeight.w700
+              ),
+            ),
+          )
+        ),
+      );
+    });
+
+    return cards;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +104,13 @@ class _SettleCardsState extends State<SettleCards> {
             SizedBox(height: 140),
             TCard(
               size: Size(360, 480),
-              cards: cards,
+              cards: buildCards(),
               controller: _controller,
               onForward: (index, info) {
-                _index = index;
                 print(info.direction);
                 setState(() {});
               },
               onBack: (index) {
-                _index = index;
                 setState(() {});
               },
               onEnd: () {
@@ -119,10 +152,6 @@ class _SettleCardsState extends State<SettleCards> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   child: Text(_index.toString()),
-      // ),
     );
   }
 

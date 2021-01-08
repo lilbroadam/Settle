@@ -1,23 +1,21 @@
 import 'package:provider/provider.dart';
-import 'DarkThemeProvider.dart';
-import 'NameScreen.dart';
-import 'SettleCards.dart';
-import 'app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'app_localizations.dart';
+import 'DarkThemeProvider.dart';
+import 'NameScreen.dart';
 
 void main() {
   LicenseRegistry.addLicense(() async* {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
+
   runApp(SettleApp());
 }
 
@@ -61,8 +59,8 @@ class _SettleAppState extends State<SettleApp> {
             ],
             localeResolutionCallback: (locale, suportedLocales) {
               for (var suportedLocale in suportedLocales) {
-                if (suportedLocale.languageCode == locale.languageCode &&
-                    suportedLocale.countryCode == locale.countryCode) {
+                if (suportedLocale.languageCode == locale.languageCode
+                      && suportedLocale.countryCode == locale.countryCode) {
                   return suportedLocale;
                 }
               }
@@ -87,7 +85,6 @@ class SettleHomePage extends StatefulWidget {
 
   final String title;
 
-  // From dart.dev: The => expr syntax is a shorthand for { return expr; }
   @override
   _SettleHomePageState createState() => _SettleHomePageState();
 }
@@ -102,17 +99,19 @@ class _SettleHomePageState extends State<SettleHomePage> {
 
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
-        await themeChangeProvider.darkThemePreference.getTheme();
+      await themeChangeProvider.darkThemePreference.getTheme();
   }
 
   // Called when 'Create a Settle' button is pressed
   void _createASettlePressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) {
-        final themeChange = Provider.of<DarkThemeProvider>(context);
-        return NameScreen(true, context, themeChange);
-      }),
+      MaterialPageRoute(
+        builder: (context) {
+          final themeChange = Provider.of<DarkThemeProvider>(context);
+          return NameScreen(true, context, themeChange);
+        }
+      ),
     );
   }
 
@@ -120,10 +119,12 @@ class _SettleHomePageState extends State<SettleHomePage> {
   void _joinASettlePressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) {
-        final themeChange = Provider.of<DarkThemeProvider>(context);
-        return NameScreen(false, context, themeChange);
-      }),
+      MaterialPageRoute(
+        builder: (context) {
+          final themeChange = Provider.of<DarkThemeProvider>(context);
+          return NameScreen(false, context, themeChange);
+        }
+      ),
     );
   }
 
@@ -153,7 +154,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                 leading: Icon(Icons.info_outline),
                 title: Text("Settle"),
                 subtitle: Text(
-                    AppLocalizations.of(context).translate("version") + " 1.0"),
+                  AppLocalizations.of(context).translate("version") + " 1.0"
+                ),
               ),
               Material(
                 child: ListTile(
@@ -175,9 +177,9 @@ class _SettleHomePageState extends State<SettleHomePage> {
                 child: ListTile(
                   leading: Icon(MdiIcons.email),
                   title:
-                      Text(AppLocalizations.of(context).translate("contact")),
+                    Text(AppLocalizations.of(context).translate("contact")),
                   subtitle: Text(
-                      AppLocalizations.of(context).translate("contactsub")),
+                    AppLocalizations.of(context).translate("contactsub")),
                   onTap: () async {
                     const emailAdrees = "settleitapplication@gmail.com";
                     const subject = "Client Request";
@@ -192,15 +194,16 @@ class _SettleHomePageState extends State<SettleHomePage> {
               ),
               Material(
                 child: ListTile(
-                    leading: Icon(
-                      MdiIcons.currencyUsd,
-                      size: 25,
-                    ),
-                    title:
-                        Text(AppLocalizations.of(context).translate("support")),
-                    subtitle: Text(
-                        AppLocalizations.of(context).translate("supportsub")),
-                    onTap: () {}),
+                  leading: Icon(
+                    MdiIcons.currencyUsd,
+                    size: 25,
+                  ),
+                  title:
+                    Text(AppLocalizations.of(context).translate("support")),
+                  subtitle: Text(
+                    AppLocalizations.of(context).translate("supportsub")),
+                  onTap: () {}
+                ),
               )
             ],
           ),
@@ -264,18 +267,18 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     alignment: Alignment.topRight,
                     child: IconButton(
                       icon: themeChange.darkTheme
-                          ? Icon(
-                              Icons.brightness_3,
-                              color: themeChange.darkTheme
-                                  ? Colors.blueAccent
-                                  : Colors.grey[850],
-                            )
-                          : Icon(
-                              Icons.wb_sunny,
-                              color: themeChange.darkTheme
-                                  ? Colors.blueAccent
-                                  : Colors.grey[850],
-                            ),
+                        ? Icon(
+                            Icons.brightness_3,
+                            color: themeChange.darkTheme
+                              ? Colors.blueAccent
+                              : Colors.grey[850],
+                          )
+                        : Icon(
+                            Icons.wb_sunny,
+                            color: themeChange.darkTheme
+                              ? Colors.blueAccent
+                              : Colors.grey[850],
+                          ),
                       color: Colors.black,
                       onPressed: () {
                         setState(() {
@@ -305,7 +308,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       icon: Icon(Icons.info),
                       iconSize: miscButtonSize,
                       tooltip:
-                          AppLocalizations.of(context).translate("settleinfo"),
+                        AppLocalizations.of(context).translate("settleinfo"),
                       onPressed: _informationPressed,
                     ),
                   ),
@@ -316,9 +319,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       icon: Icon(Icons.settings),
                       iconSize: miscButtonSize,
                       tooltip:
-                          AppLocalizations.of(context).translate("setting"),
-                      // onPressed: _settingsPressed,
-                      onPressed: () {},
+                        AppLocalizations.of(context).translate("setting"),
+                      onPressed: _settingsPressed,
                     ),
                   ),
                 ],
