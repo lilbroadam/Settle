@@ -25,11 +25,13 @@
     "sharecopy": "Share or Copy",
     "lobbycode": "Lobby Code: ",
     "entercustom": "Enter your custom options",
+    "invalidoption": "Value Cannot Be Empty",
     "welcome": "Welcome",
     "lobbyguests": "Guests",
     "lobbyoptions": "Options",
     "startsettle": "Start Settling",
     "waithost": "Waiting on Host",
     "addoption": "Add Option",
-    "tipback": "Back"
+    "tipback": "Back",
+    "soon": "Coming Soon..."
 }

@@ -45,14 +45,16 @@ class _LobbyScreen extends State<LobbyScreen> {
   Widget build(BuildContext context) {
     Widget customBox = Column(children: [
       Container(height: 30),
-      Text('Enter your custom options',
+      Text(AppLocalizations.of(context).translate("entercustom"),
           style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
       Padding(
         padding: const EdgeInsets.all(18.0),
         child: TextField(
           controller: myControler,
           decoration: InputDecoration(
-            errorText: _validate ? 'Value Can\'t Be Empty' : null,
+            errorText: _validate
+                ? AppLocalizations.of(context).translate("invalidcustom")
+                : null,
           ),
         ),
       ),

@@ -172,12 +172,16 @@ class _CreateSettle extends State<CreateSettle> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Column(
-              mainAxisSize: MainAxisSize.min, // Size to only needed space
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text('What is your', style: TextStyle(fontSize: 25)),
-                Text('group Settling?', style: TextStyle(fontSize: 25)),
+                Text(
+                  AppLocalizations.of(context).translate("asktype"),
+                  style: TextStyle(fontSize: 25),
+                  textAlign: TextAlign.center,
+                ),
                 RadioButton(_settleTypePressed),
-                CheckBox('Allow custom choices', _customOptionsPressed),
+                CheckBox(AppLocalizations.of(context).translate("allowcustom"),
+                    _customOptionsPressed),
                 Container(
                   margin: settleButtonMargin,
                   child: createSettleButton,

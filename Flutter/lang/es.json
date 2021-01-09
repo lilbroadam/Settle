@@ -25,11 +25,13 @@
     "sharecopy": "Compartir o copiar",
     "lobbycode": "Código de lobby: ",
     "entercustom": "Ingrese sus opciones personalizadas",
+    "invalidoption": "El valor no puede estar vacío",
     "welcome": "Bienvenidos",
     "lobbyguests": "Invitados",
     "lobbyoptions": "Opciones",
     "startsettle": "Iniciar Settle",
     "waithost": "Esperando en el anfitrión",
     "addoption": "Agregar opción",
-    "tipback": "atrás"
+    "tipback": "atrás",
+    "soon": "Próximamente..."
 }

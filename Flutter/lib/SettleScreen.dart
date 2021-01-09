@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcard/tcard.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'Settle.dart';
+import 'app_localizations.dart';
 
 List<Color> colors = [
   Colors.blue,
@@ -55,13 +56,12 @@ class SettleScreen extends StatefulWidget {
   final Settle settle;
 
   const SettleScreen(this.settle);
-  
+
   @override
   _SettleScreenState createState() => _SettleScreenState(settle);
 }
 
 class _SettleScreenState extends State<SettleScreen> {
-  
   Settle settle;
   TCardController _controller = TCardController();
 
@@ -69,26 +69,25 @@ class _SettleScreenState extends State<SettleScreen> {
 
   List<Widget> buildCards() {
     List<Widget> cards = new List();
-  
+
     settle.options.forEach((option) {
       cards.add(
         new Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            color: Colors.black,
-          ),
-          child: Align(
             alignment: Alignment.center,
-            child: Text('$option',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
-                fontWeight: FontWeight.w700
-              ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              color: Colors.black,
             ),
-          )
-        ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                '$option',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w700),
+              ),
+            )),
       );
     });
 
@@ -180,7 +179,7 @@ class _SettleScreenState extends State<SettleScreen> {
                 padding: EdgeInsets.all(10),
               ),
               Text(
-                "Coming Soon...",
+                AppLocalizations.of(context).translate("soon"),
                 style: TextStyle(fontSize: 15),
               ),
               Padding(
