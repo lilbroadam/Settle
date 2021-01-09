@@ -29,6 +29,7 @@ class _CreateSettle extends State<CreateSettle> {
   final DarkThemeProvider themeChange;
   SettleType _settleType;
   bool _customOptionsAllowed = false;
+  bool gotCode = false;
   Settle settle;
 
   _CreateSettle(this.hostName, this.themeChange);
@@ -75,12 +76,15 @@ class _CreateSettle extends State<CreateSettle> {
             child: Text(AppLocalizations.of(context).translate("getcode"))),
         context: context,
         firstButton: AppTheme.rawButton(context, "golobby", () {
-          Navigator.push(
-            // Go to the lobby
-            context,
-            MaterialPageRoute(
-                builder: (context) => LobbyScreen(settle, hostName, true)),
-          );
+          if (gotCode) {
+            return Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LobbyScreen(settle, hostName, true)),
+            );
+          } else {
+            return null;
+          }
         }),
         secondButton: RaisedButton(
           elevation: 4,
@@ -108,6 +112,7 @@ class _CreateSettle extends State<CreateSettle> {
             builder: (context, snapshot) {
               if (snapshot.data != null) {
                 settle = snapshot.data;
+                gotCode = true;
                 return Text(settle.settleCode,
                     style: GoogleFonts.notoSansKR(fontSize: 19));
               } else {

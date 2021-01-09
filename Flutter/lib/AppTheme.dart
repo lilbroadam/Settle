@@ -4,7 +4,7 @@ import 'app_localizations.dart';
 class AppTheme {
   static final double boxWidth = 55;
   static final double boxHeight = 50;
-  static final settleButtonWidth = 180.0;
+  static final settleButtonWidth = 150.0;
   static final settleButtonHeight = 45.0;
   static final settleButtonTextStyle = new TextStyle(
     fontSize: 16.4,
