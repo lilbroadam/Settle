@@ -27,6 +27,7 @@ public class SettleSession {
     private String settleResult;
 
     private int usersDone;
+    private boolean inside;
     private List<String> finishedUsers;
     
     // Create a Settle session with settle code settleCode
@@ -43,6 +44,7 @@ public class SettleSession {
         this.voteMap = new HashMap<>();
 
         this.usersDone = 0;
+        this.inside = false;
         //this.finishedUsers = new ArrayList<>();
 
         addUser(hostUser);
@@ -141,6 +143,7 @@ public class SettleSession {
 
     public String evaluateResult() {
         List<String> results = new ArrayList<>();
+        inside = true;
         int mostVotes = Integer.MIN_VALUE;
         for (Map.Entry<String,Integer> entry : voteMap.entrySet()){
             if (entry.getValue() > mostVotes){
@@ -212,9 +215,12 @@ public class SettleSession {
             jsonObject.add("users", getUsersJson());
             jsonObject.add("options", getOptionsJson());
             jsonObject.add("result", getResultJson());
-
+            
+            jsonObject.add("usersDone", new JsonPrimitive(usersDone));
+            jsonObject.add("evaluated", new JsonPrimitive(inside));
+            
             return jsonObject;
         }
     }
-
+    
 }

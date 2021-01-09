@@ -28,7 +28,7 @@ public class VotingServlet extends HttpServlet {
         String userId = parameters[1];
         String bodyJson = ServletUtils.getBody(request);
         String voteOption = ServletUtils.getJsonProperty(bodyJson, "voteOption");
-        boolean userFinished = ServletUtils.getJsonProperty(bodyJson, "voteOption").equals("true");
+        boolean userFinished = ServletUtils.getJsonProperty(bodyJson, "userDone").equals("true");
         
         // Do request
         SettleSession settleSession = SettleSessionManager.getSettleSession(settleCode);
