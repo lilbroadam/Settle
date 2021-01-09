@@ -28,11 +28,16 @@ public class VotingServlet extends HttpServlet {
         String userId = parameters[1];
         String bodyJson = ServletUtils.getBody(request);
         String voteOption = ServletUtils.getJsonProperty(bodyJson, "voteOption");
-
+        boolean userFinished = ServletUtils.getJsonProperty(bodyJson, "voteOption").equals("true");
+        
         // Do request
         SettleSession settleSession = SettleSessionManager.getSettleSession(settleCode);
-        settleSession.submitVote(voteOption);
-
+        if (userFinished){
+            settleSession.userFinished(userId);
+        } else {
+            settleSession.submitVote(voteOption);
+        }
+        
         // Build response
         String json = (new Gson()).toJson(settleSession.toJson());
         response.setContentType("application/json");

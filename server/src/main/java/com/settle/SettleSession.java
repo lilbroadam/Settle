@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Random;
 
 // An object to keep track of a Settle session
 public class SettleSession {
@@ -25,6 +26,9 @@ public class SettleSession {
     private Map<String, Integer> voteMap;
     private String settleResult;
 
+    private int usersDone;
+    private List<String> finishedUsers;
+    
     // Create a Settle session with settle code settleCode
     public SettleSession(String settleCode, User hostUser, 
             SettleType settleType, boolean customChoicesAllowed) {
@@ -37,6 +41,9 @@ public class SettleSession {
         this.users = new ArrayList<>();
         this.options = new ArrayList<>();
         this.voteMap = new HashMap<>();
+
+        this.usersDone = 0;
+        //this.finishedUsers = new ArrayList<>();
 
         addUser(hostUser);
     }
@@ -77,6 +84,15 @@ public class SettleSession {
             } else {
                 // TODO Reject request
             }
+        }
+    }
+
+    public void userFinished(String user){
+        //finishedUsers.add(user);
+        usersDone++;
+
+        if (usersDone == users.size()){
+            settleResult = evaluateResult();
         }
     }
 
@@ -123,6 +139,21 @@ public class SettleSession {
         }
     }
 
+    public String evaluateResult() {
+        List<String> results = new ArrayList<>();
+        int mostVotes = Integer.MIN_VALUE;
+        for (Map.Entry<String,Integer> entry : voteMap.entrySet()){
+            if (entry.getValue() > mostVotes){
+                results.clear();
+                mostVotes = entry.getValue();
+                results.add(entry.getKey());
+            } else if (entry.getValue() == mostVotes){
+                results.add(entry.getKey()); 
+            }
+        }
+        return results.get((int)(Math.random() * (results.size() - 0 + 1)));
+    }
+    
     public JsonPrimitive getSettleCodeJson() {
         synchronized (this) {
             return new JsonPrimitive(settleCode);
