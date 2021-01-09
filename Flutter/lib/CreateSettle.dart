@@ -98,8 +98,12 @@ class _CreateSettle extends State<CreateSettle> {
                 color: themeChange.darkTheme ? Colors.white : Colors.black),
           ),
           onPressed: () {
-            Clipboard.setData(ClipboardData(text: settle.settleCode));
-            Share.share(settle.settleCode);
+            if (gotCode) {
+              Clipboard.setData(ClipboardData(text: settle.settleCode));
+              Share.share(settle.settleCode);
+            } else {
+              return null;
+            }
           },
         ),
         icon: Icon(
