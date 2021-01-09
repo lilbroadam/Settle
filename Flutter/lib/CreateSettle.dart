@@ -74,26 +74,15 @@ class _CreateSettle extends State<CreateSettle> {
         title: Center(
             child: Text(AppLocalizations.of(context).translate("getcode"))),
         context: context,
-        firstButton: MaterialButton(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(40),
-          ),
-          color: Colors.blue,
-          child: Text(
-            AppLocalizations.of(context).translate("golobby"),
-            style: TextStyle(color: Colors.white),
-          ),
-          onPressed: () {
-            Navigator.push(
-              // Go to the lobby
-              context,
-              MaterialPageRoute(
-                  builder: (context) => LobbyScreen(settle, hostName, true)),
-            );
-          },
-        ),
-        secondButton: MaterialButton(
+        firstButton: AppTheme.rawButton(context, "golobby", () {
+          Navigator.push(
+            // Go to the lobby
+            context,
+            MaterialPageRoute(
+                builder: (context) => LobbyScreen(settle, hostName, true)),
+          );
+        }),
+        secondButton: RaisedButton(
           elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
@@ -137,8 +126,6 @@ class _CreateSettle extends State<CreateSettle> {
   Widget build(BuildContext context) {
     final settleButtonWidth = 180.0;
     final settleButtonHeight = 45.0;
-    final settleButtonTextStyle =
-        TextStyle(fontSize: 16.4, color: Colors.white);
     final createSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
@@ -149,24 +136,7 @@ class _CreateSettle extends State<CreateSettle> {
               ? null
               : () async {
                   await showPopup();
-                })
-      // RaisedButton(
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.circular(25),
-      //   ),
-      //   color: Colors.blue,
-      //   // Only enable this button when at least 1 option has been selected
-      //   onPressed: !_isAnOptionSelected()
-      //       ? null
-      //       : () async {
-      //           await showPopup();
-      //         },
-      //   child: Text(
-      //     AppLocalizations.of(context).translate("createthissettle"),
-      //     style: settleButtonTextStyle
-      //   ),
-      // )
-      ,
+                }),
     );
     final settleButtonMargin = EdgeInsets.all(18.0);
 

@@ -7,7 +7,6 @@ import 'JoinSettle.dart';
 import 'app_localizations.dart';
 
 class NameScreen extends StatefulWidget {
-  // final bool darkTheme;
   final DarkThemeProvider themeChange;
   final bool newSession;
   final context;
