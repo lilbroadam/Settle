@@ -27,7 +27,8 @@ class _NameScreenState extends State<NameScreen> {
     } else {
       Navigator.push(
         widget.context,
-        MaterialPageRoute(builder: (context) => JoinSettle(name)),
+        MaterialPageRoute(
+            builder: (context) => JoinSettle(name, widget.themeChange)),
       );
     }
   }

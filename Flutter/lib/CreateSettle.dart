@@ -80,7 +80,8 @@ class _CreateSettle extends State<CreateSettle> {
             return Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => LobbyScreen(settle, hostName, true)),
+                  builder: (context) =>
+                      LobbyScreen(settle, hostName, true, widget.themeChange)),
             );
           } else {
             return null;

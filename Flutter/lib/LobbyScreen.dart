@@ -1,5 +1,6 @@
 import 'package:Settle/AppTheme.dart';
 import 'package:flutter/material.dart';
+import 'DarkThemeProvider.dart';
 import 'app_localizations.dart';
 import 'Animation.dart';
 import 'SettleScreen.dart';
@@ -9,8 +10,9 @@ class LobbyScreen extends StatefulWidget {
   final Settle settle;
   final String userName;
   final bool isHost;
+  final DarkThemeProvider themeChange;
 
-  const LobbyScreen(this.settle, this.userName, this.isHost);
+  const LobbyScreen(this.settle, this.userName, this.isHost, this.themeChange);
 
   @override
   _LobbyScreen createState() => _LobbyScreen(settle, userName, isHost);
@@ -38,7 +40,9 @@ class _LobbyScreen extends State<LobbyScreen> {
 
     // Go to the Settle screen
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SettleScreen(settle)));
+        context,
+        MaterialPageRoute(
+            builder: (context) => SettleScreen(settle, widget.themeChange)));
   }
 
   @override
@@ -157,8 +161,10 @@ class _LobbyScreen extends State<LobbyScreen> {
 
   Widget startButton() {
     return AppTheme.button(context, "startsettle", () {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => SettleScreen(settle)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SettleScreen(settle, widget.themeChange)));
     });
   }
 

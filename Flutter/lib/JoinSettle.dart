@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Settle/LobbyScreen.dart';
+import 'DarkThemeProvider.dart';
 import 'Server.dart';
 import 'Settle.dart';
 import 'AppTheme.dart';
@@ -7,7 +8,8 @@ import 'app_localizations.dart';
 
 class JoinSettle extends StatefulWidget {
   final String hostName;
-  JoinSettle(this.hostName);
+  final DarkThemeProvider themeChange;
+  JoinSettle(this.hostName, this.themeChange);
 
   @override
   _JoinSettle createState() => _JoinSettle(hostName);
@@ -27,7 +29,8 @@ class _JoinSettle extends State<JoinSettle> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => LobbyScreen(settle, userName, false)),
+            builder: (context) =>
+                LobbyScreen(settle, userName, false, widget.themeChange)),
       );
     } else {
       // TODO popup that the user couldn't be joined

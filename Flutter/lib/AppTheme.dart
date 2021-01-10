@@ -1,3 +1,4 @@
+import 'package:Settle/SettleScreen.dart';
 import 'package:flutter/material.dart';
 import 'app_localizations.dart';
 
@@ -28,7 +29,7 @@ class AppTheme {
       disabledColor: Colors.grey,
       textSelectionColor: isDarkTheme ? Colors.white : Colors.black,
       cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
-      canvasColor: isDarkTheme ? Color(0xff1E1E1E) : Colors.grey[50],
+      canvasColor: isDarkTheme ? Color(0xff1E1E1E) : Colors.grey[200],
       brightness: isDarkTheme ? Brightness.dark : Brightness.light,
       buttonTheme: Theme.of(context).buttonTheme.copyWith(
           colorScheme: isDarkTheme ? ColorScheme.dark() : ColorScheme.light()),
@@ -87,6 +88,71 @@ class AppTheme {
         style: TextStyle(color: Colors.white),
       ),
       onPressed: fun,
+    );
+  }
+
+  static SizedBox neumorphicButton() {
+    return SizedBox(
+      child: Container(
+          width: 100,
+          height: 100,
+          child: Icon(
+            Icons.android,
+            size: 80,
+          ),
+          decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.all(Radius.circular(40)),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey[500],
+                    offset: Offset(5, 5),
+                    blurRadius: 15,
+                    spreadRadius: 1),
+                BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(-5, -5),
+                    blurRadius: 5,
+                    spreadRadius: 1),
+              ])),
+    );
+  }
+
+  static SizedBox neumorphicButton2(
+    double width,
+    double height,
+    double size,
+    Color c,
+    Function fun,
+    bool isDark,
+  ) {
+    return SizedBox(
+      child: Container(
+          width: width,
+          height: height,
+          child: IconButton(
+            icon: Icon(
+              Icons.favorite,
+              color: c,
+              size: size,
+            ),
+            onPressed: fun,
+          ),
+          decoration: BoxDecoration(
+              color: isDark ? Colors.grey[850] : Colors.grey[300],
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              boxShadow: [
+                BoxShadow(
+                    color: isDark ? Colors.grey[900] : Colors.grey[500],
+                    offset: Offset(5, 5),
+                    blurRadius: 15,
+                    spreadRadius: 1),
+                BoxShadow(
+                    color: isDark ? Colors.grey[900] : Colors.white,
+                    offset: Offset(-5, -5),
+                    blurRadius: 5,
+                    spreadRadius: 1),
+              ])),
     );
   }
 }
