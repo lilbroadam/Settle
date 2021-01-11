@@ -26,9 +26,9 @@ public class SettleSession {
     private Map<String, Integer> voteMap;
     private String settleResult;
 
-    private int usersDone;
+    private int numUsersDone;
     private boolean inside;
-    private List<String> finishedUsers;
+    //private List<String> finishedUsers;
     
     // Create a Settle session with settle code settleCode
     public SettleSession(String settleCode, User hostUser, 
@@ -43,7 +43,7 @@ public class SettleSession {
         this.options = new ArrayList<>();
         this.voteMap = new HashMap<>();
 
-        this.usersDone = 0;
+        this.numUsersDone = 0;
         this.inside = false;
         //this.finishedUsers = new ArrayList<>();
 
@@ -91,11 +91,28 @@ public class SettleSession {
 
     public void userFinished(String user){
         //finishedUsers.add(user);
-        usersDone++;
+        numUsersDone++;
 
-        if (usersDone == users.size()){
+        if (numUsersDone == users.size()){
+            setSettleState(SettleState.COMPLETE);
             settleResult = evaluateResult();
         }
+    }
+
+    public String evaluateResult() {
+        List<String> results = new ArrayList<>();
+        inside = true;
+        int mostVotes = Integer.MIN_VALUE;
+        for (Map.Entry<String,Integer> entry : voteMap.entrySet()){
+            if (entry.getValue() > mostVotes){
+                results.clear();
+                mostVotes = entry.getValue();
+                results.add(entry.getKey());
+            } else if (entry.getValue() == mostVotes){
+                results.add(entry.getKey()); 
+            }
+        }
+        return results.get((int)(Math.random() * (results.size() - 0 + 1)));
     }
 
     public String getSettleCode() {
@@ -141,21 +158,6 @@ public class SettleSession {
         }
     }
 
-    public String evaluateResult() {
-        List<String> results = new ArrayList<>();
-        inside = true;
-        int mostVotes = Integer.MIN_VALUE;
-        for (Map.Entry<String,Integer> entry : voteMap.entrySet()){
-            if (entry.getValue() > mostVotes){
-                results.clear();
-                mostVotes = entry.getValue();
-                results.add(entry.getKey());
-            } else if (entry.getValue() == mostVotes){
-                results.add(entry.getKey()); 
-            }
-        }
-        return results.get((int)(Math.random() * (results.size() - 0 + 1)));
-    }
     
     public JsonPrimitive getSettleCodeJson() {
         synchronized (this) {
@@ -215,9 +217,9 @@ public class SettleSession {
             jsonObject.add("users", getUsersJson());
             jsonObject.add("options", getOptionsJson());
             jsonObject.add("result", getResultJson());
-            
-            jsonObject.add("usersDone", new JsonPrimitive(usersDone));
-            jsonObject.add("evaluated", new JsonPrimitive(inside));
+
+            //jsonObject.add("usersDone", new JsonPrimitive(usersDone));
+            //jsonObject.add("evaluated", new JsonPrimitive(inside));
             
             return jsonObject;
         }

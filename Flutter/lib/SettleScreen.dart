@@ -62,7 +62,6 @@ class SettleScreen extends StatefulWidget {
 
 class _SettleScreenState extends State<SettleScreen> {
   Settle settle;
-  bool done = false;
   TCardController _controller = TCardController();
 
   _SettleScreenState(this.settle);
@@ -114,8 +113,8 @@ class _SettleScreenState extends State<SettleScreen> {
                 setState(() {});
               },
               onEnd: () async {
-                done = true;
-                settle.submitVote('', done);
+                settle.submitVote(settle.options[0]);
+                settle.userFinished();
                 print('end');
               },
             ),
