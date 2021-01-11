@@ -1,4 +1,5 @@
 import 'package:Settle/AppTheme.dart';
+// import 'package:Settle/SettleScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -10,6 +11,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'app_localizations.dart';
 import 'DarkThemeProvider.dart';
 import 'NameScreen.dart';
+import 'package:fluttericon/typicons_icons.dart';
+import 'package:fluttericon/linecons_icons.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 
 void main() {
   LicenseRegistry.addLicense(() async* {
@@ -218,84 +222,150 @@ class _SettleHomePageState extends State<SettleHomePage> {
     final miscButtonSize = 30.0;
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Container(),
-            Expanded(
-              child: Stack(
+      appBar: AppBar(
+        // title: Align(
+        //   alignment: Alignment.center,
+        //   child: Text(
+        //     "Home",
+        //     textAlign: TextAlign.center,
+        //   ),
+        // ),
+        actions: [
+          Row(
+            children: [
+              Align(
                 alignment: Alignment.center,
+                child: Text(
+                  "Home",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(63),
+              ),
+              IconButton(
+                icon: Icon(
+                  FontAwesome5.share_alt,
+                  color: themeChange.darkTheme ? Colors.blue : Colors.black,
+                  size: 20,
+                ),
+                // tooltip: AppLocalizations.of(context).translate("tipback"),
+                onPressed: () {},
+              )
+            ],
+          )
+        ],
+        backgroundColor: themeChange.darkTheme ? Colors.black : Colors.white,
+        automaticallyImplyLeading: true,
+        elevation: 0,
+      ),
+      body: SafeArea(
+          child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(10),
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: themeChange.darkTheme ? Color(0xff1E1E1E) : Colors.white,
+                borderRadius: BorderRadius.circular(25)),
+            child: SizedBox(
+              height: 500,
+              width: double.infinity,
+              child: Column(
                 children: <Widget>[
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: themeChange.darkTheme
-                          ? Icon(
-                              Icons.brightness_3,
-                              color: themeChange.darkTheme
-                                  ? Colors.blueAccent
-                                  : Colors.grey[850],
-                            )
-                          : Icon(
-                              Icons.wb_sunny,
-                              color: themeChange.darkTheme
-                                  ? Colors.blueAccent
-                                  : Colors.grey[850],
+                  Expanded(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        Column(
+                          // Settle buttons in the center
+                          mainAxisSize:
+                              MainAxisSize.min, // Size to only needed space
+                          children: <Widget>[
+                            Container(
+                              margin: settleButtonMargin,
+                              child: AppTheme.button(context, "createsettle",
+                                  _createASettlePressed),
                             ),
-                      color: Colors.black,
-                      onPressed: () {
-                        setState(() {
-                          themeChange.darkTheme = !themeChange.darkTheme;
-                        });
-                      },
-                    ),
-                  ),
-                  Column(
-                    // Settle buttons in the center
-                    mainAxisSize: MainAxisSize.min, // Size to only needed space
-                    children: <Widget>[
-                      Container(
-                        margin: settleButtonMargin,
-                        child: AppTheme.button(
-                            context, "createsettle", _createASettlePressed),
-                      ),
-                      Container(
-                        margin: settleButtonMargin,
-                        child: AppTheme.button(
-                            context, "joinsettle", _joinASettlePressed),
-                      ),
-                      // AppTheme.neumorphicButton2(
-                      // 70, 70, Colors.grey[300], _createASettlePressed),
-                    ],
-                  ),
-                  Align(
-                    // Info button in the bottom left
-                    alignment: Alignment.bottomLeft,
-                    child: IconButton(
-                      icon: Icon(Icons.info),
-                      iconSize: miscButtonSize,
-                      tooltip:
-                          AppLocalizations.of(context).translate("settleinfo"),
-                      onPressed: _informationPressed,
-                    ),
-                  ),
-                  Align(
-                    // Settings button in the bottom right
-                    alignment: Alignment.bottomRight,
-                    child: IconButton(
-                      icon: Icon(Icons.settings),
-                      iconSize: miscButtonSize,
-                      tooltip:
-                          AppLocalizations.of(context).translate("setting"),
-                      onPressed: _settingsPressed,
+                            Container(
+                              margin: settleButtonMargin,
+                              child: AppTheme.button(
+                                  context, "joinsettle", _joinASettlePressed),
+                            ),
+                            // AppTheme.neumorphicButton2(
+                            // 70, 70, Colors.grey[300], _createASettlePressed),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: themeChange.darkTheme ? Color(0xff1E1E1E) : Colors.white,
+                borderRadius: BorderRadius.circular(25)),
+            child: SizedBox(
+              height: 150,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Typicons.info,
+                      size: 33,
+                      color: Colors.lightBlue[400],
+                    ),
+                    iconSize: miscButtonSize,
+                    tooltip:
+                        AppLocalizations.of(context).translate("settleinfo"),
+                    onPressed: _informationPressed,
+                  ),
+                  IconButton(
+                    icon: themeChange.darkTheme
+                        ? Icon(
+                            Icons.brightness_3,
+                            color: themeChange.darkTheme
+                                ? Colors.lightBlue[400]
+                                : Colors.grey[850],
+                            size: 30,
+                          )
+                        : Icon(
+                            FontAwesome5.lightbulb,
+                            color: themeChange.darkTheme
+                                ? Colors.lightBlue[400]
+                                : Colors.yellow[800],
+                          ),
+                    color: Colors.black,
+                    onPressed: () {
+                      setState(() {
+                        themeChange.darkTheme = !themeChange.darkTheme;
+                      });
+                    },
+                  ),
+                  // Settings button in the bottom right
+                  IconButton(
+                    icon: Icon(
+                      Linecons.cog,
+                      size: 35,
+                      color: Colors.lightBlue[400],
+                    ),
+                    iconSize: miscButtonSize,
+                    tooltip: AppLocalizations.of(context).translate("setting"),
+                    onPressed: _settingsPressed,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      )),
     );
   }
 }
