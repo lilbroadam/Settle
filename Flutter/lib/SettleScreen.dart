@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcard/tcard.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
+import 'ResultScreen.dart';
 import 'Settle.dart';
 
 List<Color> colors = [
@@ -117,6 +118,10 @@ class _SettleScreenState extends State<SettleScreen> {
                 done = true;
                 settle.submitVote('', done);
                 print('end');
+                Navigator.push( // Go to results screen
+                  context,
+                  MaterialPageRoute(builder: (context) => ResultScreen(settle))
+                );
               },
             ),
             SizedBox(height: 70),
