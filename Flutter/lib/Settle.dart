@@ -77,7 +77,7 @@ class Settle {
   }
 
   Future<Settle> userFinished() async {
-    Settle settle = await Server.submitVote("", true, settleCode);
+    Settle settle = await Server.submitVote("null", true, settleCode);
     _update(settle);
     return settle;
   } 
