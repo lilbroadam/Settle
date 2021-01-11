@@ -1,4 +1,3 @@
-import 'package:Settle/SettleScreen.dart';
 import 'package:flutter/material.dart';
 import 'app_localizations.dart';
 

@@ -52,7 +52,7 @@ class _LobbyScreen extends State<LobbyScreen> {
       Text(AppLocalizations.of(context).translate("entercustom"),
           style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
       Padding(
-        padding: const EdgeInsets.all(18.0),
+        padding: const EdgeInsets.all(15.0),
         child: TextField(
           controller: myControler,
           decoration: InputDecoration(
@@ -67,6 +67,7 @@ class _LobbyScreen extends State<LobbyScreen> {
           _validate = true;
         } else {
           await settle.addOption(myControler.text);
+          // setState(() {});
           myControler = TextEditingController();
           _validate = false;
         }
@@ -117,31 +118,64 @@ class _LobbyScreen extends State<LobbyScreen> {
                 textAlign: TextAlign.center,
               ),
               Padding(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.only(bottom: 10),
               ),
-              Container(
-                  height: 200,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Container(
-                            margin: const EdgeInsets.all(10.0),
-                            child: scroller(
-                                settle.users,
-                                AppLocalizations.of(context)
-                                    .translate("lobbyguests"))),
-                      ),
-                      Expanded(
-                        child: Container(
-                            margin: const EdgeInsets.all(10.0),
-                            child: scroller(
-                                settle.options,
-                                AppLocalizations.of(context)
-                                    .translate("lobbyoptions"))),
-                      )
-                    ],
-                  )),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: Column(
+                      children: [
+                        Text(
+                            AppLocalizations.of(context)
+                                .translate("lobbyguests"),
+                            style: TextStyle(fontSize: 20)),
+                        Padding(padding: EdgeInsets.all(3)),
+                        Expanded(
+                            child: ListView.builder(
+                                itemCount: settle.users.length,
+                                itemBuilder: (context, index) {
+                                  return _CardsItem(
+                                      widget.themeChange.darkTheme,
+                                      str: settle
+                                          .users[index % settle.users.length]);
+                                }))
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    child: Padding(
+                      padding: EdgeInsets.all(3),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: Column(
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate("lobbyoptions"),
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(3),
+                        ),
+                        Expanded(
+                            child: ListView.builder(
+                                itemCount: settle.options.length,
+                                itemBuilder: (context, index) {
+                                  return _CardsItem(
+                                      widget.themeChange.darkTheme,
+                                      str: settle.options[
+                                          index % settle.options.length]);
+                                }))
+                      ],
+                    ),
+                  ),
+                ],
+              ),
               if (settle.customAllowed) customBox,
               Container(height: 75),
               if (isHost)
@@ -149,7 +183,7 @@ class _LobbyScreen extends State<LobbyScreen> {
               else
                 Column(children: [
                   animation(),
-                  Container(height: 50),
+                  Container(height: 80),
                   Text(AppLocalizations.of(context).translate("waithost"),
                       style: TextStyle(fontSize: 15),
                       textAlign: TextAlign.center)
@@ -255,6 +289,42 @@ class _LobbyScreen extends State<LobbyScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _CardsItem extends StatelessWidget {
+  final String str;
+  final bool isDark;
+  const _CardsItem(this.isDark, {Key key, this.str}) : super(key: key);
+
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(5),
+      child: Container(
+        height: 35,
+        decoration: BoxDecoration(
+            color: isDark ? Colors.grey[850] : Colors.grey[200],
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            boxShadow: [
+              BoxShadow(
+                  color: isDark ? Colors.grey[900] : Colors.grey[500],
+                  offset: Offset(2, 2),
+                  blurRadius: 5,
+                  spreadRadius: 1),
+              BoxShadow(
+                  color: isDark ? Colors.grey[800] : Colors.white70,
+                  offset: Offset(-2, -2),
+                  blurRadius: 5,
+                  spreadRadius: 1),
+            ]),
+        child: Text(
+          str,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        padding: EdgeInsets.only(top: 5),
       ),
     );
   }
