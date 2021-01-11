@@ -222,14 +222,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
     final miscButtonSize = 30.0;
 
     return Scaffold(
+      backgroundColor: themeChange.darkTheme ? Colors.black : Colors.grey[200],
       appBar: AppBar(
-        // title: Align(
-        //   alignment: Alignment.center,
-        //   child: Text(
-        //     "Home",
-        //     textAlign: TextAlign.center,
-        //   ),
-        // ),
         actions: [
           Row(
             children: [
@@ -266,6 +260,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
             padding: EdgeInsets.all(10),
           ),
           Container(
+            margin: EdgeInsets.only(left: 5, right: 5),
             decoration: BoxDecoration(
                 color: themeChange.darkTheme ? Color(0xff1E1E1E) : Colors.white,
                 borderRadius: BorderRadius.circular(25)),
@@ -293,8 +288,6 @@ class _SettleHomePageState extends State<SettleHomePage> {
                               child: AppTheme.button(
                                   context, "joinsettle", _joinASettlePressed),
                             ),
-                            // AppTheme.neumorphicButton2(
-                            // 70, 70, Colors.grey[300], _createASettlePressed),
                           ],
                         ),
                       ],
@@ -308,6 +301,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
             padding: EdgeInsets.all(10),
           ),
           Container(
+            margin: EdgeInsets.only(left: 5, right: 5),
             decoration: BoxDecoration(
                 color: themeChange.darkTheme ? Color(0xff1E1E1E) : Colors.white,
                 borderRadius: BorderRadius.circular(25)),
@@ -330,7 +324,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                   IconButton(
                     icon: themeChange.darkTheme
                         ? Icon(
-                            Icons.brightness_3,
+                            FontAwesome5.moon,
                             color: themeChange.darkTheme
                                 ? Colors.lightBlue[400]
                                 : Colors.grey[850],

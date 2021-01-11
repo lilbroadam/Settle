@@ -28,9 +28,7 @@ class AppTheme {
       disabledColor: Colors.grey,
       textSelectionColor: isDarkTheme ? Colors.white : Colors.black,
       cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
-      // canvasColor: isDarkTheme ? Color(0xff1E1E1E) : Colors.grey[200],
-      canvasColor: isDarkTheme ? Colors.black : Colors.grey[200],
-
+      canvasColor: isDarkTheme ? Color(0xff1E1E1E) : Colors.grey[200],
       brightness: isDarkTheme ? Brightness.dark : Brightness.light,
       buttonTheme: Theme.of(context).buttonTheme.copyWith(
           colorScheme: isDarkTheme ? ColorScheme.dark() : ColorScheme.light()),
