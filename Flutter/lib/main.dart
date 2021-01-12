@@ -110,14 +110,15 @@ class _SettleHomePageState extends State<SettleHomePage> {
                 leading: Icon(Icons.info_outline),
                 title: Text("Settle"),
                 subtitle: Text(
-                    AppLocalizations.of(context).translate("version") + " 1.0"),
+                  AppLocalizations.of(context).translate("version") + " 1.0"
+                ),
               ),
               Material(
                 child: ListTile(
                   leading: Icon(MdiIcons.github),
                   title: Text(AppLocalizations.of(context).translate("git")),
                   subtitle:
-                      Text(AppLocalizations.of(context).translate("gitsub")),
+                    Text(AppLocalizations.of(context).translate("gitsub")),
                   onTap: () async {
                     const url = "https://github.com/lilbroadam/Settle";
                     if (await canLaunch(url)) {
@@ -132,9 +133,9 @@ class _SettleHomePageState extends State<SettleHomePage> {
                 child: ListTile(
                   leading: Icon(MdiIcons.email),
                   title:
-                      Text(AppLocalizations.of(context).translate("contact")),
+                    Text(AppLocalizations.of(context).translate("contact")),
                   subtitle: Text(
-                      AppLocalizations.of(context).translate("contactsub")),
+                    AppLocalizations.of(context).translate("contactsub")),
                   onTap: () async {
                     const emailAdrees = "settleitapplication@gmail.com";
                     const subject = "Client Request";
@@ -154,9 +155,9 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       size: 25,
                     ),
                     title:
-                        Text(AppLocalizations.of(context).translate("support")),
+                      Text(AppLocalizations.of(context).translate("support")),
                     subtitle: Text(
-                        AppLocalizations.of(context).translate("supportsub")),
+                      AppLocalizations.of(context).translate("supportsub")),
                     onTap: () {}),
               )
             ],
@@ -172,11 +173,6 @@ class _SettleHomePageState extends State<SettleHomePage> {
   }
 
   @override
-  // This method is rerun every time setState is called.
-  //
-  // The Flutter framework has been optimized to make rerunning build methods
-  // fast, so that you can just rebuild anything that needs updating rather
-  // than having to individually change instances of widgets.
   Widget build(BuildContext context) {
     final settleButtonWidth = 150.0;
     final settleButtonHeight = 45.0;
@@ -196,7 +192,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
         },
         text: ["Be everyting...", "Be Settle"],
         textStyle: GoogleFonts.lobster(
-            fontSize: 40, textStyle: TextStyle(color: Colors.lightBlue)),
+          fontSize: 40, textStyle: TextStyle(color: Colors.lightBlue)),
         textAlign: TextAlign.start,
       ),
     );
@@ -211,7 +207,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
         color: Colors.blue,
         onPressed: _createASettlePressed,
         child: Text(AppLocalizations.of(context).translate("createsettle"),
-            style: settleButtonTextStyle),
+          style: settleButtonTextStyle),
       ),
     );
     final joinSettleButton = SizedBox(
@@ -224,7 +220,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
         color: Colors.blue,
         onPressed: _joinASettlePressed,
         child: Text(AppLocalizations.of(context).translate("joinsettle"),
-            style: settleButtonTextStyle),
+          style: settleButtonTextStyle),
       ),
     );
     final settleButtonMargin = EdgeInsets.all(18.0);
@@ -271,7 +267,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       icon: Icon(Icons.info),
                       iconSize: miscButtonSize,
                       tooltip:
-                          AppLocalizations.of(context).translate("settleinfo"),
+                        AppLocalizations.of(context).translate("settleinfo"),
                       onPressed: _informationPressed,
                     ),
                   ),
@@ -282,7 +278,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       icon: Icon(Icons.settings),
                       iconSize: miscButtonSize,
                       tooltip:
-                          AppLocalizations.of(context).translate("setting"),
+                        AppLocalizations.of(context).translate("setting"),
                       onPressed: _settingsPressed,
                     ),
                   ),

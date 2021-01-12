@@ -50,7 +50,7 @@ class _JoinSettle extends State<JoinSettle> {
         color: Colors.blue,
         onPressed: _joinASettlePressed,
         child: Text(AppLocalizations.of(context).translate("joinasettle"),
-            style: settleButtonTextStyle),
+          style: settleButtonTextStyle),
       ),
     );
     final settleButtonMargin = EdgeInsets.all(18.0);

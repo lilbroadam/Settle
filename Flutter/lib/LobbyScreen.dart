@@ -32,8 +32,10 @@ class _LobbyScreen extends State<LobbyScreen> {
 
   // Call this function when 'Start Settle' is pressed
   void startSettlePressed() async {
-    await settle.setState(SettleState.settling);
-    print('User started the Settle');
+    if (isHost) {
+      await settle.setState(SettleState.settling);
+      print('User started the Settle');
+    }
     
     // Go to the Settle screen
     Navigator.push(
@@ -91,7 +93,12 @@ class _LobbyScreen extends State<LobbyScreen> {
           IconButton(
             color: Colors.black,
             icon: Icon(Icons.refresh), 
-            onPressed: () async {await settle.update();setState((){});}
+            onPressed: () async {
+              await settle.update();
+              setState((){});
+              if (settle.settleState == SettleState.settling)
+                startSettlePressed();
+            }
         )]
       ),
       body: Center(
@@ -128,31 +135,35 @@ class _LobbyScreen extends State<LobbyScreen> {
               ),
               if (settle.customAllowed) customBox,
               Container(height: 75),
-              isHost ? 
-                standardButton('Start Settling', startSettlePressed) :
+              if (isHost)
+                standardButton('Start Settling', startSettlePressed)
+              else
                 Column(
                   children: [
-                    animation(), Container(height: 50), Text('Waiting on Host', style: TextStyle(fontSize: 15), textAlign: TextAlign.center)
+                    animation(),
+                    Container(height: 50),
+                    Text('Waiting on Host',
+                      style: TextStyle(fontSize: 15),
+                      textAlign: TextAlign.center
+                    )
                   ]
                 )
             ],
-          )),
-        ));
-  }
-
-  void startSettle() {
-    print('it works');
+          )
+        ),
+      )
+    );
   }
 
   Widget scroller(List<String> l, String name) {
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
-            title: Text('$name:', style: TextStyle(fontSize: 22)),
-            titleSpacing: 0,
-            pinned: true,
-            toolbarHeight: 30,
-            leading: Container()),
+          title: Text('$name:', style: TextStyle(fontSize: 22)),
+          titleSpacing: 0,
+          pinned: true,
+          toolbarHeight: 30,
+          leading: Container()),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
@@ -161,8 +172,8 @@ class _LobbyScreen extends State<LobbyScreen> {
                 color: Colors.lightBlue,
                 height: 22,
                 child: Text('${l[index]}',
-                    style: TextStyle(fontSize: 18),
-                    textAlign: TextAlign.center),
+                  style: TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center),
               );
             },
             childCount: l.length,
@@ -210,14 +221,14 @@ class _LobbyScreen extends State<LobbyScreen> {
             period: animationPosition,
             backgroundWaveVerticalOffset: 90 - animationPosition * 200,
             foregroundWaveVerticalOffset: 90 +
-                reversingSplitParameters(
-                  position: animationPosition,
-                  numberBreaks: 6,
-                  parameterBase: 8.0,
-                  parameterVariation: 8.0,
-                  reversalPoint: 0.75,
-                ) -
-                animationPosition * 200,
+              reversingSplitParameters(
+                position: animationPosition,
+                numberBreaks: 6,
+                parameterBase: 8.0,
+                parameterVariation: 8.0,
+                reversalPoint: 0.75,
+              ) -
+              animationPosition * 200,
             waveHeight: reversingSplitParameters(
               position: animationPosition,
               numberBreaks: 5,
