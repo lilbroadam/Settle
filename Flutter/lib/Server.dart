@@ -167,15 +167,11 @@ class Server {
       })
     );
 
-    
-
     Settle responseSettle;
     Map<String, dynamic> responseJson = jsonDecode(response.body);
     if (response.statusCode == HttpStatus.ok) {
       responseSettle = Settle.fromJson(jsonDecode(response.body));
       settleCode = responseSettle.settleCode;
-      print('Joined user to Settle #$settleCode');
-      print('Current state of Settle: $responseSettle');
     } else {
       // TODO error handling
       print('ERROR: ${responseJson['error']}');

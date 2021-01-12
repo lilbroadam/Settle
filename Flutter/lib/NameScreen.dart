@@ -34,25 +34,25 @@ class NameScreen extends StatelessWidget {
       width: width,
       height: height,
       child: RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25.0),
-              side: BorderSide(color: Colors.white)),
-          color: Colors.blue,
-          child: Icon(
-            Icons.arrow_forward_outlined,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            if (_formKey.currentState.validate()) {
-              _navigate(myControler.text);
-            }
-          }),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          side: BorderSide(color: Colors.white)),
+        color: Colors.blue,
+        child: Icon(
+          Icons.arrow_forward_outlined,
+          color: Colors.white,),
+        onPressed: () {
+          if (_formKey.currentState.validate()) {
+            _navigate(myControler.text);
+          }
+        }
+      ),
     );
 
     return Container(
       decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/background.png'), fit: BoxFit.cover)),
+        image: DecorationImage(
+          image: AssetImage('assets/background.png'), fit: BoxFit.cover)),
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -81,7 +81,7 @@ class NameScreen extends StatelessWidget {
               Column(
                 children: <Widget>[
                   Text(AppLocalizations.of(context).translate("getname"),
-                      style: GoogleFonts.notoSansKR(fontSize: 25)),
+                    style: GoogleFonts.notoSansKR(fontSize: 25)),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: TextFormField(
