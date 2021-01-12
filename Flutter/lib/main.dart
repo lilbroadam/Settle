@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'app_localizations.dart';
 import 'DarkThemeProvider.dart';
 import 'NameScreen.dart';
+import 'OptionsScreen.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
@@ -60,7 +61,7 @@ class _SettleAppState extends State<SettleApp> {
             ],
             supportedLocales: [
               const Locale('en', ''), // English, no country code
-              const Locale('es', ''), // Arabic, no country code
+              const Locale('es', ''), // Spanish, no country code
             ],
             localeResolutionCallback: (locale, suportedLocales) {
               for (var suportedLocale in suportedLocales) {
@@ -73,6 +74,8 @@ class _SettleAppState extends State<SettleApp> {
               // index 0 == English
               // index 1 == Spanish
               // We'll later add buttons to chnage language from the app
+              // Change this number to 1 or 0 depending on the function called
+              // at the button
               return suportedLocales.elementAt(0);
             },
             title: 'Settle',
@@ -214,6 +217,10 @@ class _SettleHomePageState extends State<SettleHomePage> {
   // Called when the settings button is pressed
   void _settingsPressed() {
     // TODO
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OptionsScreen()),
+    );
   }
 
   Widget build(BuildContext context) {
