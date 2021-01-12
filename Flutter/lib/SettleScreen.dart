@@ -38,7 +38,8 @@ class _SettleScreenState extends State<SettleScreen> {
               controller: _controller,
               onForward: (index, info) {
                 print(info.direction);
-                settle.submitVote(settleCards[info.cardIndex].title);
+                if (info.direction == SwipDirection.Right)
+                  settle.submitVote(settleCards[info.cardIndex].title);
                 setState(() {});
               },
               onBack: (index) {
