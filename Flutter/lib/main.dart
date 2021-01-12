@@ -1,10 +1,20 @@
-import 'package:Settle/NameScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'app_localizations.dart';
+import 'NameScreen.dart';
 
 void main() {
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString('google_fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });
   runApp(SettleApp());
 }
 
@@ -13,6 +23,30 @@ class SettleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''), // English, no country code
+        const Locale('es', ''), // Arabic, no country code
+      ],
+      localeResolutionCallback: (locale, suportedLocales) {
+        for (var suportedLocale in suportedLocales) {
+          if (suportedLocale.languageCode == locale.languageCode &&
+              suportedLocale.countryCode == locale.countryCode) {
+            return suportedLocale;
+          }
+        }
+        // Change to:
+        // index 0 == English
+        // index 1 == Spanish
+        // We'll later add buttons to chnage language from the app
+        return suportedLocales.elementAt(0);
+      },
       title: 'Settle',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -26,23 +60,14 @@ class SettleApp extends StatelessWidget {
 class SettleHomePage extends StatefulWidget {
   SettleHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
-  // From dart.dev: The => expr syntax is a shorthand for { return expr; }
   @override
   _SettleHomePageState createState() => _SettleHomePageState();
 }
 
 class _SettleHomePageState extends State<SettleHomePage> {
+
   // Called when 'Create a Settle' button is pressed
   void _createASettlePressed() {
     Navigator.push(
@@ -84,13 +109,16 @@ class _SettleHomePageState extends State<SettleHomePage> {
               ListTile(
                 leading: Icon(Icons.info_outline),
                 title: Text("Settle"),
-                subtitle: Text("Version 1.0"),
+                subtitle: Text(
+                  AppLocalizations.of(context).translate("version") + " 1.0"
+                ),
               ),
               Material(
                 child: ListTile(
                   leading: Icon(MdiIcons.github),
-                  title: Text("View Source Code on Github"),
-                  subtitle: Text("Contribute or open issues"),
+                  title: Text(AppLocalizations.of(context).translate("git")),
+                  subtitle:
+                    Text(AppLocalizations.of(context).translate("gitsub")),
                   onTap: () async {
                     const url = "https://github.com/lilbroadam/Settle";
                     if (await canLaunch(url)) {
@@ -104,8 +132,10 @@ class _SettleHomePageState extends State<SettleHomePage> {
               Material(
                 child: ListTile(
                   leading: Icon(MdiIcons.email),
-                  title: Text("Contact Us"),
-                  subtitle: Text("Report bugs, suggestions, or concerns"),
+                  title:
+                    Text(AppLocalizations.of(context).translate("contact")),
+                  subtitle: Text(
+                    AppLocalizations.of(context).translate("contactsub")),
                   onTap: () async {
                     const emailAdrees = "settleitapplication@gmail.com";
                     const subject = "Client Request";
@@ -117,6 +147,18 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     }
                   },
                 ),
+              ),
+              Material(
+                child: ListTile(
+                    leading: Icon(
+                      MdiIcons.currencyUsd,
+                      size: 25,
+                    ),
+                    title:
+                      Text(AppLocalizations.of(context).translate("support")),
+                    subtitle: Text(
+                      AppLocalizations.of(context).translate("supportsub")),
+                    onTap: () {}),
               )
             ],
           ),
@@ -131,17 +173,28 @@ class _SettleHomePageState extends State<SettleHomePage> {
   }
 
   @override
-  // This method is rerun every time setState is called.
-  //
-  // The Flutter framework has been optimized to make rerunning build methods
-  // fast, so that you can just rebuild anything that needs updating rather
-  // than having to individually change instances of widgets.
   Widget build(BuildContext context) {
     final settleButtonWidth = 150.0;
     final settleButtonHeight = 45.0;
     final settleButtonTextStyle = new TextStyle(
       fontSize: 16.4,
       color: Colors.white,
+    );
+
+    final animatedText = SizedBox(
+      width: 250.0,
+      height: 50,
+      child: TypewriterAnimatedTextKit(
+        pause: Duration(milliseconds: 500),
+        speed: Duration(milliseconds: 300),
+        onTap: () {
+          print("Tap Event");
+        },
+        text: ["Be everyting...", "Be Settle"],
+        textStyle: GoogleFonts.lobster(
+          fontSize: 40, textStyle: TextStyle(color: Colors.lightBlue)),
+        textAlign: TextAlign.start,
+      ),
     );
 
     final createSettleButton = SizedBox(
@@ -153,7 +206,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
         ),
         color: Colors.blue,
         onPressed: _createASettlePressed,
-        child: Text('Create a Settle', style: settleButtonTextStyle),
+        child: Text(AppLocalizations.of(context).translate("createsettle"),
+          style: settleButtonTextStyle),
       ),
     );
     final joinSettleButton = SizedBox(
@@ -165,7 +219,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
         ),
         color: Colors.blue,
         onPressed: _joinASettlePressed,
-        child: Text('Join a Settle', style: settleButtonTextStyle),
+        child: Text(AppLocalizations.of(context).translate("joinsettle"),
+          style: settleButtonTextStyle),
       ),
     );
     final settleButtonMargin = EdgeInsets.all(18.0);
@@ -181,8 +236,12 @@ class _SettleHomePageState extends State<SettleHomePage> {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container(
+              height: 10,
+            ),
+            animatedText,
             Expanded(
               child: Stack(
                 alignment: Alignment.center,
@@ -198,7 +257,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       Container(
                         margin: settleButtonMargin,
                         child: joinSettleButton,
-                      )
+                      ),
                     ],
                   ),
                   Align(
@@ -207,7 +266,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     child: IconButton(
                       icon: Icon(Icons.info),
                       iconSize: miscButtonSize,
-                      tooltip: 'Information about Settle',
+                      tooltip:
+                        AppLocalizations.of(context).translate("settleinfo"),
                       onPressed: _informationPressed,
                     ),
                   ),
@@ -217,7 +277,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     child: IconButton(
                       icon: Icon(Icons.settings),
                       iconSize: miscButtonSize,
-                      tooltip: 'Settle settings',
+                      tooltip:
+                        AppLocalizations.of(context).translate("setting"),
                       onPressed: _settingsPressed,
                     ),
                   ),

@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 // An object to keep track of a Settle session
 public class SettleSession {
@@ -20,6 +22,8 @@ public class SettleSession {
     private SettleState settleState;
     private List<User> users;
     private List<String> options;
+    private Map<String, Integer> voteMap;
+    private String settleResult;
 
     // Create a Settle session with settle code settleCode
     public SettleSession(String settleCode, User hostUser, 
@@ -32,6 +36,7 @@ public class SettleSession {
         this.settleState = SettleState.LOBBY;
         this.users = new ArrayList<>();
         this.options = new ArrayList<>();
+        this.voteMap = new HashMap<>();
 
         addUser(hostUser);
     }
@@ -58,6 +63,20 @@ public class SettleSession {
     public void setSettleState(SettleState state) {
         synchronized (this) {
             settleState = state;
+        }
+    }
+
+    public void submitVote(String voteOption) {
+        synchronized (this) {
+            if (settleState == SettleState.SETTLING) {
+                Integer i = voteMap.get(voteOption);
+                if (i == null)
+                    voteMap.put(voteOption, 1);
+                else
+                    voteMap.put(voteOption, i + 1);
+            } else {
+                // TODO Reject request
+            }
         }
     }
 
@@ -146,6 +165,12 @@ public class SettleSession {
         }
     }
 
+    public JsonPrimitive getResultJson() {
+        synchronized (this) {
+            return new JsonPrimitive(settleResult == null ? "" : settleResult);
+        }
+    }
+
     public JsonObject toJson() {
         synchronized (this) {
             JsonObject jsonObject = new JsonObject();
@@ -155,6 +180,7 @@ public class SettleSession {
             jsonObject.add("settleState", getSettleStateJson());
             jsonObject.add("users", getUsersJson());
             jsonObject.add("options", getOptionsJson());
+            jsonObject.add("result", getResultJson());
 
             return jsonObject;
         }

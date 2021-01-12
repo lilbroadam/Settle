@@ -8,6 +8,7 @@ import 'package:share/share.dart';
 import 'LobbyScreen.dart';
 import 'Server.dart';
 import 'Settle.dart';
+import 'app_localizations.dart';
 
 typedef void SettleTypePressedCallback(SettleType settleType);
 typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
@@ -66,7 +67,8 @@ class _CreateSettle extends State<CreateSettle> {
 
   Future<void> showPopup() async {
     await animated_dialog_box.showScaleAlertBox(
-        title: Center(child: Text("Here is your Settle Code:")),
+        title: Center(
+            child: Text(AppLocalizations.of(context).translate("getcode"))),
         context: context,
         firstButton: MaterialButton(
           shape: RoundedRectangleBorder(
@@ -74,12 +76,11 @@ class _CreateSettle extends State<CreateSettle> {
           ),
           color: Colors.blue,
           child: Text(
-            'Go to Lobby',
+            AppLocalizations.of(context).translate("golobby"),
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
-            // Go to the lobby
-            Navigator.push(
+            Navigator.push( // Go to the lobby
               context,
               MaterialPageRoute(
                 builder: (context) => LobbyScreen(settle, hostName, true)
@@ -92,7 +93,7 @@ class _CreateSettle extends State<CreateSettle> {
             borderRadius: BorderRadius.circular(40),
           ),
           color: Colors.white,
-          child: Text('Share or Copy'),
+          child: Text(AppLocalizations.of(context).translate("sharecopy")),
           onPressed: () {
             Clipboard.setData(ClipboardData(text: settle.settleCode));
             Share.share(settle.settleCode);
@@ -143,7 +144,8 @@ class _CreateSettle extends State<CreateSettle> {
                 await showPopup();
               },
 
-        child: Text('Create this Settle', style: settleButtonTextStyle),
+        child: Text(AppLocalizations.of(context).translate("createthissettle"),
+            style: settleButtonTextStyle),
       ),
     );
     final settleButtonMargin = EdgeInsets.all(18.0);
@@ -242,7 +244,7 @@ class _RadioButton extends State<RadioButton> {
     return Column(
       children: <Widget>[
         ListTile(
-          title: const Text('Movies'),
+          title: Text(AppLocalizations.of(context).translate("movies")),
           leading: Radio(
             value: SettleType.movies,
             groupValue: _currentOption,
@@ -253,7 +255,7 @@ class _RadioButton extends State<RadioButton> {
           ),
         ),
         ListTile(
-          title: const Text('Restaurants'),
+          title: Text(AppLocalizations.of(context).translate("rest")),
           leading: Radio(
             value: SettleType.restaurants,
             groupValue: _currentOption,
@@ -264,7 +266,7 @@ class _RadioButton extends State<RadioButton> {
           ),
         ),
         ListTile(
-          title: const Text('Custom choices only'),
+          title: Text(AppLocalizations.of(context).translate("customonly")),
           leading: Radio(
             value: SettleType.custom,
             groupValue: _currentOption,

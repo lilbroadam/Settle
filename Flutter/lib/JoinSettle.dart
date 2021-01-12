@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:Settle/LobbyScreen.dart';
 import 'Server.dart';
 import 'Settle.dart';
+import 'app_localizations.dart';
 
 class JoinSettle extends StatefulWidget {
   final String hostName;
@@ -23,8 +24,8 @@ class _JoinSettle extends State<JoinSettle> {
     Settle settle = await Server.joinSettle(userName, joinSettleCode);
     if (settle != null) {
       Navigator.push(
-          context,
-          MaterialPageRoute(
+        context,
+        MaterialPageRoute(
             builder: (context) => LobbyScreen(settle, userName, false)),
       );
     } else {
@@ -48,7 +49,8 @@ class _JoinSettle extends State<JoinSettle> {
         ),
         color: Colors.blue,
         onPressed: _joinASettlePressed,
-        child: Text('Join a Settle', style: settleButtonTextStyle),
+        child: Text(AppLocalizations.of(context).translate("joinasettle"),
+          style: settleButtonTextStyle),
       ),
     );
     final settleButtonMargin = EdgeInsets.all(18.0);
@@ -75,9 +77,11 @@ class _JoinSettle extends State<JoinSettle> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Enter a', style: TextStyle(fontSize: 25)),
-            Text('code to join', style: TextStyle(fontSize: 25)),
-            Text('a Settle', style: TextStyle(fontSize: 25)),
+            Text(
+              AppLocalizations.of(context).translate("entercode"),
+              style: TextStyle(fontSize: 25),
+              textAlign: TextAlign.center,
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: TextField(

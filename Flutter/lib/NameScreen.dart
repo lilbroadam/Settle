@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'CreateSettle.dart';
 import 'JoinSettle.dart';
+import 'app_localizations.dart';
 
 class NameScreen extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
+
   final bool newSession;
   final context;
   NameScreen(this.newSession, this.context);
@@ -31,21 +34,25 @@ class NameScreen extends StatelessWidget {
       width: width,
       height: height,
       child: RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25.0),
-              side: BorderSide(color: Colors.white)),
-          color: Colors.blue,
-          child: Icon(
-            Icons.arrow_forward_outlined,
-            color: Colors.white,
-          ),
-          onPressed: () => _navigate(myControler.text)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          side: BorderSide(color: Colors.white)),
+        color: Colors.blue,
+        child: Icon(
+          Icons.arrow_forward_outlined,
+          color: Colors.white,),
+        onPressed: () {
+          if (_formKey.currentState.validate()) {
+            _navigate(myControler.text);
+          }
+        }
+      ),
     );
 
     return Container(
       decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/background.png'), fit: BoxFit.cover)),
+        image: DecorationImage(
+          image: AssetImage('assets/background.png'), fit: BoxFit.cover)),
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -59,24 +66,38 @@ class NameScreen extends StatelessWidget {
               color: Colors.white,
               size: 30,
             ),
+            tooltip: AppLocalizations.of(context).translate("tipback"),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
         ),
         backgroundColor: Colors.transparent,
-        body: SafeArea(
+        body: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Text('Enter your name',
-                      style: GoogleFonts.notoSansKR(fontSize: 25)),
+                  Text(AppLocalizations.of(context).translate("getname"),
+                    style: GoogleFonts.notoSansKR(fontSize: 25)),
                   Padding(
                     padding: const EdgeInsets.all(16),
-                    child: TextField(
+                    child: TextFormField(
                       controller: myControler,
+                      textAlign: TextAlign.center,
+                      validator: (text) {
+                        myControler.text = text.trim();
+                        text = text.trim();
+                        if (text.isEmpty) {
+                          return AppLocalizations.of(context)
+                              .translate("invalidname");
+                        } else {
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(),
                     ),
                   ),
                   Container(

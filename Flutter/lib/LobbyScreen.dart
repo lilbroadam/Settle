@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:Settle/Animation.dart';
+import 'Animation.dart';
+import 'SettleScreen.dart';
 import 'Settle.dart';
+import 'app_localizations.dart';
 
 class LobbyScreen extends StatefulWidget {
   final Settle settle;
@@ -23,24 +25,25 @@ class _LobbyScreen extends State<LobbyScreen> {
   var myControler = TextEditingController();
   bool _validate = false;
 
-  _LobbyScreen(this.settle, this.userName, this.isHost) :
-    this.hostName = settle.users.first,
-    this.isCustom = settle.customAllowed,
-    this.code = settle.settleCode;
+  _LobbyScreen(this.settle, this.userName, this.isHost)
+      : this.hostName = settle.users.first,
+        this.isCustom = settle.customAllowed,
+        this.code = settle.settleCode;
 
   // Call this function when 'Start Settle' is pressed
   void startSettlePressed() async {
-    await settle.setState(SettleState.settling);
-    print('User started the Settle');
+    if (isHost) {
+      await settle.setState(SettleState.settling);
+      print('User started the Settle');
+    }
     
-    // TODO Go to the Settle screen
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     context,
-    //     builder: (context) => SettleScreen();
-    //   )
-    // );
+    // Go to the Settle screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SettleScreen(settle)
+      )
+    );
   }
 
   @override
@@ -70,7 +73,7 @@ class _LobbyScreen extends State<LobbyScreen> {
           onPressed: () async {
             if (myControler.text.isEmpty){
               _validate = true;
-            }else {
+            } else {
               await settle.addOption(myControler.text);
               myControler = TextEditingController();
               _validate = false;
@@ -90,7 +93,12 @@ class _LobbyScreen extends State<LobbyScreen> {
           IconButton(
             color: Colors.black,
             icon: Icon(Icons.refresh), 
-            onPressed: () async {await settle.update();setState((){});}
+            onPressed: () async {
+              await settle.update();
+              setState((){});
+              if (settle.settleState == SettleState.settling)
+                startSettlePressed();
+            }
         )]
       ),
       body: Center(
@@ -98,8 +106,13 @@ class _LobbyScreen extends State<LobbyScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('Welcome', style: TextStyle(fontSize: 30), textAlign: TextAlign.center),
-              Text('$userName', style: TextStyle(fontSize: 30), textAlign: TextAlign.center,),
+              Text(AppLocalizations.of(context).translate("welcome"),
+                  style: TextStyle(fontSize: 30), textAlign: TextAlign.center),
+              Text(
+                '$userName',
+                style: TextStyle(fontSize: 30),
+                textAlign: TextAlign.center,
+              ),
               Container(
                 height: 200,
                 child: Row(
@@ -116,18 +129,23 @@ class _LobbyScreen extends State<LobbyScreen> {
                         margin: const EdgeInsets.all(10.0),
                         child: scroller(settle.options, "Options")
                       ),
-                    ),
+                    )
                   ],
                 )
               ),
-              if (settle.customAllowed)
-                customBox,
+              if (settle.customAllowed) customBox,
               Container(height: 75),
-              isHost ? 
-                standardButton('Start Settling', startSettlePressed) :
+              if (isHost)
+                standardButton('Start Settling', startSettlePressed)
+              else
                 Column(
                   children: [
-                    animation(), Container(height: 50), Text('Waiting on Host', style: TextStyle(fontSize: 15), textAlign: TextAlign.center)
+                    animation(),
+                    Container(height: 50),
+                    Text('Waiting on Host',
+                      style: TextStyle(fontSize: 15),
+                      textAlign: TextAlign.center
+                    )
                   ]
                 )
             ],
@@ -137,34 +155,35 @@ class _LobbyScreen extends State<LobbyScreen> {
     );
   }
 
-  Widget scroller(List<String> l, String name){
+  Widget scroller(List<String> l, String name) {
     return CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            title: Text('$name:', style: TextStyle(fontSize: 22)),
-            titleSpacing: 0,
-            pinned: true,
-            toolbarHeight: 30,
-            leading: Container()
+      slivers: <Widget>[
+        SliverAppBar(
+          title: Text('$name:', style: TextStyle(fontSize: 22)),
+          titleSpacing: 0,
+          pinned: true,
+          toolbarHeight: 30,
+          leading: Container()),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return Container(
+                alignment: Alignment.center,
+                color: Colors.lightBlue,
+                height: 22,
+                child: Text('${l[index]}',
+                  style: TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center),
+              );
+            },
+            childCount: l.length,
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Container(
-                  alignment: Alignment.center,
-                  color: Colors.lightBlue,
-                  height: 22,
-                  child: Text('${l[index]}', style: TextStyle(fontSize: 18), textAlign: TextAlign.center),
-                );
-              },
-              childCount: l.length,
-            ),
-          ),
-        ],
-      );
+        ),
+      ],
+    );
   }
 
-  Widget standardButton (String text, VoidCallback action){
+  Widget standardButton(String text, VoidCallback action) {
     final settleButtonWidth = 150.0;
     final settleButtonHeight = 45.0;
     final settleButtonTextStyle = new TextStyle(
@@ -185,43 +204,41 @@ class _LobbyScreen extends State<LobbyScreen> {
     );
   }
 
-  Widget animation(){
+  Widget animation() {
     return Container(
-        width: 10,
-        height: 10,
-        alignment: Alignment.center,
-        child: AutomatedAnimator(
-          animateToggle: true,
-          doRepeatAnimation: true,
-          duration: Duration(seconds: 10),
-          buildWidget: (double animationPosition) {
-            return WaveLoadingBubble(
-              foregroundWaveColor: Color(0xFF6AA0E1),
-              backgroundWaveColor: Color(0xFF4D90DF),
-              loadingWheelColor: Color(0xFF77AAEE),
-              period: animationPosition,
-              backgroundWaveVerticalOffset: 90 - animationPosition * 200,
-              foregroundWaveVerticalOffset: 90 +
-                  reversingSplitParameters(
-                    position: animationPosition,
-                    numberBreaks: 6,
-                    parameterBase: 8.0,
-                    parameterVariation: 8.0,
-                    reversalPoint: 0.75,
-                  ) -
-                  animationPosition * 200,
-              waveHeight: reversingSplitParameters(
+      width: 10,
+      height: 10,
+      alignment: Alignment.center,
+      child: AutomatedAnimator(
+        animateToggle: true,
+        doRepeatAnimation: true,
+        duration: Duration(seconds: 10),
+        buildWidget: (double animationPosition) {
+          return WaveLoadingBubble(
+            foregroundWaveColor: Color(0xFF6AA0E1),
+            backgroundWaveColor: Color(0xFF4D90DF),
+            loadingWheelColor: Color(0xFF77AAEE),
+            period: animationPosition,
+            backgroundWaveVerticalOffset: 90 - animationPosition * 200,
+            foregroundWaveVerticalOffset: 90 +
+              reversingSplitParameters(
                 position: animationPosition,
-                numberBreaks: 5,
-                parameterBase: 12,
-                parameterVariation: 8,
+                numberBreaks: 6,
+                parameterBase: 8.0,
+                parameterVariation: 8.0,
                 reversalPoint: 0.75,
-              ),
-            );
-          },
-        ),
-      );
+              ) -
+              animationPosition * 200,
+            waveHeight: reversingSplitParameters(
+              position: animationPosition,
+              numberBreaks: 5,
+              parameterBase: 12,
+              parameterVariation: 8,
+              reversalPoint: 0.75,
+            ),
+          );
+        },
+      ),
+    );
   }
 }
-
-
