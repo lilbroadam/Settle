@@ -112,7 +112,7 @@ public class SettleSession {
                 results.add(entry.getKey()); 
             }
         }
-        return results.get((int)(Math.random() * (results.size() - 0 + 1)));
+        return results.get((int)(Math.random() * (results.size() - 1)));
     }
 
     public String getSettleCode() {
