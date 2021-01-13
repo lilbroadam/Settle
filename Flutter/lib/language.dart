@@ -11,11 +11,8 @@ class Language {
 
   static List<Language> languageList() {
     return <Language>[
-      // Language(1, "🇦🇫", "فارسی", "fa"),
       Language(1, "US", "English", "en"),
       Language(2, "SP", "Spanish", "es"),
-      // Language(3, "🇸🇦", "اَلْعَرَبِيَّةُ‎", "ar"),
-      // Language(4, "🇮🇳", "हिंदी", "hi"),
     ];
   }
 }

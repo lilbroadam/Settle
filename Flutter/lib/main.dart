@@ -391,9 +391,25 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     iconSize: miscButtonSize,
                     tooltip: AppLocalizations.of(context).translate("setting"),
                     // onPressed: _settingsPressed,
-                    onPressed: () {
-                      _changeLang(Language.es);
-                    },
+                    // onPressed: () {
+                    //   _changeLang(Language.es);
+                    // },
+                    onPressed: _settingMenu,
+                    // () {
+                    //   PopupMenuButton(
+                    //     elevation: 3,
+                    //     initialValue: Language.languageList().first,
+                    //     // onSelected: _select,
+                    //     itemBuilder: (BuildContext context) {
+                    //       return Language.languageList().map((Language l) {
+                    //         return PopupMenuItem(
+                    //           value: l,
+                    //           child: Text(l.name),
+                    //         );
+                    //       }).toList();
+                    //     },
+                    //   );
+                    // },
                   ),
                 ],
               ),
@@ -401,6 +417,59 @@ class _SettleHomePageState extends State<SettleHomePage> {
           ),
         ],
       )),
+    );
+  }
+
+  void _settingMenu() {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      builder: (builder) {
+        return Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ModalDrawerHandle(
+                  handleColor: Colors.black38,
+                  handleWidth: 35,
+                ),
+              ),
+              Material(
+                child: PopupMenuButton(
+                  child: ListTile(
+                    leading: Icon(MdiIcons.earth),
+                    title: Text("Language"),
+                    subtitle: Text("Change the app's language"),
+                  ),
+                  elevation: 3,
+                  initialValue: Language.languageList().first,
+                  onSelected: _changeLang,
+                  itemBuilder: (BuildContext context) {
+                    return Language.languageList().map((Language l) {
+                      return PopupMenuItem(
+                        value: l,
+                        child: Text(l.name),
+                      );
+                    }).toList();
+                  },
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.info_outline),
+                title: Text("More features..."),
+                subtitle: Text("Coming soon..."),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
