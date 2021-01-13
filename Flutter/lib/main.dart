@@ -1,5 +1,5 @@
 import 'package:Settle/AppTheme.dart';
-// import 'package:Settle/SettleScreen.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -8,6 +8,7 @@ import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'app_localizations.dart';
 import 'DarkThemeProvider.dart';
 import 'NameScreen.dart';
@@ -15,6 +16,8 @@ import 'OptionsScreen.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
+
+import 'language.dart';
 
 void main() {
   LicenseRegistry.addLicense(() async* {
@@ -26,10 +29,16 @@ void main() {
 }
 
 class SettleApp extends StatefulWidget {
+  static void setLocale(BuildContext context, Locale locale) {
+    _SettleAppState state = context.findAncestorStateOfType<_SettleAppState>();
+    state.setLocale(locale);
+  }
+
   _SettleAppState createState() => _SettleAppState();
 }
 
 class _SettleAppState extends State<SettleApp> {
+  Locale _locale;
   DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
   void initState() {
@@ -42,6 +51,12 @@ class _SettleAppState extends State<SettleApp> {
         await themeChangeProvider.darkThemePreference.getTheme();
   }
 
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
   // This widget is the root of the app.
   @override
   Widget build(BuildContext context) {
@@ -52,16 +67,16 @@ class _SettleAppState extends State<SettleApp> {
       child: Consumer<DarkThemeProvider>(
         builder: (BuildContext context, value, Widget child) {
           return MaterialApp(
+            locale: _locale,
             localizationsDelegates: [
-              // ... app-specific localization delegate[s] here
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: [
-              const Locale('en', ''), // English, no country code
-              const Locale('es', ''), // Spanish, no country code
+              const Locale('en', 'US'), // English, no country code
+              const Locale('es', 'SP'), // Spanish, no country code
             ],
             localeResolutionCallback: (locale, suportedLocales) {
               for (var suportedLocale in suportedLocales) {
@@ -70,13 +85,14 @@ class _SettleAppState extends State<SettleApp> {
                   return suportedLocale;
                 }
               }
-              // Change to:
-              // index 0 == English
-              // index 1 == Spanish
-              // We'll later add buttons to chnage language from the app
-              // Change this number to 1 or 0 depending on the function called
-              // at the button
-              return suportedLocales.elementAt(0);
+              //   // Change to:
+              //   // index 0 == English
+              //   // index 1 == Spanish
+              //   // We'll later add buttons to chnage language from the app
+              //   // Change this number to 1 or 0 depending on the function called
+              //   // at the button
+              // return suportedLocales.elementAt(0);
+              return suportedLocales.first;
             },
             title: 'Settle',
             theme: AppTheme.themeData(themeChangeProvider.darkTheme, context),
@@ -108,6 +124,21 @@ class _SettleHomePageState extends State<SettleHomePage> {
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
         await themeChangeProvider.darkThemePreference.getTheme();
+  }
+
+  void _changeLang(Language language) {
+    Locale _temp;
+    switch (language.languageCode) {
+      case 'en':
+        _temp = Locale(language.languageCode, 'US');
+        break;
+      case 'es':
+        _temp = Locale(language.languageCode, 'SP');
+        break;
+      default:
+        _temp = Locale(language.languageCode, 'US');
+    }
+    SettleApp.setLocale(context, _temp);
   }
 
   // Called when 'Create a Settle' button is pressed
@@ -219,7 +250,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
     // TODO
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => OptionsScreen()),
+      MaterialPageRoute(
+          builder: (context) => OptionsScreen(themeChangeProvider)),
     );
   }
 
@@ -250,7 +282,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                   color: themeChange.darkTheme ? Colors.blue : Colors.black,
                   size: 20,
                 ),
-                // tooltip: AppLocalizations.of(context).translate("tipback"),
+                tooltip: AppLocalizations.of(context).translate("tipback"),
                 onPressed: () {},
               )
             ],
@@ -350,7 +382,6 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       });
                     },
                   ),
-                  // Settings button in the bottom right
                   IconButton(
                     icon: Icon(
                       Linecons.cog,
@@ -359,7 +390,10 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     ),
                     iconSize: miscButtonSize,
                     tooltip: AppLocalizations.of(context).translate("setting"),
-                    onPressed: _settingsPressed,
+                    // onPressed: _settingsPressed,
+                    onPressed: () {
+                      _changeLang(Language.es);
+                    },
                   ),
                 ],
               ),

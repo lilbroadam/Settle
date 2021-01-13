@@ -1,8 +1,12 @@
+import 'package:Settle/DarkThemeProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'Options.dart';
 import 'app_localizations.dart';
 
 class OptionsScreen extends StatefulWidget {
+  final DarkThemeProvider provider;
+  OptionsScreen(this.provider);
   @override
   _OptionsScreenState createState() => _OptionsScreenState();
 }
@@ -59,12 +63,14 @@ class _OptionsScreenState extends State<OptionsScreen> {
               onTap: () {
                 setState(() {
                   _selectedOption = index - 1;
-                  if(_selectedOption == 0){ // English
+                  if (_selectedOption == 0) {
+                    // English
                     // TODO: Change this locale to english
                     // AppLocalizations.of(context).load(Locale('en', ''));
                     // Locale('en', '').load();
                     // print(AppLocalizations.of(context));
-                  } else if (_selectedOption == 1){ // Spanish
+                  } else if (_selectedOption == 1) {
+                    // Spanish
                     // TODO: Change this locale to spanish
                     // Locale('es', '').load();
                     // _AppLocalizationsDelegate.load(Locale('es', ''));
