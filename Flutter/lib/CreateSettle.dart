@@ -105,8 +105,7 @@ class _CreateSettle extends State<CreateSettle> {
               if (snapshot.data != null) {
                 settle = snapshot.data;
                 gotCode = true;
-                return Text(settle.settleCode,
-                    style: GoogleFonts.notoSansKR(fontSize: 19));
+                return Text(settle.settleCode, style: TextStyle(fontSize: 19));
               } else {
                 return SpinKitDualRing(
                   color: Colors.blue,

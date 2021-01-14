@@ -17,7 +17,8 @@ export 'localization/lang_constants.dart';
 export 'localization/language.dart';
 export 'CreateSettle.dart';
 export 'JoinSettle.dart';
-export 'package:google_fonts/google_fonts.dart';
+// causing bad state insecure http exception
+// export 'package:google_fonts/google_fonts.dart';
 export 'dart:convert';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'DarkThemePref.dart';
@@ -36,3 +37,4 @@ export 'package:flutter_neumorphic/flutter_neumorphic.dart';
 export 'package:flutter_spinkit/flutter_spinkit.dart';
 export 'package:animated_dialog_box/animated_dialog_box.dart';
 export 'package:share/share.dart';
+export 'package:animated_splash/animated_splash.dart';

@@ -5,8 +5,23 @@ void main() {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-
   runApp(SettleApp());
+
+  // not working properly...may get scrapped or replaced with something else
+  // Function duringSplash = () {
+  //   return 1;
+  // };
+  // Map<int, Widget> op = {1: SettleApp(), 2: SettleHomePage()};
+  // runApp(MaterialApp(
+  //   home: AnimatedSplash(
+  //     imagePath: 'assets/splashscreen.png',
+  //     home: SettleApp(),
+  //     customFunction: duringSplash,
+  //     type: AnimatedSplashType.BackgroundProcess,
+  //     duration: 1500,
+  //     outputAndHome: op,
+  //   ),
+  // ));
 }
 
 class SettleApp extends StatefulWidget {

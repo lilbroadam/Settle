@@ -79,7 +79,7 @@ class _NameScreenState extends State<NameScreen> {
               Column(
                 children: <Widget>[
                   Text(getText(context, "getname"),
-                      style: GoogleFonts.notoSansKR(fontSize: 25)),
+                      style: TextStyle(fontSize: 25)),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: TextFormField(
