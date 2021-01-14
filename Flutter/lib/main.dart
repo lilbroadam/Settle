@@ -162,15 +162,13 @@ class _SettleHomePageState extends State<SettleHomePage> {
               ListTile(
                 leading: Icon(Icons.info_outline),
                 title: Text("Settle"),
-                subtitle: Text(
-                    AppLocalizations.of(context).translate("version") + " 1.0"),
+                subtitle: Text(getText(context, "version") + " 1.0"),
               ),
               Material(
                 child: ListTile(
                   leading: Icon(MdiIcons.github),
-                  title: Text(AppLocalizations.of(context).translate("git")),
-                  subtitle:
-                      Text(AppLocalizations.of(context).translate("gitsub")),
+                  title: Text(getText(context, "git")),
+                  subtitle: Text(getText(context, "gitsub")),
                   onTap: () async {
                     const url = "https://github.com/lilbroadam/Settle";
                     if (await canLaunch(url)) {
@@ -184,10 +182,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
               Material(
                 child: ListTile(
                   leading: Icon(MdiIcons.email),
-                  title:
-                      Text(AppLocalizations.of(context).translate("contact")),
-                  subtitle: Text(
-                      AppLocalizations.of(context).translate("contactsub")),
+                  title: Text(getText(context, "contact")),
+                  subtitle: Text(getText(context, "contactsub")),
                   onTap: () async {
                     const emailAdrees = "settleitapplication@gmail.com";
                     const subject = "Client Request";
@@ -206,10 +202,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       MdiIcons.currencyUsd,
                       size: 25,
                     ),
-                    title:
-                        Text(AppLocalizations.of(context).translate("support")),
-                    subtitle: Text(
-                        AppLocalizations.of(context).translate("supportsub")),
+                    title: Text(getText(context, "support")),
+                    subtitle: Text(getText(context, "supportsub")),
                     onTap: () {}),
               )
             ],
@@ -233,7 +227,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
               Align(
                 alignment: Alignment.center,
                 child: Text(
-                  "Home",
+                  getText(context, "home"),
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
@@ -246,7 +240,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                   color: themeChange.darkTheme ? Colors.blue : Colors.black,
                   size: 20,
                 ),
-                tooltip: AppLocalizations.of(context).translate("tipback"),
+                tooltip: getText(context, "tipback"),
                 onPressed: () {},
               )
             ],
@@ -353,27 +347,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       color: Colors.lightBlue[400],
                     ),
                     iconSize: miscButtonSize,
-                    tooltip: AppLocalizations.of(context).translate("setting"),
-                    // onPressed: _settingsPressed,
-                    // onPressed: () {
-                    //   _changeLang(Language.es);
-                    // },
+                    tooltip: getText(context, "setting"),
                     onPressed: _settingMenu,
-                    // () {
-                    //   PopupMenuButton(
-                    //     elevation: 3,
-                    //     initialValue: Language.languageList().first,
-                    //     // onSelected: _select,
-                    //     itemBuilder: (BuildContext context) {
-                    //       return Language.languageList().map((Language l) {
-                    //         return PopupMenuItem(
-                    //           value: l,
-                    //           child: Text(l.name),
-                    //         );
-                    //       }).toList();
-                    //     },
-                    //   );
-                    // },
                   ),
                 ],
               ),
@@ -410,8 +385,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                   offset: Offset(1, 0),
                   child: ListTile(
                     leading: Icon(MdiIcons.earth),
-                    title: Text("Language"),
-                    subtitle: Text("Change the app's language"),
+                    title: Text(getText(context, "lang")),
+                    subtitle: Text(getText(context, "langsub")),
                   ),
                   elevation: 3,
                   initialValue: Language.languageList().first,

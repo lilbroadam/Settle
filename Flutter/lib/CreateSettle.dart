@@ -1,16 +1,4 @@
-import 'package:Settle/AppTheme.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:animated_dialog_box/animated_dialog_box.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:share/share.dart';
-import 'DarkThemeProvider.dart';
-import 'LobbyScreen.dart';
-import 'Server.dart';
-import 'Settle.dart';
-import 'localization/app_localizations.dart';
+import 'import_all.dart';
 
 typedef void SettleTypePressedCallback(SettleType settleType);
 typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
@@ -72,8 +60,7 @@ class _CreateSettle extends State<CreateSettle> {
 
   Future<void> showPopup() async {
     await animated_dialog_box.showScaleAlertBox(
-        title: Center(
-            child: Text(AppLocalizations.of(context).translate("getcode"))),
+        title: Center(child: Text(getText(context, "getcode"))),
         context: context,
         firstButton: AppTheme.rawButton(context, "golobby", () {
           if (gotCode) {
@@ -94,7 +81,7 @@ class _CreateSettle extends State<CreateSettle> {
           ),
           color: themeChange.darkTheme ? Color(0xff5B5B5B) : Colors.white,
           child: Text(
-            AppLocalizations.of(context).translate("sharecopy"),
+            getText(context, "sharecopy"),
             style: TextStyle(
                 color: themeChange.darkTheme ? Colors.white : Colors.black),
           ),
@@ -176,13 +163,13 @@ class _CreateSettle extends State<CreateSettle> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
-                  AppLocalizations.of(context).translate("asktype"),
+                  getText(context, "asktype"),
                   style: TextStyle(fontSize: 25),
                   textAlign: TextAlign.center,
                 ),
                 RadioButton(_settleTypePressed),
-                CheckBox(AppLocalizations.of(context).translate("allowcustom"),
-                    _customOptionsPressed),
+                CheckBox(
+                    getText(context, "allowcustom"), _customOptionsPressed),
                 Container(
                   margin: settleButtonMargin,
                   child: createSettleButton,
@@ -248,7 +235,7 @@ class _RadioButton extends State<RadioButton> {
     return Column(
       children: <Widget>[
         ListTile(
-          title: Text(AppLocalizations.of(context).translate("movies")),
+          title: Text(getText(context, "movies")),
           leading: Radio(
             value: SettleType.movies,
             groupValue: _currentOption,
@@ -259,7 +246,7 @@ class _RadioButton extends State<RadioButton> {
           ),
         ),
         ListTile(
-          title: Text(AppLocalizations.of(context).translate("rest")),
+          title: Text(getText(context, "rest")),
           leading: Radio(
             value: SettleType.restaurants,
             groupValue: _currentOption,
@@ -270,7 +257,7 @@ class _RadioButton extends State<RadioButton> {
           ),
         ),
         ListTile(
-          title: Text(AppLocalizations.of(context).translate("customonly")),
+          title: Text(getText(context, "customonly")),
           leading: Radio(
               value: SettleType.custom,
               groupValue: _currentOption,

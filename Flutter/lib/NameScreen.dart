@@ -64,7 +64,7 @@ class _NameScreenState extends State<NameScreen> {
               color: Colors.white,
               size: 30,
             ),
-            tooltip: AppLocalizations.of(context).translate("tipback"),
+            tooltip: getText(context, "tipback"),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -78,7 +78,7 @@ class _NameScreenState extends State<NameScreen> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Text(AppLocalizations.of(context).translate("getname"),
+                  Text(getText(context, "getname"),
                       style: GoogleFonts.notoSansKR(fontSize: 25)),
                   Padding(
                     padding: const EdgeInsets.all(16),
@@ -89,8 +89,7 @@ class _NameScreenState extends State<NameScreen> {
                         myControler.text = text.trim();
                         text = text.trim();
                         if (text.isEmpty) {
-                          return AppLocalizations.of(context)
-                              .translate("invalidname");
+                          return getText(context, "invalidname");
                         } else {
                           return null;
                         }

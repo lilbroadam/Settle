@@ -1,11 +1,4 @@
-import 'package:Settle/AppTheme.dart';
-import 'package:flutter/material.dart';
-import 'package:tcard/tcard.dart';
-import 'package:groovin_widgets/groovin_widgets.dart';
-import 'DarkThemeProvider.dart';
-import 'Settle.dart';
-import 'localization/app_localizations.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'import_all.dart';
 
 List<Color> colors = [
   Colors.blue,
@@ -173,11 +166,7 @@ class _SettleScreenState extends State<SettleScreen> {
                   ),
                 ),
                 NeumorphicButton(
-                  // onPressed: _controller.forward,
-                  onPressed: () {
-                    widget.themeChange.darkTheme =
-                        !widget.themeChange.darkTheme;
-                  },
+                  onPressed: _controller.forward,
                   style: NeumorphicStyle(
                     depth: 2.7,
                     intensity: 0.35,
@@ -233,7 +222,7 @@ class _SettleScreenState extends State<SettleScreen> {
                 padding: EdgeInsets.all(10),
               ),
               Text(
-                AppLocalizations.of(context).translate("soon"),
+                getText(context, "soon"),
                 style: TextStyle(fontSize: 15),
               ),
               Padding(

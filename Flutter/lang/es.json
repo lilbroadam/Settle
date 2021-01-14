@@ -1,4 +1,5 @@
 {
+    "home": "Inicio",
     "createsettle": "Crear un Settle",
     "joinsettle": "Únete a un Settle",
     "settleinfo": "Información sobre Settle",
@@ -10,6 +11,8 @@
     "support": "Apoyanos",
     "supportsub": "¡Cómpranos un café!",
     "setting": "Ajustes de Settle",
+    "lang": "idioma",
+    "langsub": "Cambiar el idioma de la aplicación",
     "getname": "Introduce tu nombre:",
     "invalidname": "Por favor ingrese un nombre valido",
     "asktype": "¿Que es\nlo que tu grupo\nesta Settling?",

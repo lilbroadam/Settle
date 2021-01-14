@@ -43,16 +43,14 @@ class _LobbyScreen extends State<LobbyScreen> {
   Widget build(BuildContext context) {
     Widget customBox = Column(children: [
       Container(height: 30),
-      Text(AppLocalizations.of(context).translate("entercustom"),
+      Text(getText(context, "entercustom"),
           style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
       Padding(
         padding: const EdgeInsets.all(15.0),
         child: TextField(
           controller: myControler,
           decoration: InputDecoration(
-            errorText: _validate
-                ? AppLocalizations.of(context).translate("invalidcustom")
-                : null,
+            errorText: _validate ? getText(context, "invalidcustom") : null,
           ),
         ),
       ),
@@ -76,7 +74,7 @@ class _LobbyScreen extends State<LobbyScreen> {
           elevation: 0.0,
           centerTitle: true,
           title: Text(
-            AppLocalizations.of(context).translate("lobbycode") + " $code",
+            getText(context, "lobbycode") + " $code",
             style: TextStyle(fontSize: 18),
           ),
           actions: [
@@ -104,7 +102,7 @@ class _LobbyScreen extends State<LobbyScreen> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(AppLocalizations.of(context).translate("welcome"),
+              Text(getText(context, "welcome"),
                   style: TextStyle(fontSize: 30), textAlign: TextAlign.center),
               Text(
                 '$userName',
@@ -121,9 +119,7 @@ class _LobbyScreen extends State<LobbyScreen> {
                     height: 200,
                     child: Column(
                       children: [
-                        Text(
-                            AppLocalizations.of(context)
-                                .translate("lobbyguests"),
+                        Text(getText(context, "lobbyguests"),
                             style: TextStyle(fontSize: 20)),
                         Padding(padding: EdgeInsets.all(3)),
                         Expanded(
@@ -149,8 +145,7 @@ class _LobbyScreen extends State<LobbyScreen> {
                     child: Column(
                       children: [
                         Text(
-                          AppLocalizations.of(context)
-                              .translate("lobbyoptions"),
+                          getText(context, "lobbyoptions"),
                           style: TextStyle(fontSize: 20),
                         ),
                         Padding(
@@ -178,7 +173,7 @@ class _LobbyScreen extends State<LobbyScreen> {
                 Column(children: [
                   animation(),
                   Container(height: 80),
-                  Text(AppLocalizations.of(context).translate("waithost"),
+                  Text(getText(context, "waithost"),
                       style: TextStyle(fontSize: 15),
                       textAlign: TextAlign.center)
                 ])

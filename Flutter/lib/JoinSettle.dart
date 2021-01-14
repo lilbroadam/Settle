@@ -34,24 +34,6 @@ class _JoinSettle extends State<JoinSettle> {
 
   @override
   Widget build(BuildContext context) {
-    // final settleButtonWidth = 150.0;
-    // final settleButtonHeight = 45.0;
-    // final settleButtonTextStyle =
-    //     new TextStyle(fontSize: 16.4, color: Colors.white);
-    // // final joinSettleButton =
-    // // SizedBox(
-    // //   width: settleButtonWidth,
-    // //   height: settleButtonHeight,
-    // //   child: RaisedButton(
-    // //     shape: RoundedRectangleBorder(
-    // //       borderRadius: BorderRadius.circular(25),
-    // //     ),
-    // //     color: Colors.blue,
-    // //     onPressed: _joinASettlePressed,
-    // //     child: Text(AppLocalizations.of(context).translate("joinasettle"),
-    // //         style: settleButtonTextStyle),
-    // //   ),
-    // // );
     final settleButtonMargin = EdgeInsets.all(18.0);
 
     return Scaffold(
@@ -77,7 +59,7 @@ class _JoinSettle extends State<JoinSettle> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              AppLocalizations.of(context).translate("entercode"),
+              getText(context, "entercode"),
               style: TextStyle(fontSize: 25),
               textAlign: TextAlign.center,
             ),

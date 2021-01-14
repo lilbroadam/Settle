@@ -31,3 +31,8 @@ export 'package:device_info/device_info.dart';
 export 'package:flutter/services.dart' show rootBundle;
 export 'dart:io';
 export 'dart:async';
+export 'package:tcard/tcard.dart';
+export 'package:flutter_neumorphic/flutter_neumorphic.dart';
+export 'package:flutter_spinkit/flutter_spinkit.dart';
+export 'package:animated_dialog_box/animated_dialog_box.dart';
+export 'package:share/share.dart';
