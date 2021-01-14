@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Random;
 
 // An object to keep track of a Settle session
 public class SettleSession {
@@ -25,6 +26,10 @@ public class SettleSession {
     private Map<String, Integer> voteMap;
     private String settleResult;
 
+    private int numUsersDone;
+    private boolean inside;
+    //private List<String> finishedUsers;
+    
     // Create a Settle session with settle code settleCode
     public SettleSession(String settleCode, User hostUser, 
             SettleType settleType, boolean customChoicesAllowed) {
@@ -37,6 +42,10 @@ public class SettleSession {
         this.users = new ArrayList<>();
         this.options = new ArrayList<>();
         this.voteMap = new HashMap<>();
+
+        this.numUsersDone = 0;
+        this.inside = false;
+        //this.finishedUsers = new ArrayList<>();
 
         addUser(hostUser);
     }
@@ -78,6 +87,32 @@ public class SettleSession {
                 // TODO Reject request
             }
         }
+    }
+
+    public void userFinished(String user){
+        //finishedUsers.add(user);
+        numUsersDone++;
+
+        if (numUsersDone == users.size()){
+            setSettleState(SettleState.COMPLETE);
+            settleResult = evaluateResult();
+        }
+    }
+
+    public String evaluateResult() {
+        List<String> results = new ArrayList<>();
+        inside = true;
+        int mostVotes = Integer.MIN_VALUE;
+        for (Map.Entry<String,Integer> entry : voteMap.entrySet()){
+            if (entry.getValue() > mostVotes){
+                results.clear();
+                mostVotes = entry.getValue();
+                results.add(entry.getKey());
+            } else if (entry.getValue() == mostVotes){
+                results.add(entry.getKey()); 
+            }
+        }
+        return results.get((int)(Math.random() * (results.size() - 1)));
     }
 
     public String getSettleCode() {
@@ -123,6 +158,7 @@ public class SettleSession {
         }
     }
 
+    
     public JsonPrimitive getSettleCodeJson() {
         synchronized (this) {
             return new JsonPrimitive(settleCode);
@@ -182,8 +218,11 @@ public class SettleSession {
             jsonObject.add("options", getOptionsJson());
             jsonObject.add("result", getResultJson());
 
+            //jsonObject.add("usersDone", new JsonPrimitive(usersDone));
+            //jsonObject.add("evaluated", new JsonPrimitive(inside));
+            
             return jsonObject;
         }
     }
-
+    
 }

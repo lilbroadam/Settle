@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcard/tcard.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'widgets/settle_card.dart';
+import 'ResultScreen.dart';
 import 'Settle.dart';
 
 class SettleScreen extends StatefulWidget {
@@ -14,7 +15,6 @@ class SettleScreen extends StatefulWidget {
 }
 
 class _SettleScreenState extends State<SettleScreen> {
-  
   Settle settle;
   List<SettleCard> settleCards = List();
   TCardController _controller = TCardController();
@@ -38,7 +38,8 @@ class _SettleScreenState extends State<SettleScreen> {
               controller: _controller,
               onForward: (index, info) {
                 print(info.direction);
-                settle.submitVote(settleCards[info.cardIndex].title);
+                if (info.direction == SwipDirection.Right)
+                  settle.submitVote(settleCards[info.cardIndex].title);
                 setState(() {});
               },
               onBack: (index) {
@@ -46,6 +47,11 @@ class _SettleScreenState extends State<SettleScreen> {
               },
               onEnd: () { // TODO: go to result screen
                 print('end');
+                settle.userFinished();
+                Navigator.push( // Go to results screen
+                  context,
+                  MaterialPageRoute(builder: (context) => ResultScreen(settle))
+                );
               },
             ),
             SizedBox(height: 70),

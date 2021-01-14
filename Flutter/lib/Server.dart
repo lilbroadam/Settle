@@ -154,14 +154,16 @@ class Server {
     return responseSettle;
   }
 
-  static Future<Settle> submitVote(String option, [String code]) async {
+  static Future<Settle> submitVote(String option, bool done, [String code]) async {
     code = code ?? settleCode;
+    String finished = done == true ? "true" : "false";
 
     final http.Response response = await http.post(
       await _getUri(server_voting_path, code),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
-        'voteOption': option
+        'voteOption': option,
+        'userDone' : finished
       })
     );
 
@@ -169,6 +171,7 @@ class Server {
     Map<String, dynamic> responseJson = jsonDecode(response.body);
     if (response.statusCode == HttpStatus.ok) {
       responseSettle = Settle.fromJson(responseJson);
+      settleCode = responseSettle.settleCode;
     } else {
       // TODO error handling
       print('ERROR: ${responseJson['error']}');
