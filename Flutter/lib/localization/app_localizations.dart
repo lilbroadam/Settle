@@ -1,7 +1,4 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import '../import_all.dart';
 
 class AppLocalizations {
   final Locale locale;

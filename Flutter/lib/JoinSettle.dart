@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:Settle/LobbyScreen.dart';
-import 'DarkThemeProvider.dart';
-import 'Server.dart';
-import 'Settle.dart';
-import 'AppTheme.dart';
-import 'app_localizations.dart';
+import 'import_all.dart';
 
 class JoinSettle extends StatefulWidget {
   final String hostName;

@@ -1,10 +1,4 @@
-import 'package:Settle/AppTheme.dart';
-import 'package:flutter/material.dart';
-import 'DarkThemeProvider.dart';
-import 'app_localizations.dart';
-import 'Animation.dart';
-import 'SettleScreen.dart';
-import 'Settle.dart';
+import 'import_all.dart';
 
 class LobbyScreen extends StatefulWidget {
   final Settle settle;

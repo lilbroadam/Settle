@@ -1,4 +1,4 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'import_all.dart';
 
 class DarkThemePreference {
   static const THEME_STATUS = "THEMESTATUS";

@@ -1,10 +1,4 @@
-import 'package:Settle/AppTheme.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'CreateSettle.dart';
-import 'DarkThemeProvider.dart';
-import 'JoinSettle.dart';
-import 'app_localizations.dart';
+import 'import_all.dart';
 
 class NameScreen extends StatefulWidget {
   final DarkThemeProvider themeChange;

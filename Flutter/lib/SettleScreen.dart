@@ -4,7 +4,7 @@ import 'package:tcard/tcard.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'DarkThemeProvider.dart';
 import 'Settle.dart';
-import 'app_localizations.dart';
+import 'localization/app_localizations.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 List<Color> colors = [

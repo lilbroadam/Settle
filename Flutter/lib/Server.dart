@@ -1,11 +1,5 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
-import 'package:device_info/device_info.dart';
-import 'package:flutter/services.dart';
-import 'Settle.dart';
+import 'import_all.dart';
 
 // A class to handle communications with the backend server
 class Server {
@@ -31,7 +25,6 @@ class Server {
   // responds with OK (status 200), return null otherwise.
   static Future<Settle> createSettle(
       String hostName, SettleType option, bool customAllowed) async {
-
     String optionString = option.name;
     String customString = customAllowed ? 'true' : 'false';
 
@@ -61,7 +54,8 @@ class Server {
 
   // Given a joinSettleCode, ask the server to join the user to that Settle.
   // TODO how to tell caller when join fails?
-  static Future<Settle> joinSettle(String userName, String joinSettleCode) async {
+  static Future<Settle> joinSettle(
+      String userName, String joinSettleCode) async {
     final http.Response response = await http.post(
       await _getUrl(server_join_path),
       headers: http_default_header,
@@ -86,7 +80,7 @@ class Server {
   }
 
   // If a code parameter is provided, return the Settle object for that code.
-  // Otherwrise return the Settle object for the Settle created by the calls 
+  // Otherwrise return the Settle object for the Settle created by the calls
   // to createSettle() or joinSettle().
   static Future<Settle> getSettle([String code]) async {
     code = code ?? settleCode;
@@ -105,7 +99,7 @@ class Server {
     }
   }
 
-  // Ask the server to add an Option to the Settle. Return a List of all the 
+  // Ask the server to add an Option to the Settle. Return a List of all the
   // options in the Settle after the request was handled.
   // createSettle() or joinSettle() must have been called before this method.
   static Future<Settle> addOption(String option, [String code]) async {
@@ -134,13 +128,12 @@ class Server {
   static Future<Settle> setState(SettleState state, [String code]) async {
     code = code ?? settleCode;
 
-    final http.Response response = await http.put(
-      await _getUri(server_state_path, code),
-      headers: http_default_header,
-      body: jsonEncode(<String, String>{
-        'setState': state.name,
-      })
-    );
+    final http.Response response =
+        await http.put(await _getUri(server_state_path, code),
+            headers: http_default_header,
+            body: jsonEncode(<String, String>{
+              'setState': state.name,
+            }));
 
     Settle responseSettle;
     Map<String, dynamic> responseJson = jsonDecode(response.body);
@@ -158,12 +151,9 @@ class Server {
     code = code ?? settleCode;
 
     final http.Response response = await http.post(
-      await _getUri(server_voting_path, code),
-      headers: http_default_header,
-      body: jsonEncode(<String, String>{
-        'voteOption': option
-      })
-    );
+        await _getUri(server_voting_path, code),
+        headers: http_default_header,
+        body: jsonEncode(<String, String>{'voteOption': option}));
 
     Settle responseSettle;
     Map<String, dynamic> responseJson = jsonDecode(response.body);

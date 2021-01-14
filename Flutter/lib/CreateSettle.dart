@@ -10,7 +10,7 @@ import 'DarkThemeProvider.dart';
 import 'LobbyScreen.dart';
 import 'Server.dart';
 import 'Settle.dart';
-import 'app_localizations.dart';
+import 'localization/app_localizations.dart';
 
 typedef void SettleTypePressedCallback(SettleType settleType);
 typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
