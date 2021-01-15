@@ -1,53 +1,5 @@
 import 'import_all.dart';
 
-List<Color> colors = [
-  Colors.blue,
-  Colors.yellow,
-  Colors.red,
-  Colors.orange,
-  Colors.pink,
-  Colors.amber,
-  Colors.cyan,
-  Colors.purple,
-  Colors.brown,
-  Colors.teal,
-];
-
-List<Widget> cards = List.generate(
-  colors.length,
-  (int index) {
-    return Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            color: colors[index],
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/adamoo.jpg'),
-            )),
-        child: Align(
-          alignment: Alignment.bottomLeft,
-          child: Container(
-              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Card number $index',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w700)),
-                  Padding(padding: EdgeInsets.only(bottom: 8.0)),
-                  Text('A short description.',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(color: Colors.white)),
-                ],
-              )),
-        ));
-  },
-);
-
 class SettleScreen extends StatefulWidget {
   final Settle settle;
   final DarkThemeProvider themeChange;
@@ -60,35 +12,13 @@ class SettleScreen extends StatefulWidget {
 
 class _SettleScreenState extends State<SettleScreen> {
   Settle settle;
+  List<SettleCard> settleCards = List();
   TCardController _controller = TCardController();
 
-  _SettleScreenState(this.settle);
-
-  List<Widget> buildCards() {
-    List<Widget> cards = new List();
-
+  _SettleScreenState(this.settle) {
     settle.options.forEach((option) {
-      cards.add(
-        new Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              color: Colors.black,
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                '$option',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w700),
-              ),
-            )),
-      );
+      settleCards.add(SettleCard(option));
     });
-
-    return cards;
   }
 
   @override
@@ -100,17 +30,26 @@ class _SettleScreenState extends State<SettleScreen> {
             SizedBox(height: 140),
             TCard(
               size: Size(360, 480),
-              cards: buildCards(),
+              cards: settleCards,
               controller: _controller,
               onForward: (index, info) {
                 print(info.direction);
+                if (info.direction == SwipDirection.Right)
+                  settle.submitVote(settleCards[info.cardIndex].title);
                 setState(() {});
               },
               onBack: (index) {
                 setState(() {});
               },
               onEnd: () {
+                // TODO: go to result screen
                 print('end');
+                settle.userFinished();
+                Navigator.push(
+                    // Go to results screen
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ResultScreen(settle)));
               },
             ),
             SizedBox(height: 70),
@@ -166,7 +105,11 @@ class _SettleScreenState extends State<SettleScreen> {
                   ),
                 ),
                 NeumorphicButton(
-                  onPressed: _controller.forward,
+                  onPressed: () {
+                    int index = _controller.index;
+                    settle.submitVote(settleCards[index].title);
+                    _controller.forward();
+                  },
                   style: NeumorphicStyle(
                     depth: 2.7,
                     intensity: 0.35,

@@ -35,7 +35,6 @@ class _JoinSettle extends State<JoinSettle> {
   @override
   Widget build(BuildContext context) {
     final settleButtonMargin = EdgeInsets.all(18.0);
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(

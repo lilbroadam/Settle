@@ -25,6 +25,8 @@ export 'DarkThemePref.dart';
 export 'LobbyScreen.dart';
 export 'Server.dart';
 export 'Settle.dart';
+export 'ResultScreen.dart';
+export 'widgets/settle_card.dart';
 export 'AppTheme.dart';
 export 'SettleScreen.dart';
 export 'Animation.dart';

@@ -71,7 +71,7 @@ flutter:
     - assets/serverInfo.json
     - assets/background.png
     - assets/background-dark.png
-    - assets/adamoo.jpg
+    # - assets/adamoo.jpg
     - assets/splashscreen.png
     - lang/en.json
     - lang/es.json

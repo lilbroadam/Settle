@@ -29,8 +29,10 @@ class _LobbyScreen extends State<LobbyScreen> {
 
   // Call this function when 'Start Settle' is pressed
   void startSettlePressed() async {
-    await settle.setState(SettleState.settling);
-    print('User started the Settle');
+    if (isHost) {
+      await settle.setState(SettleState.settling);
+      print('User started the Settle');
+    }
 
     // Go to the Settle screen
     Navigator.push(
@@ -83,6 +85,8 @@ class _LobbyScreen extends State<LobbyScreen> {
                 onPressed: () async {
                   await settle.update();
                   setState(() {});
+                  if (settle.settleState == SettleState.settling)
+                    startSettlePressed();
                 })
           ],
           leading: IconButton(
@@ -184,15 +188,17 @@ class _LobbyScreen extends State<LobbyScreen> {
 
   Widget startButton() {
     return AppTheme.button(context, "startsettle", () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => SettleScreen(settle, widget.themeChange)));
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => SettleScreen(settle, widget.themeChange)));
+      startSettlePressed();
     });
   }
 
   void startSettle() {
     print('it works');
+    // standardButton('Start Settling', startSettlePressed)
   }
 
   Widget scroller(List<String> l, String name) {

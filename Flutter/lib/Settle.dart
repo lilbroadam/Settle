@@ -74,10 +74,16 @@ class Settle {
 
   // TODO make this method not async so caller doesn't have to await
   Future<Settle> submitVote(String option) async {
-    Settle settle = await Server.submitVote(option, settleCode);
+    Settle settle = await Server.submitVote(option, false, settleCode);
     _update(settle);
     return settle;
   }
+
+  Future<Settle> userFinished() async {
+    Settle settle = await Server.submitVote("null", true, settleCode);
+    _update(settle);
+    return settle;
+  } 
 
   // Update this Settle with the server's Settle object.
   // TODO make this method not async so caller doesn't have to await
