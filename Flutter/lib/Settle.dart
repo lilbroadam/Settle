@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-
 import 'Server.dart';
 
 enum SettleType { custom, movies, restaurants }
@@ -11,8 +10,7 @@ extension SettleTypeExt on SettleType {
     if (settleType == 'custom') return SettleType.custom;
     if (settleType == 'movies') return SettleType.movies;
     if (settleType == 'restaurants') return SettleType.restaurants;
-    throw FormatException(
-        'Could not match \'$settleType\' to a SettleType enum');
+    throw FormatException('Could not match \'$settleType\' to a SettleType enum');
   }
 }
 
@@ -25,8 +23,7 @@ extension SettleStateExt on SettleState {
     if (settleState == 'lobby') return SettleState.lobby;
     if (settleState == 'settling') return SettleState.settling;
     if (settleState == 'complete') return SettleState.complete;
-    throw FormatException(
-        'Could not match \'$settleState\' to a SettleState enum');
+    throw FormatException('Could not match \'$settleState\' to a SettleState enum');
   }
 }
 
@@ -105,11 +102,11 @@ class Settle {
 
   @override
   String toString() {
-    return '[' +
-        'settleCode:$settleCode, settleType:${settleType.name}, ' +
-        'customAllowed:$customAllowed, settleState:${settleState.name}, ' +
-        'users:${users.toString()}, options:${options.toString()}, ' +
-        'result:${_result ?? 'null'}' +
-        ']';
+    return '['
+      + 'settleCode:$settleCode, settleType:${settleType.name}, '
+      + 'customAllowed:$customAllowed, settleState:${settleState.name}, '
+      + 'users:${users.toString()}, options:${options.toString()}, '
+      + 'result:${_result ?? 'null'}'
+      + ']';
   }
 }
