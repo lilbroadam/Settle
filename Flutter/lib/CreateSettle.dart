@@ -178,8 +178,7 @@ class _CreateSettle extends State<CreateSettle> {
                   textAlign: TextAlign.center,
                 ),
                 RadioButton(_settleTypePressed),
-                CheckBox(
-                    getText(context, "allowcustom"), _customOptionsPressed),
+                CheckBox(getText(context, "allowcustom"), _customOptionsPressed),
                 Container(
                   margin: settleButtonMargin,
                   child: createSettleButton,

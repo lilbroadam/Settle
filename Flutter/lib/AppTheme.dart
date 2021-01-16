@@ -15,8 +15,7 @@ class AppTheme {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     return ThemeData(
       inputDecorationTheme: InputDecorationTheme(
-          focusedBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
+          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
       primarySwatch: Colors.blue,
       primaryColor: isDarkTheme ? Colors.black : Colors.white,
       backgroundColor: isDarkTheme ? Colors.black : Color(0xffF1F5FB),

@@ -62,14 +62,12 @@ double reversingSplitParameters({
 }) {
   assert(reversalPoint <= 1.0 && reversalPoint >= 0.0,
       "reversalPoint must be a number between 0.0 and 1.0");
-  final double finalAnimationPosition =
-      breakAnimationPosition(position, numberBreaks);
+  final double finalAnimationPosition = breakAnimationPosition(position, numberBreaks);
 
   if (finalAnimationPosition <= 0.5) {
     return parameterBase - (finalAnimationPosition * 2 * parameterVariation);
   } else {
-    return parameterBase -
-        ((1 - finalAnimationPosition) * 2 * parameterVariation);
+    return parameterBase - ((1 - finalAnimationPosition) * 2 * parameterVariation);
   }
 }
 
@@ -185,8 +183,7 @@ class WaveLoadingBubblePainter extends CustomPainter {
     Path backgroundWavePath = WavePathHorizontal(
       amplitude: waveHeight,
       period: 1.0,
-      startPoint:
-          Offset(0.0 - waveBubbleRadius, 0.0 + backgroundWaveVerticalOffset),
+      startPoint: Offset(0.0 - waveBubbleRadius, 0.0 + backgroundWaveVerticalOffset),
       width: bubbleDiameter,
       crossAxisEndPoint: waveBubbleRadius,
       doClosePath: true,
@@ -196,8 +193,7 @@ class WaveLoadingBubblePainter extends CustomPainter {
     Path foregroundWavePath = WavePathHorizontal(
       amplitude: waveHeight,
       period: 1.0,
-      startPoint:
-          Offset(0.0 - waveBubbleRadius, 0.0 + foregroundWaveVerticalOffset),
+      startPoint: Offset(0.0 - waveBubbleRadius, 0.0 + foregroundWaveVerticalOffset),
       width: bubbleDiameter,
       crossAxisEndPoint: waveBubbleRadius,
       doClosePath: true,
@@ -245,9 +241,9 @@ class WavePathHorizontal {
   final double amplitude;
   final double period;
   final Offset startPoint;
-  final double crossAxisEndPoint; //*
-  final double
-      phaseShift; //* shift the starting value of the wave, in radians, repeats every 2 radians
+  final double crossAxisEndPoint;
+  // shift the starting value of the wave, in radians, repeats every 2 radians
+  final double phaseShift;
   final bool doClosePath;
 
   Path build() {
