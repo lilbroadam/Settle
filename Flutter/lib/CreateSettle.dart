@@ -77,9 +77,7 @@ class _CreateSettle extends State<CreateSettle> {
           if (gotCode) {
             return Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      LobbyScreen(settle, hostName, true)),
+              MaterialPageRoute(builder: (context) => LobbyScreen(settle, hostName, true)),
             );
           } else {
             return null;
@@ -90,11 +88,9 @@ class _CreateSettle extends State<CreateSettle> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
           ),
-          color: themeChange.darkTheme ? Color(0xff5B5B5B) : Colors.white,
+          color: AppTheme.buttonColor(),
           child: Text(
             getText(context, "sharecopy"),
-            style: TextStyle(
-                color: themeChange.darkTheme ? Colors.white : Colors.black),
           ),
           onPressed: () {
             if (gotCode) {

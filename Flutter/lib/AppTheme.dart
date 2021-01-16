@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'DarkThemeProvider.dart';
 import 'localization/lang_constants.dart';
 
 class AppTheme {
+  static final DarkThemeProvider themeChange = new DarkThemeProvider();
   static final double boxWidth = 55;
   static final double boxHeight = 50;
   static final settleButtonWidth = 150.0;
@@ -87,5 +89,17 @@ class AppTheme {
       ),
       onPressed: fun,
     );
+  }
+
+  static Color buttonColor() {
+    return themeChange.darkTheme ? Color(0xff5B5B5B) : Colors.white;
+  }
+
+  static Color backgroundColor() {
+    return themeChange.darkTheme ? Color(0xff1E1E1E) : Colors.white;
+  }
+
+  static String namescreenBackgroundURI() {
+    return themeChange.darkTheme ? 'assets/background-dark.png' : 'assets/background.png';
   }
 }

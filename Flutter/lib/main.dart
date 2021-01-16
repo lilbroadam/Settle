@@ -289,7 +289,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
           Container(
             margin: EdgeInsets.only(left: 5, right: 5),
             decoration: BoxDecoration(
-                color: themeChange.darkTheme ? Color(0xff1E1E1E) : Colors.white,
+                color: AppTheme.backgroundColor(),
                 borderRadius: BorderRadius.circular(25)),
             child: SizedBox(
               height: 500,
@@ -330,7 +330,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
           Container(
             margin: EdgeInsets.only(left: 5, right: 5),
             decoration: BoxDecoration(
-                color: themeChange.darkTheme ? Color(0xff1E1E1E) : Colors.white,
+                color: AppTheme.backgroundColor(),
                 borderRadius: BorderRadius.circular(25)),
             child: SizedBox(
               height: 150,

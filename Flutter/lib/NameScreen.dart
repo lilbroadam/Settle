@@ -35,9 +35,7 @@ class _NameScreenState extends State<NameScreen> {
 
   String getBackground() {
     setState(() {});
-    return widget.themeChange.darkTheme
-        ? 'assets/background-dark.png'
-        : 'assets/background.png';
+    return AppTheme.namescreenBackgroundURI();
   }
 
   Widget build(BuildContext context) {
