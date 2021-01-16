@@ -33,7 +33,7 @@ class _NameScreenState extends State<NameScreen> {
     }
   }
 
-  String getImage() {
+  String getBackground() {
     setState(() {});
     return widget.themeChange.darkTheme
         ? 'assets/background-dark.png'
@@ -56,7 +56,7 @@ class _NameScreenState extends State<NameScreen> {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage(getImage()), fit: BoxFit.cover)),
+              image: AssetImage(getBackground()), fit: BoxFit.cover)),
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
