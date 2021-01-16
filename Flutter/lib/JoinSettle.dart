@@ -2,8 +2,8 @@ import 'import_all.dart';
 
 class JoinSettle extends StatefulWidget {
   final String hostName;
-  final DarkThemeProvider themeChange;
-  JoinSettle(this.hostName, this.themeChange);
+  final DarkThemeProvider themeChange = new DarkThemeProvider();
+  JoinSettle(this.hostName);
 
   @override
   _JoinSettle createState() => _JoinSettle(hostName);
@@ -24,7 +24,7 @@ class _JoinSettle extends State<JoinSettle> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                LobbyScreen(settle, userName, false, widget.themeChange)),
+                LobbyScreen(settle, userName, false)),
       );
     } else {
       // TODO popup that the user couldn't be joined

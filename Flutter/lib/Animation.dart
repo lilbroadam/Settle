@@ -23,8 +23,7 @@ class AutomatedAnimator extends StatefulWidget {
   _AutomatedAnimatorState createState() => _AutomatedAnimatorState();
 }
 
-class _AutomatedAnimatorState extends State<AutomatedAnimator>
-    with SingleTickerProviderStateMixin {
+class _AutomatedAnimatorState extends State<AutomatedAnimator> with SingleTickerProviderStateMixin {
   _AutomatedAnimatorState();
   AnimationController controller;
 

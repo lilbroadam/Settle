@@ -5,22 +5,22 @@ typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
 
 class CreateSettle extends StatefulWidget {
   final String hostName;
-  final DarkThemeProvider themeChange;
-  CreateSettle(this.hostName, this.themeChange);
-
+  // final DarkThemeProvider themeChange = new DarkThemeProvider();
+  CreateSettle(this.hostName);
+  // final DarkThemeProvider x = Provider<DarkThemeProvider>.value();
   @override
-  _CreateSettle createState() => _CreateSettle(hostName, themeChange);
+  _CreateSettle createState() => _CreateSettle(hostName);
 }
 
 class _CreateSettle extends State<CreateSettle> {
   final String hostName;
-  final DarkThemeProvider themeChange;
+  final DarkThemeProvider themeChange = new DarkThemeProvider();
   SettleType _settleType;
   bool _customOptionsAllowed = false;
   bool gotCode = false;
   Settle settle;
 
-  _CreateSettle(this.hostName, this.themeChange);
+  _CreateSettle(this.hostName);
 
   // Call this function when a Settle type is pressed.
   void _settleTypePressed(SettleType settleType) {
@@ -68,7 +68,7 @@ class _CreateSettle extends State<CreateSettle> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      LobbyScreen(settle, hostName, true, widget.themeChange)),
+                      LobbyScreen(settle, hostName, true)),
             );
           } else {
             return null;

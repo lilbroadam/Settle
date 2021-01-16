@@ -73,8 +73,7 @@ class AppTheme {
             onPressed: fun));
   }
 
-  static RaisedButton rawButton(
-      BuildContext context, String text, Function fun) {
+  static RaisedButton rawButton(BuildContext context, String text, Function fun) {
     return RaisedButton(
       elevation: 5,
       shape: RoundedRectangleBorder(

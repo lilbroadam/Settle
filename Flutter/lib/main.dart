@@ -135,8 +135,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
-        final themeChange = Provider.of<DarkThemeProvider>(context);
-        return NameScreen(true, context, themeChange);
+        return NameScreen(true, context);
       }),
     );
   }
@@ -146,8 +145,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
-        final themeChange = Provider.of<DarkThemeProvider>(context);
-        return NameScreen(false, context, themeChange);
+        return NameScreen(false, context);
       }),
     );
   }

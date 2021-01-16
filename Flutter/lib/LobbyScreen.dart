@@ -4,9 +4,9 @@ class LobbyScreen extends StatefulWidget {
   final Settle settle;
   final String userName;
   final bool isHost;
-  final DarkThemeProvider themeChange;
+  // final DarkThemeProvider themeChange = new DarkThemeProvider();
 
-  const LobbyScreen(this.settle, this.userName, this.isHost, this.themeChange);
+  const LobbyScreen(this.settle, this.userName, this.isHost);
 
   @override
   _LobbyScreen createState() => _LobbyScreen(settle, userName, isHost);
@@ -21,6 +21,7 @@ class _LobbyScreen extends State<LobbyScreen> {
   final String userName;
   var myControler = TextEditingController();
   bool _validate = false;
+  final DarkThemeProvider themeChange = new DarkThemeProvider();
 
   _LobbyScreen(this.settle, this.userName, this.isHost)
       : this.hostName = settle.users.first,
@@ -38,7 +39,7 @@ class _LobbyScreen extends State<LobbyScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => SettleScreen(settle, widget.themeChange)));
+            builder: (context) => SettleScreen(settle)));
   }
 
   @override
@@ -131,7 +132,7 @@ class _LobbyScreen extends State<LobbyScreen> {
                                 itemCount: settle.users.length,
                                 itemBuilder: (context, index) {
                                   return _CardsItem(
-                                      widget.themeChange.darkTheme,
+                                      themeChange.darkTheme,
                                       str: settle
                                           .users[index % settle.users.length]);
                                 }))
@@ -160,7 +161,7 @@ class _LobbyScreen extends State<LobbyScreen> {
                                 itemCount: settle.options.length,
                                 itemBuilder: (context, index) {
                                   return _CardsItem(
-                                      widget.themeChange.darkTheme,
+                                      themeChange.darkTheme,
                                       str: settle.options[
                                           index % settle.options.length]);
                                 }))
@@ -188,17 +189,12 @@ class _LobbyScreen extends State<LobbyScreen> {
 
   Widget startButton() {
     return AppTheme.button(context, "startsettle", () {
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => SettleScreen(settle, widget.themeChange)));
       startSettlePressed();
     });
   }
 
   void startSettle() {
     print('it works');
-    // standardButton('Start Settling', startSettlePressed)
   }
 
   Widget scroller(List<String> l, String name) {

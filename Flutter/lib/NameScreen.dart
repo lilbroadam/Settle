@@ -1,10 +1,10 @@
 import 'import_all.dart';
 
 class NameScreen extends StatefulWidget {
-  final DarkThemeProvider themeChange;
+  final DarkThemeProvider themeChange = new DarkThemeProvider();
   final bool newSession;
   final context;
-  NameScreen(this.newSession, this.context, this.themeChange);
+  NameScreen(this.newSession, this.context);
   _NameScreenState createState() => _NameScreenState();
 }
 
@@ -16,13 +16,13 @@ class _NameScreenState extends State<NameScreen> {
       Navigator.push(
         widget.context,
         MaterialPageRoute(
-            builder: (context) => CreateSettle(name, widget.themeChange)),
+            builder: (context) => CreateSettle(name)),
       );
     } else {
       Navigator.push(
         widget.context,
         MaterialPageRoute(
-            builder: (context) => JoinSettle(name, widget.themeChange)),
+            builder: (context) => JoinSettle(name)),
       );
     }
   }
