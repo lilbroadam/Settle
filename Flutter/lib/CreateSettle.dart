@@ -5,7 +5,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:share/share.dart';
 
 import 'AppTheme.dart';
-import 'DarkThemeProvider.dart';
 import 'LobbyScreen.dart';
 import 'Server.dart';
 import 'Settle.dart';

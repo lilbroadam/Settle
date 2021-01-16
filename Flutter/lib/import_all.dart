@@ -8,7 +8,6 @@ export 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 export 'package:url_launcher/url_launcher.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';
 export 'localization/app_localizations.dart';
-export 'DarkThemeProvider.dart';
 export 'NameScreen.dart';
 export 'package:fluttericon/typicons_icons.dart';
 export 'package:fluttericon/linecons_icons.dart';
@@ -21,7 +20,6 @@ export 'JoinSettle.dart';
 // export 'package:google_fonts/google_fonts.dart';
 export 'dart:convert';
 export 'package:shared_preferences/shared_preferences.dart';
-export 'DarkThemePref.dart';
 export 'LobbyScreen.dart';
 export 'Server.dart';
 export 'Settle.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:tcard/tcard.dart';
 
-import 'DarkThemeProvider.dart';
+import 'AppTheme.dart';
 import 'ResultScreen.dart';
 import 'Settle.dart';
 import 'localization/lang_constants.dart';

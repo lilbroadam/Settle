@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'AppTheme.dart';
 import 'CreateSettle.dart';
-import 'DarkThemeProvider.dart';
 import 'JoinSettle.dart';
 import 'localization/lang_constants.dart';
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'Animation.dart';
 import 'AppTheme.dart';
-import 'DarkThemeProvider.dart';
 import 'Settle.dart';
 import 'SettleScreen.dart';
 import 'localization/lang_constants.dart';

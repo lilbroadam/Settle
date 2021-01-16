@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'AppTheme.dart';
-import 'DarkThemeProvider.dart';
 import 'LobbyScreen.dart';
 import 'Server.dart';
 import 'Settle.dart';

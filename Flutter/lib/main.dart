@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'AppTheme.dart';
-import 'DarkThemeProvider.dart';
 import 'NameScreen.dart';
 import 'localization/app_localizations.dart';
 import 'localization/lang_constants.dart';
