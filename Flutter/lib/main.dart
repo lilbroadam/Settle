@@ -1,4 +1,21 @@
-import 'import_all.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:fluttericon/linecons_icons.dart';
+import 'package:fluttericon/typicons_icons.dart';
+import 'package:groovin_widgets/groovin_widgets.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'AppTheme.dart';
+import 'DarkThemeProvider.dart';
+import 'NameScreen.dart';
+import 'localization/app_localizations.dart';
+import 'localization/lang_constants.dart';
+import 'localization/language.dart';
 
 void main() {
   LicenseRegistry.addLicense(() async* {

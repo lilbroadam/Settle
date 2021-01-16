@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'dart:math' as math;
-import 'import_all.dart';
+
+import 'package:flutter/material.dart';
 
 //https://codepen.io/SkysRad/pen/vYNxJwM
 

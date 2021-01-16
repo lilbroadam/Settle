@@ -1,4 +1,13 @@
-import 'import_all.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:groovin_widgets/groovin_widgets.dart';
+import 'package:tcard/tcard.dart';
+
+import 'DarkThemeProvider.dart';
+import 'ResultScreen.dart';
+import 'Settle.dart';
+import 'localization/lang_constants.dart';
+import 'widgets/settle_card.dart';
 
 class SettleScreen extends StatefulWidget {
   final Settle settle;

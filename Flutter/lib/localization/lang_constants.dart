@@ -1,4 +1,7 @@
-import '../import_all.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'app_localizations.dart';
 
 const String LAGUAGE_CODE = 'languageCode';
 

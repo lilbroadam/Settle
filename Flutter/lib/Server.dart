@@ -1,5 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'import_all.dart';
+
+import 'Settle.dart';
 
 // A class to handle communications with the backend server
 class Server {

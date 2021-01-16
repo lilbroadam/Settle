@@ -1,4 +1,6 @@
-import 'import_all.dart';
+import 'package:flutter/material.dart';
+
+import 'localization/lang_constants.dart';
 
 class AppTheme {
   static final double boxWidth = 55;
