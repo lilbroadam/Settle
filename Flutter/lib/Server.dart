@@ -1,5 +1,11 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
-import 'import_all.dart';
+import 'package:device_info/device_info.dart';
+import 'package:flutter/services.dart';
+import 'Settle.dart';
 
 // A class to handle communications with the backend server
 class Server {
@@ -54,8 +60,7 @@ class Server {
 
   // Given a joinSettleCode, ask the server to join the user to that Settle.
   // TODO how to tell caller when join fails?
-  static Future<Settle> joinSettle(
-      String userName, String joinSettleCode) async {
+  static Future<Settle> joinSettle(String userName, String joinSettleCode) async {
     final http.Response response = await http.post(
       await _getUrl(server_join_path),
       headers: http_default_header,
@@ -128,12 +133,13 @@ class Server {
   static Future<Settle> setState(SettleState state, [String code]) async {
     code = code ?? settleCode;
 
-    final http.Response response =
-        await http.put(await _getUri(server_state_path, code),
-            headers: http_default_header,
-            body: jsonEncode(<String, String>{
-              'setState': state.name,
-            }));
+    final http.Response response = await http.put(
+      await _getUri(server_state_path, code),
+      headers: http_default_header,
+      body: jsonEncode(<String, String>{
+        'setState': state.name,
+      })
+    );
 
     Settle responseSettle;
     Map<String, dynamic> responseJson = jsonDecode(response.body);
@@ -147,16 +153,18 @@ class Server {
     return responseSettle;
   }
 
-  static Future<Settle> submitVote(String option, bool done,
-      [String code]) async {
+  static Future<Settle> submitVote(String option, bool done, [String code]) async {
     code = code ?? settleCode;
     String finished = done == true ? "true" : "false";
 
     final http.Response response = await http.post(
-        await _getUri(server_voting_path, code),
-        headers: http_default_header,
-        body: jsonEncode(
-            <String, String>{'voteOption': option, 'userDone': finished}));
+      await _getUri(server_voting_path, code),
+      headers: http_default_header,
+      body: jsonEncode(<String, String>{
+        'voteOption': option,
+        'userDone' : finished
+      })
+    );
 
     Settle responseSettle;
     Map<String, dynamic> responseJson = jsonDecode(response.body);
