@@ -27,7 +27,6 @@ class _LobbyScreen extends State<LobbyScreen> {
   final String userName;
   var myControler = TextEditingController();
   bool _validate = false;
-  final DarkThemeProvider themeChange = new DarkThemeProvider();
 
   _LobbyScreen(this.settle, this.userName, this.isHost)
       : this.hostName = settle.users.first,
@@ -138,7 +137,7 @@ class _LobbyScreen extends State<LobbyScreen> {
                                 itemCount: settle.users.length,
                                 itemBuilder: (context, index) {
                                   return _CardsItem(
-                                      themeChange.darkTheme,
+                                      AppTheme.isDarkTheme(),
                                       str: settle
                                           .users[index % settle.users.length]);
                                 }))
@@ -167,7 +166,7 @@ class _LobbyScreen extends State<LobbyScreen> {
                                 itemCount: settle.options.length,
                                 itemBuilder: (context, index) {
                                   return _CardsItem(
-                                      themeChange.darkTheme,
+                                      AppTheme.isDarkTheme(),
                                       str: settle.options[
                                           index % settle.options.length]);
                                 }))
@@ -197,10 +196,6 @@ class _LobbyScreen extends State<LobbyScreen> {
     return AppTheme.button(context, "startsettle", () {
       startSettlePressed();
     });
-  }
-
-  void startSettle() {
-    print('it works');
   }
 
   Widget scroller(List<String> l, String name) {

@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:device_info/device_info.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-
 import 'Settle.dart';
 
 // A class to handle communications with the backend server

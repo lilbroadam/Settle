@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:tcard/tcard.dart';
-
+import 'localization/lang_constants.dart';
+import 'widgets/settle_card.dart';
 import 'AppTheme.dart';
 import 'ResultScreen.dart';
 import 'Settle.dart';
-import 'localization/lang_constants.dart';
-import 'widgets/settle_card.dart';
 
 class SettleScreen extends StatefulWidget {
   final Settle settle;
@@ -22,7 +21,6 @@ class _SettleScreenState extends State<SettleScreen> {
   Settle settle;
   List<SettleCard> settleCards = List();
   TCardController _controller = TCardController();
-  final DarkThemeProvider themeChange = new DarkThemeProvider();
 
   _SettleScreenState(this.settle) {
     settle.options.forEach((option) {
@@ -72,11 +70,11 @@ class _SettleScreenState extends State<SettleScreen> {
                     intensity: 0.35,
                     surfaceIntensity: 0.5,
                     lightSource: LightSource.topLeft,
-                    shadowLightColor: themeChange.darkTheme
+                    shadowLightColor: AppTheme.isDarkTheme()
                         ? Colors.white
                         : Colors.black,
                     shadowDarkColor: Colors.grey[900],
-                    color: themeChange.darkTheme
+                    color: AppTheme.isDarkTheme()
                         ? Color(0xff1E1E1E)
                         : Colors.grey[200],
                     shape: NeumorphicShape.flat,
@@ -96,11 +94,11 @@ class _SettleScreenState extends State<SettleScreen> {
                     intensity: 0.35,
                     surfaceIntensity: 0.5,
                     lightSource: LightSource.topLeft,
-                    shadowLightColor: themeChange.darkTheme
+                    shadowLightColor: AppTheme.isDarkTheme()
                         ? Colors.white
                         : Colors.black,
                     shadowDarkColor: Colors.grey[900],
-                    color: themeChange.darkTheme
+                    color: AppTheme.isDarkTheme()
                         ? Color(0xff1E1E1E)
                         : Colors.grey[200],
                     shape: NeumorphicShape.flat,
@@ -124,11 +122,11 @@ class _SettleScreenState extends State<SettleScreen> {
                     intensity: 0.35,
                     surfaceIntensity: 0.5,
                     lightSource: LightSource.topLeft,
-                    shadowLightColor: themeChange.darkTheme
+                    shadowLightColor: AppTheme.isDarkTheme()
                         ? Colors.white
                         : Colors.black,
                     shadowDarkColor: Colors.grey[900],
-                    color: themeChange.darkTheme
+                    color: AppTheme.isDarkTheme()
                         ? Color(0xff1E1E1E)
                         : Colors.grey[200],
                     shape: NeumorphicShape.flat,

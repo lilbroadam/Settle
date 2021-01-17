@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'localization/lang_constants.dart';
 import 'AppTheme.dart';
 import 'CreateSettle.dart';
 import 'JoinSettle.dart';
-import 'localization/lang_constants.dart';
 
 class NameScreen extends StatefulWidget {
-  final DarkThemeProvider themeChange = new DarkThemeProvider();
   final bool newSession;
   final context;
   NameScreen(this.newSession, this.context);

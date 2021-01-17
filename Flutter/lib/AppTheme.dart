@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'localization/lang_constants.dart';
 
 class AppTheme {
@@ -38,6 +37,10 @@ class AppTheme {
         elevation: 0.0,
       ),
     );
+  }
+
+  static bool isDarkTheme() {
+    return DarkThemeProvider().darkTheme;
   }
 
   static SizedBox button(BuildContext context, String text, Function fun) {

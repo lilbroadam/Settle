@@ -3,28 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:share/share.dart';
-
+import 'localization/lang_constants.dart';
 import 'AppTheme.dart';
 import 'LobbyScreen.dart';
 import 'Server.dart';
 import 'Settle.dart';
-import 'localization/lang_constants.dart';
 
 typedef void SettleTypePressedCallback(SettleType settleType);
 typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
 
 class CreateSettle extends StatefulWidget {
   final String hostName;
-  // final DarkThemeProvider themeChange = new DarkThemeProvider();
+
   CreateSettle(this.hostName);
-  // final DarkThemeProvider x = Provider<DarkThemeProvider>.value();
+
   @override
   _CreateSettle createState() => _CreateSettle(hostName);
 }
 
 class _CreateSettle extends State<CreateSettle> {
   final String hostName;
-  final DarkThemeProvider themeChange = new DarkThemeProvider();
   SettleType _settleType;
   bool _customOptionsAllowed = false;
   bool gotCode = false;

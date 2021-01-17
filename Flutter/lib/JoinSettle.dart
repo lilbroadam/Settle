@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-
+import 'localization/lang_constants.dart';
 import 'AppTheme.dart';
 import 'LobbyScreen.dart';
 import 'Server.dart';
 import 'Settle.dart';
-import 'localization/lang_constants.dart';
 
 class JoinSettle extends StatefulWidget {
   final String hostName;
-  final DarkThemeProvider themeChange = new DarkThemeProvider();
+
   JoinSettle(this.hostName);
 
   @override
