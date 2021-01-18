@@ -1,14 +1,13 @@
-import 'package:flutter/foundation.dart';
+import 'package:animated_dialog_box/animated_dialog_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:animated_dialog_box/animated_dialog_box.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:share/share.dart';
+import 'localization/lang_constants.dart';
+import 'AppTheme.dart';
 import 'LobbyScreen.dart';
 import 'Server.dart';
 import 'Settle.dart';
-import 'app_localizations.dart';
 
 typedef void SettleTypePressedCallback(SettleType settleType);
 typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
@@ -26,6 +25,7 @@ class _CreateSettle extends State<CreateSettle> {
   final String hostName;
   SettleType _settleType;
   bool _customOptionsAllowed = false;
+  bool gotCode = false;
   Settle settle;
 
   _CreateSettle(this.hostName);
@@ -50,13 +50,14 @@ class _CreateSettle extends State<CreateSettle> {
   // Call this function when the "Create this Settle" button is pressed.
   // This function will ask the server to create a new Settle.
   Future<Settle> _createSettleButtonPressed() async {
-    settle = await Server.createSettle(hostName, _settleType, _customOptionsAllowed);
-    
+    settle =
+        await Server.createSettle(hostName, _settleType, _customOptionsAllowed);
+
     if (settle == null) {
       // TODO error handling
       return Future<Settle>.value(null);
     }
-    
+
     return settle;
   }
 
@@ -67,36 +68,34 @@ class _CreateSettle extends State<CreateSettle> {
 
   Future<void> showPopup() async {
     await animated_dialog_box.showScaleAlertBox(
-        title: Center(
-            child: Text(AppLocalizations.of(context).translate("getcode"))),
+        title: Center(child: Text(getText(context, "getcode"))),
         context: context,
-        firstButton: MaterialButton(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(40),
-          ),
-          color: Colors.blue,
-          child: Text(
-            AppLocalizations.of(context).translate("golobby"),
-            style: TextStyle(color: Colors.white),
-          ),
-          onPressed: () {
-            Navigator.push( // Go to the lobby
+        firstButton: AppTheme.rawButton(context, "golobby", () {
+          if (gotCode) {
+            return Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => LobbyScreen(settle, hostName, true)
-              ),
+              MaterialPageRoute(builder: (context) => LobbyScreen(settle, hostName, true)),
             );
-          },
-        ),
-        secondButton: MaterialButton(
+          } else {
+            return null;
+          }
+        }),
+        secondButton: RaisedButton(
+          elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
           ),
-          color: Colors.white,
-          child: Text(AppLocalizations.of(context).translate("sharecopy")),
+          color: AppTheme.buttonColor(),
+          child: Text(
+            getText(context, "sharecopy"),
+          ),
           onPressed: () {
-            Clipboard.setData(ClipboardData(text: settle.settleCode));
-            Share.share(settle.settleCode);
+            if (gotCode) {
+              Clipboard.setData(ClipboardData(text: settle.settleCode));
+              Share.share(settle.settleCode);
+            } else {
+              return null;
+            }
           },
         ),
         icon: Icon(
@@ -109,8 +108,8 @@ class _CreateSettle extends State<CreateSettle> {
             builder: (context, snapshot) {
               if (snapshot.data != null) {
                 settle = snapshot.data;
-                return Text(settle.settleCode,
-                    style: GoogleFonts.notoSansKR(fontSize: 19));
+                gotCode = true;
+                return Text(settle.settleCode, style: TextStyle(fontSize: 19));
               } else {
                 return SpinKitDualRing(
                   color: Colors.blue,
@@ -127,26 +126,17 @@ class _CreateSettle extends State<CreateSettle> {
   Widget build(BuildContext context) {
     final settleButtonWidth = 180.0;
     final settleButtonHeight = 45.0;
-    final settleButtonTextStyle =
-        new TextStyle(fontSize: 16.4, color: Colors.white);
     final createSettleButton = SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-        color: Colors.blue,
-        // Only enable this button when at least 1 option has been selected
-        onPressed: !_isAnOptionSelected()
-            ? null
-            : () async {
-                await showPopup();
-              },
-
-        child: Text(AppLocalizations.of(context).translate("createthissettle"),
-            style: settleButtonTextStyle),
-      ),
+      child: AppTheme.button(
+          context,
+          "createthissettle",
+          !_isAnOptionSelected()
+              ? null
+              : () async {
+                  await showPopup();
+                }),
     );
     final settleButtonMargin = EdgeInsets.all(18.0);
 
@@ -173,12 +163,15 @@ class _CreateSettle extends State<CreateSettle> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Column(
-              mainAxisSize: MainAxisSize.min, // Size to only needed space
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text('What is your', style: TextStyle(fontSize: 25)),
-                Text('group Settling?', style: TextStyle(fontSize: 25)),
+                Text(
+                  getText(context, "asktype"),
+                  style: TextStyle(fontSize: 25),
+                  textAlign: TextAlign.center,
+                ),
                 RadioButton(_settleTypePressed),
-                CheckBox('Allow custom choices', _customOptionsPressed),
+                CheckBox(getText(context, "allowcustom"), _customOptionsPressed),
                 Container(
                   margin: settleButtonMargin,
                   child: createSettleButton,
@@ -244,7 +237,7 @@ class _RadioButton extends State<RadioButton> {
     return Column(
       children: <Widget>[
         ListTile(
-          title: Text(AppLocalizations.of(context).translate("movies")),
+          title: Text(getText(context, "movies")),
           leading: Radio(
             value: SettleType.movies,
             groupValue: _currentOption,
@@ -255,7 +248,7 @@ class _RadioButton extends State<RadioButton> {
           ),
         ),
         ListTile(
-          title: Text(AppLocalizations.of(context).translate("rest")),
+          title: Text(getText(context, "rest")),
           leading: Radio(
             value: SettleType.restaurants,
             groupValue: _currentOption,
@@ -266,15 +259,14 @@ class _RadioButton extends State<RadioButton> {
           ),
         ),
         ListTile(
-          title: Text(AppLocalizations.of(context).translate("customonly")),
+          title: Text(getText(context, "customonly")),
           leading: Radio(
-            value: SettleType.custom,
-            groupValue: _currentOption,
-            onChanged: (SettleType value) {
-              setState(() => _currentOption = value);
-              callback(value);
-            }
-          ),
+              value: SettleType.custom,
+              groupValue: _currentOption,
+              onChanged: (SettleType value) {
+                setState(() => _currentOption = value);
+                callback(value);
+              }),
         ),
       ],
     );

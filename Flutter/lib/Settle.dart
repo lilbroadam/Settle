@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'Server.dart';
 
 enum SettleType { custom, movies, restaurants }
+
 extension SettleTypeExt on SettleType {
   String get name => describeEnum(this);
 
@@ -12,7 +13,9 @@ extension SettleTypeExt on SettleType {
     throw FormatException('Could not match \'$settleType\' to a SettleType enum');
   }
 }
+
 enum SettleState { lobby, settling, complete }
+
 extension SettleStateExt on SettleState {
   String get name => describeEnum(this);
 
@@ -25,7 +28,6 @@ extension SettleStateExt on SettleState {
 }
 
 class Settle {
-  
   final String settleCode;
   final SettleType settleType;
   final bool customAllowed;
@@ -34,14 +36,14 @@ class Settle {
   List<String> _options = new List<String>();
   String _result;
 
-  Settle.fromJson(Map<String, dynamic> json) :
-    this.settleCode = json['settleCode'],
-    this.settleType = SettleTypeExt.toSettleType(json['settleType']),
-    this.customAllowed = json['customAllowed'],
-    this._settleState = SettleStateExt.toSettleState(json['settleState']),
-    this._users = json['users'].cast<String>(),
-    this._options = json['options'].cast<String>(),
-    this._result = json['result'].isEmpty ? null : json['result'];
+  Settle.fromJson(Map<String, dynamic> json)
+      : this.settleCode = json['settleCode'],
+        this.settleType = SettleTypeExt.toSettleType(json['settleType']),
+        this.customAllowed = json['customAllowed'],
+        this._settleState = SettleStateExt.toSettleState(json['settleState']),
+        this._users = json['users'].cast<String>(),
+        this._options = json['options'].cast<String>(),
+        this._result = json['result'].isEmpty ? null : json['result'];
 
   static Future<Settle> fromCode(String code) {
     return Server.getSettle(code);
@@ -84,7 +86,7 @@ class Settle {
 
   // Update this Settle with the server's Settle object.
   // TODO make this method not async so caller doesn't have to await
-  Future <void> update() async {
+  Future<void> update() async {
     _update(await Server.getSettle(settleCode));
   }
 

@@ -93,6 +93,26 @@ TCard:
 > Licensed under the [MIT](https://opensource.org/licenses/MIT). 
 > (See the [License](https://github.com/xrr2016/tcard/blob/master/LICENSE) file for the whole license text)
 
+Provider:
+> Copyright (c) 2019 Remi Rousselet.
+> Licensed under the [MIT](https://opensource.org/licenses/MIT). 
+> (See the [License](https://github.com/rrousselGit/provider/blob/master/LICENSE) file for the whole license text)
+
+Shared Preferance:
+> Copyright 2017 The Chromium Authors.
+> Licensed under the [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause). 
+> (See the [License](https://github.com/flutter/plugins/blob/master/LICENSE) file for the whole license text)
+
+Flutter Neumorphic:
+> Copyright 2020 Florent37.
+> Licensed under the [Apache](http://www.apache.org/licenses/). 
+> (see the [License](https://github.com/Idean/Flutter-Neumorphic/blob/master/LICENSE) file for the whole license text)
+
+Flutter Icon:
+> Copyright (c) 2020, Mike Hoolehan, StarHeight Media
+> Licensed under the [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause). 
+> (See the [License](https://github.com/ilikerobots/fluttericon_pkg/blob/master/LICENSE) file for the whole license text)
+
 
 # Acknowledgment
 

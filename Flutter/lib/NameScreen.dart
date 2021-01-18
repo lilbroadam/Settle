@@ -1,28 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'localization/lang_constants.dart';
+import 'AppTheme.dart';
 import 'CreateSettle.dart';
 import 'JoinSettle.dart';
-import 'app_localizations.dart';
 
-class NameScreen extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
-
+class NameScreen extends StatefulWidget {
   final bool newSession;
   final context;
   NameScreen(this.newSession, this.context);
+  _NameScreenState createState() => _NameScreenState();
+}
+
+class _NameScreenState extends State<NameScreen> {
+  final _formKey = GlobalKey<FormState>();
 
   void _navigate(String name) {
-    if (newSession) {
+    if (widget.newSession) {
       Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CreateSettle(name)),
+        widget.context,
+        MaterialPageRoute(
+            builder: (context) => CreateSettle(name)),
       );
     } else {
       Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => JoinSettle(name)),
+        widget.context,
+        MaterialPageRoute(
+            builder: (context) => JoinSettle(name)),
       );
     }
+  }
+
+  String getBackground() {
+    setState(() {});
+    return AppTheme.namescreenBackgroundURI();
   }
 
   Widget build(BuildContext context) {
@@ -33,26 +43,15 @@ class NameScreen extends StatelessWidget {
     final nextButton = SizedBox(
       width: width,
       height: height,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0),
-          side: BorderSide(color: Colors.white)),
-        color: Colors.blue,
-        child: Icon(
-          Icons.arrow_forward_outlined,
-          color: Colors.white,),
-        onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _navigate(myControler.text);
-          }
-        }
-      ),
+      child: AppTheme.nextButton(context, () {
+        if (_formKey.currentState.validate()) _navigate(myControler.text);
+      }),
     );
 
     return Container(
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/background.png'), fit: BoxFit.cover)),
+          image: DecorationImage(
+              image: AssetImage(getBackground()), fit: BoxFit.cover)),
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -66,7 +65,7 @@ class NameScreen extends StatelessWidget {
               color: Colors.white,
               size: 30,
             ),
-            tooltip: AppLocalizations.of(context).translate("tipback"),
+            tooltip: getText(context, "tipback"),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -80,8 +79,8 @@ class NameScreen extends StatelessWidget {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Text(AppLocalizations.of(context).translate("getname"),
-                    style: GoogleFonts.notoSansKR(fontSize: 25)),
+                  Text(getText(context, "getname"),
+                      style: TextStyle(fontSize: 25)),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: TextFormField(
@@ -91,8 +90,7 @@ class NameScreen extends StatelessWidget {
                         myControler.text = text.trim();
                         text = text.trim();
                         if (text.isEmpty) {
-                          return AppLocalizations.of(context)
-                              .translate("invalidname");
+                          return getText(context, "invalidname");
                         } else {
                           return null;
                         }

@@ -1,13 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:fluttericon/linecons_icons.dart';
+import 'package:fluttericon/typicons_icons.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'app_localizations.dart';
+import 'localization/app_localizations.dart';
+import 'localization/lang_constants.dart';
+import 'localization/language.dart';
+import 'AppTheme.dart';
 import 'NameScreen.dart';
 
 void main() {
@@ -15,44 +20,101 @@ void main() {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
+
   runApp(SettleApp());
+
+  // not working properly...may get scrapped or replaced with something else
+  // Function duringSplash = () {
+  //   return 1;
+  // };
+  // Map<int, Widget> op = {1: SettleApp(), 2: SettleHomePage()};
+  // runApp(MaterialApp(
+  //   home: AnimatedSplash(
+  //     imagePath: 'assets/splashscreen.png',
+  //     home: SettleApp(),
+  //     customFunction: duringSplash,
+  //     type: AnimatedSplashType.BackgroundProcess,
+  //     duration: 1500,
+  //     outputAndHome: op,
+  //   ),
+  // ));
 }
 
-class SettleApp extends StatelessWidget {
+class SettleApp extends StatefulWidget {
+  static void setLocale(BuildContext context, Locale locale) {
+    _SettleAppState state = context.findAncestorStateOfType<_SettleAppState>();
+    state.setLocale(locale);
+  }
+
+  _SettleAppState createState() => _SettleAppState();
+}
+
+class _SettleAppState extends State<SettleApp> {
+  Locale _locale;
+  DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
+  void initState() {
+    super.initState();
+    getCurrentAppTheme();
+  }
+
+  void getCurrentAppTheme() async {
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.darkThemePreference.getTheme();
+  }
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    getLocale().then((locale) {
+      setState(() {
+        this._locale = locale;
+      });
+    });
+    super.didChangeDependencies();
+  }
+
   // This widget is the root of the app.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: [
-        // ... app-specific localization delegate[s] here
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en', ''), // English, no country code
-        const Locale('es', ''), // Arabic, no country code
-      ],
-      localeResolutionCallback: (locale, suportedLocales) {
-        for (var suportedLocale in suportedLocales) {
-          if (suportedLocale.languageCode == locale.languageCode &&
-              suportedLocale.countryCode == locale.countryCode) {
-            return suportedLocale;
-          }
-        }
-        // Change to:
-        // index 0 == English
-        // index 1 == Spanish
-        // We'll later add buttons to chnage language from the app
-        return suportedLocales.elementAt(0);
+    return ChangeNotifierProvider(
+      create: (_) {
+        return themeChangeProvider;
       },
-      title: 'Settle',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+      child: Consumer<DarkThemeProvider>(
+        builder: (BuildContext context, value, Widget child) {
+          return MaterialApp(
+            locale: _locale,
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              const Locale('en', 'US'),
+              const Locale('es', 'SP'),
+            ],
+            localeResolutionCallback: (locale, suportedLocales) {
+              for (var suportedLocale in suportedLocales) {
+                if (suportedLocale.languageCode == locale.languageCode &&
+                    suportedLocale.countryCode == locale.countryCode) {
+                  return suportedLocale;
+                }
+              }
+              return suportedLocales.first;
+            },
+            title: 'Settle',
+            theme: AppTheme.themeData(themeChangeProvider.darkTheme, context),
+            home: SettleHomePage(title: 'Settle'),
+          );
+        },
       ),
-      home: SettleHomePage(title: 'Settle'),
     );
   }
 }
@@ -67,12 +129,30 @@ class SettleHomePage extends StatefulWidget {
 }
 
 class _SettleHomePageState extends State<SettleHomePage> {
+  DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
+  void initState() {
+    super.initState();
+    getCurrentAppTheme();
+  }
+
+  void getCurrentAppTheme() async {
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.darkThemePreference.getTheme();
+  }
+
+  void _changeLang(Language language) async {
+    Locale _locale = await setLocale(language.languageCode);
+    SettleApp.setLocale(context, _locale);
+  }
 
   // Called when 'Create a Settle' button is pressed
   void _createASettlePressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => NameScreen(true, context)),
+      MaterialPageRoute(builder: (context) {
+        return NameScreen(true, context);
+      }),
     );
   }
 
@@ -80,7 +160,9 @@ class _SettleHomePageState extends State<SettleHomePage> {
   void _joinASettlePressed() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => NameScreen(false, context)),
+      MaterialPageRoute(builder: (context) {
+        return NameScreen(false, context);
+      }),
     );
   }
 
@@ -109,16 +191,13 @@ class _SettleHomePageState extends State<SettleHomePage> {
               ListTile(
                 leading: Icon(Icons.info_outline),
                 title: Text("Settle"),
-                subtitle: Text(
-                  AppLocalizations.of(context).translate("version") + " 1.0"
-                ),
+                subtitle: Text(getText(context, "version") + " 1.0"),
               ),
               Material(
                 child: ListTile(
                   leading: Icon(MdiIcons.github),
-                  title: Text(AppLocalizations.of(context).translate("git")),
-                  subtitle:
-                    Text(AppLocalizations.of(context).translate("gitsub")),
+                  title: Text(getText(context, "git")),
+                  subtitle: Text(getText(context, "gitsub")),
                   onTap: () async {
                     const url = "https://github.com/lilbroadam/Settle";
                     if (await canLaunch(url)) {
@@ -132,10 +211,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
               Material(
                 child: ListTile(
                   leading: Icon(MdiIcons.email),
-                  title:
-                    Text(AppLocalizations.of(context).translate("contact")),
-                  subtitle: Text(
-                    AppLocalizations.of(context).translate("contactsub")),
+                  title: Text(getText(context, "contact")),
+                  subtitle: Text(getText(context, "contactsub")),
                   onTap: () async {
                     const emailAdrees = "settleitapplication@gmail.com";
                     const subject = "Client Request";
@@ -154,10 +231,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                       MdiIcons.currencyUsd,
                       size: 25,
                     ),
-                    title:
-                      Text(AppLocalizations.of(context).translate("support")),
-                    subtitle: Text(
-                      AppLocalizations.of(context).translate("supportsub")),
+                    title: Text(getText(context, "support")),
+                    subtitle: Text(getText(context, "supportsub")),
                     onTap: () {}),
               )
             ],
@@ -167,127 +242,203 @@ class _SettleHomePageState extends State<SettleHomePage> {
     );
   }
 
-  // Called when the settings button is pressed
-  void _settingsPressed() {
-    // TODO
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final settleButtonWidth = 150.0;
-    final settleButtonHeight = 45.0;
-    final settleButtonTextStyle = new TextStyle(
-      fontSize: 16.4,
-      color: Colors.white,
-    );
-
-    final animatedText = SizedBox(
-      width: 250.0,
-      height: 50,
-      child: TypewriterAnimatedTextKit(
-        pause: Duration(milliseconds: 500),
-        speed: Duration(milliseconds: 300),
-        onTap: () {
-          print("Tap Event");
-        },
-        text: ["Be everyting...", "Be Settle"],
-        textStyle: GoogleFonts.lobster(
-          fontSize: 40, textStyle: TextStyle(color: Colors.lightBlue)),
-        textAlign: TextAlign.start,
-      ),
-    );
-
-    final createSettleButton = SizedBox(
-      width: settleButtonWidth,
-      height: settleButtonHeight,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-        color: Colors.blue,
-        onPressed: _createASettlePressed,
-        child: Text(AppLocalizations.of(context).translate("createsettle"),
-          style: settleButtonTextStyle),
-      ),
-    );
-    final joinSettleButton = SizedBox(
-      width: settleButtonWidth,
-      height: settleButtonHeight,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-        color: Colors.blue,
-        onPressed: _joinASettlePressed,
-        child: Text(AppLocalizations.of(context).translate("joinsettle"),
-          style: settleButtonTextStyle),
-      ),
-    );
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     final settleButtonMargin = EdgeInsets.all(18.0);
     final miscButtonSize = 30.0;
 
-    /**
-     * The home screen is made of an expanded stack that takes up the entire
-     * screen and draws widgets in the center of the screen by default. The
-     * Settle buttons are drawn in a column in the center of the stack/screen,
-     * the info button is drawn in the bottom left of the stack/screen, and the
-     * settings button is drawn in the bottom right of the stack/screen.
-     */
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              height: 10,
-            ),
-            animatedText,
-            Expanded(
-              child: Stack(
+      backgroundColor: themeChange.darkTheme ? Colors.black : Colors.grey[200],
+      appBar: AppBar(
+        actions: [
+          Row(
+            children: [
+              Align(
                 alignment: Alignment.center,
+                child: Text(
+                  getText(context, "home"),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(63),
+              ),
+              IconButton(
+                icon: Icon(
+                  FontAwesome5.share_alt,
+                  color: themeChange.darkTheme ? Colors.blue : Colors.black,
+                  size: 20,
+                ),
+                tooltip: getText(context, "tipback"),
+                onPressed: () {},
+              )
+            ],
+          )
+        ],
+        backgroundColor: themeChange.darkTheme ? Colors.black : Colors.white,
+        automaticallyImplyLeading: true,
+        elevation: 0,
+      ),
+      body: SafeArea(
+          child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(10),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 5, right: 5),
+            decoration: BoxDecoration(
+                color: AppTheme.backgroundColor(),
+                borderRadius: BorderRadius.circular(25)),
+            child: SizedBox(
+              height: 500,
+              width: double.infinity,
+              child: Column(
                 children: <Widget>[
-                  Column(
-                    // Settle buttons in the center
-                    mainAxisSize: MainAxisSize.min, // Size to only needed space
-                    children: <Widget>[
-                      Container(
-                        margin: settleButtonMargin,
-                        child: createSettleButton,
-                      ),
-                      Container(
-                        margin: settleButtonMargin,
-                        child: joinSettleButton,
-                      ),
-                    ],
-                  ),
-                  Align(
-                    // Info button in the bottom left
-                    alignment: Alignment.bottomLeft,
-                    child: IconButton(
-                      icon: Icon(Icons.info),
-                      iconSize: miscButtonSize,
-                      tooltip:
-                        AppLocalizations.of(context).translate("settleinfo"),
-                      onPressed: _informationPressed,
-                    ),
-                  ),
-                  Align(
-                    // Settings button in the bottom right
-                    alignment: Alignment.bottomRight,
-                    child: IconButton(
-                      icon: Icon(Icons.settings),
-                      iconSize: miscButtonSize,
-                      tooltip:
-                        AppLocalizations.of(context).translate("setting"),
-                      onPressed: _settingsPressed,
+                  Expanded(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        Column(
+                          // Settle buttons in the center
+                          mainAxisSize:
+                              MainAxisSize.min, // Size to only needed space
+                          children: <Widget>[
+                            Container(
+                              margin: settleButtonMargin,
+                              child: AppTheme.button(context, "createsettle",
+                                  _createASettlePressed),
+                            ),
+                            Container(
+                              margin: settleButtonMargin,
+                              child: AppTheme.button(
+                                  context, "joinsettle", _joinASettlePressed),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-          ],
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 5, right: 5),
+            decoration: BoxDecoration(
+                color: AppTheme.backgroundColor(),
+                borderRadius: BorderRadius.circular(25)),
+            child: SizedBox(
+              height: 150,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Typicons.info,
+                      size: 33,
+                      color: Colors.lightBlue[400],
+                    ),
+                    iconSize: miscButtonSize,
+                    tooltip:
+                        AppLocalizations.of(context).translate("settleinfo"),
+                    onPressed: _informationPressed,
+                  ),
+                  IconButton(
+                    icon: themeChange.darkTheme
+                        ? Icon(
+                            FontAwesome5.moon,
+                            color: themeChange.darkTheme
+                                ? Colors.lightBlue[400]
+                                : Colors.grey[850],
+                            size: 30,
+                          )
+                        : Icon(
+                            FontAwesome5.lightbulb,
+                            color: themeChange.darkTheme
+                                ? Colors.lightBlue[400]
+                                : Colors.yellow[800],
+                          ),
+                    color: Colors.black,
+                    onPressed: () {
+                      setState(() {
+                        themeChange.darkTheme = !themeChange.darkTheme;
+                      });
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Linecons.cog,
+                      size: 35,
+                      color: Colors.lightBlue[400],
+                    ),
+                    iconSize: miscButtonSize,
+                    tooltip: getText(context, "setting"),
+                    onPressed: _settingMenu,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      )),
+    );
+  }
+
+  void _settingMenu() {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
       ),
+      builder: (builder) {
+        return Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ModalDrawerHandle(
+                  handleColor: Colors.black38,
+                  handleWidth: 35,
+                ),
+              ),
+              Material(
+                child: PopupMenuButton(
+                  offset: Offset(1, 0),
+                  child: ListTile(
+                    leading: Icon(MdiIcons.earth),
+                    title: Text(getText(context, "lang")),
+                    subtitle: Text(getText(context, "langsub")),
+                  ),
+                  elevation: 3,
+                  initialValue: Language.languageList().first,
+                  onSelected: _changeLang,
+                  itemBuilder: (BuildContext context) {
+                    return Language.languageList().map((Language l) {
+                      return PopupMenuItem(
+                        value: l,
+                        child: Text(l.name),
+                      );
+                    }).toList();
+                  },
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.info_outline),
+                title: Text("More features..."),
+                subtitle: Text("Coming soon..."),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

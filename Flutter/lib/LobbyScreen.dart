@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+
 import 'Animation.dart';
-import 'SettleScreen.dart';
+import 'AppTheme.dart';
 import 'Settle.dart';
-import 'app_localizations.dart';
+import 'SettleScreen.dart';
+import 'localization/lang_constants.dart';
 
 class LobbyScreen extends StatefulWidget {
   final Settle settle;
   final String userName;
   final bool isHost;
+  // final DarkThemeProvider themeChange = new DarkThemeProvider();
 
   const LobbyScreen(this.settle, this.userName, this.isHost);
 
@@ -36,134 +39,174 @@ class _LobbyScreen extends State<LobbyScreen> {
       await settle.setState(SettleState.settling);
       print('User started the Settle');
     }
-    
+
     // Go to the Settle screen
     Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SettleScreen(settle)
-      )
-    );
+        context,
+        MaterialPageRoute(
+            builder: (context) => SettleScreen(settle)));
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget customBox = Column(
-      children: [
-        Container(height: 30),
-        Text('Enter your custom options', style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            controller: myControler,
-            decoration: InputDecoration(
-              errorText: _validate ? 'Value Can\'t Be Empty' : null,
-            ),
+    Widget customBox = Column(children: [
+      Container(height: 30),
+      Text(getText(context, "entercustom"),
+          style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
+      Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: TextField(
+          controller: myControler,
+          decoration: InputDecoration(
+            errorText: _validate ? getText(context, "invalidcustom") : null,
           ),
-        ), 
-        RaisedButton(
-          shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0),
-          side: BorderSide(color: Colors.white)),
-          color: Colors.blue,
-          child: Icon(
-            Icons.arrow_forward_outlined,
-            color: Colors.white,
-          ),
-          onPressed: () async {
-            if (myControler.text.isEmpty){
-              _validate = true;
-            } else {
-              await settle.addOption(myControler.text);
-              myControler = TextEditingController();
-              _validate = false;
-            }
-            setState((){});
-          },
-        )]
-    );
+        ),
+      ),
+      AppTheme.button(context, "addoption", () async {
+        if (myControler.text.isEmpty) {
+          _validate = true;
+        } else {
+          await settle.addOption(myControler.text);
+          // setState(() {});
+          myControler = TextEditingController();
+          _validate = false;
+        }
+        setState(() {});
+      }),
+    ]);
 
     return Scaffold(
-      appBar: new AppBar(
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        elevation: 0.0,
-        title: Text('Lobby Code: $code', style: TextStyle(color: Colors.black)),
-        actions: [
-          IconButton(
-            color: Colors.black,
-            icon: Icon(Icons.refresh), 
-            onPressed: () async {
-              await settle.update();
-              setState((){});
-              if (settle.settleState == SettleState.settling)
-                startSettlePressed();
-            }
-        )]
-      ),
-      body: Center(
-        child: SafeArea(
-          child: Column(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: true,
+          elevation: 0.0,
+          centerTitle: true,
+          title: Text(
+            getText(context, "lobbycode") + " $code",
+            style: TextStyle(fontSize: 18),
+          ),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () async {
+                  await settle.update();
+                  setState(() {});
+                  if (settle.settleState == SettleState.settling)
+                    startSettlePressed();
+                })
+          ],
+          leading: IconButton(
+            padding: EdgeInsets.only(left: 15),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.blue,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        body: Center(
+          child: SafeArea(
+              child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(AppLocalizations.of(context).translate("welcome"),
+              Text(getText(context, "welcome"),
                   style: TextStyle(fontSize: 30), textAlign: TextAlign.center),
               Text(
                 '$userName',
                 style: TextStyle(fontSize: 30),
                 textAlign: TextAlign.center,
               ),
-              Container(
-                height: 200,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.all(10.0),
-                        child: scroller(settle.users, "Guests")
-                      ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 10),
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: Column(
+                      children: [
+                        Text(getText(context, "lobbyguests"),
+                            style: TextStyle(fontSize: 20)),
+                        Padding(padding: EdgeInsets.all(3)),
+                        Expanded(
+                            child: ListView.builder(
+                                itemCount: settle.users.length,
+                                itemBuilder: (context, index) {
+                                  return _CardsItem(
+                                      AppTheme.isDarkTheme(),
+                                      str: settle
+                                          .users[index % settle.users.length]);
+                                }))
+                      ],
                     ),
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.all(10.0),
-                        child: scroller(settle.options, "Options")
-                      ),
-                    )
-                  ],
-                )
+                  ),
+                  SizedBox(
+                    child: Padding(
+                      padding: EdgeInsets.all(3),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: Column(
+                      children: [
+                        Text(
+                          getText(context, "lobbyoptions"),
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(3),
+                        ),
+                        Expanded(
+                            child: ListView.builder(
+                                itemCount: settle.options.length,
+                                itemBuilder: (context, index) {
+                                  return _CardsItem(
+                                      AppTheme.isDarkTheme(),
+                                      str: settle.options[
+                                          index % settle.options.length]);
+                                }))
+                      ],
+                    ),
+                  ),
+                ],
               ),
               if (settle.customAllowed) customBox,
               Container(height: 75),
               if (isHost)
-                standardButton('Start Settling', startSettlePressed)
+                startButton()
               else
-                Column(
-                  children: [
-                    animation(),
-                    Container(height: 50),
-                    Text('Waiting on Host',
+                Column(children: [
+                  animation(),
+                  Container(height: 80),
+                  Text(getText(context, "waithost"),
                       style: TextStyle(fontSize: 15),
-                      textAlign: TextAlign.center
-                    )
-                  ]
-                )
+                      textAlign: TextAlign.center)
+                ])
             ],
-          )
-        ),
-      )
-    );
+          )),
+        ));
+  }
+
+  Widget startButton() {
+    return AppTheme.button(context, "startsettle", () {
+      startSettlePressed();
+    });
   }
 
   Widget scroller(List<String> l, String name) {
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
-          title: Text('$name:', style: TextStyle(fontSize: 22)),
-          titleSpacing: 0,
-          pinned: true,
-          toolbarHeight: 30,
-          leading: Container()),
+            title: Text('$name:', style: TextStyle(fontSize: 22)),
+            titleSpacing: 0,
+            pinned: true,
+            toolbarHeight: 30,
+            leading: Container()),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
@@ -172,8 +215,8 @@ class _LobbyScreen extends State<LobbyScreen> {
                 color: Colors.lightBlue,
                 height: 22,
                 child: Text('${l[index]}',
-                  style: TextStyle(fontSize: 18),
-                  textAlign: TextAlign.center),
+                    style: TextStyle(fontSize: 18),
+                    textAlign: TextAlign.center),
               );
             },
             childCount: l.length,
@@ -221,14 +264,14 @@ class _LobbyScreen extends State<LobbyScreen> {
             period: animationPosition,
             backgroundWaveVerticalOffset: 90 - animationPosition * 200,
             foregroundWaveVerticalOffset: 90 +
-              reversingSplitParameters(
-                position: animationPosition,
-                numberBreaks: 6,
-                parameterBase: 8.0,
-                parameterVariation: 8.0,
-                reversalPoint: 0.75,
-              ) -
-              animationPosition * 200,
+                reversingSplitParameters(
+                  position: animationPosition,
+                  numberBreaks: 6,
+                  parameterBase: 8.0,
+                  parameterVariation: 8.0,
+                  reversalPoint: 0.75,
+                ) -
+                animationPosition * 200,
             waveHeight: reversingSplitParameters(
               position: animationPosition,
               numberBreaks: 5,
@@ -238,6 +281,42 @@ class _LobbyScreen extends State<LobbyScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _CardsItem extends StatelessWidget {
+  final String str;
+  final bool isDark;
+  const _CardsItem(this.isDark, {Key key, this.str}) : super(key: key);
+
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(5),
+      child: Container(
+        height: 35,
+        decoration: BoxDecoration(
+            color: isDark ? Colors.grey[850] : Colors.grey[200],
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            boxShadow: [
+              BoxShadow(
+                  color: isDark ? Colors.grey[900] : Colors.grey[500],
+                  offset: Offset(2, 2),
+                  blurRadius: 5,
+                  spreadRadius: 1),
+              BoxShadow(
+                  color: isDark ? Colors.grey[800] : Colors.white70,
+                  offset: Offset(-2, -2),
+                  blurRadius: 5,
+                  spreadRadius: 1),
+            ]),
+        child: Text(
+          str,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        padding: EdgeInsets.only(top: 5),
       ),
     );
   }

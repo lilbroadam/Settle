@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:Settle/LobbyScreen.dart';
+import 'localization/lang_constants.dart';
+import 'AppTheme.dart';
+import 'LobbyScreen.dart';
 import 'Server.dart';
 import 'Settle.dart';
-import 'app_localizations.dart';
 
 class JoinSettle extends StatefulWidget {
   final String hostName;
+
   JoinSettle(this.hostName);
 
   @override
@@ -26,7 +28,8 @@ class _JoinSettle extends State<JoinSettle> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => LobbyScreen(settle, userName, false)),
+            builder: (context) =>
+                LobbyScreen(settle, userName, false)),
       );
     } else {
       // TODO popup that the user couldn't be joined
@@ -36,25 +39,7 @@ class _JoinSettle extends State<JoinSettle> {
 
   @override
   Widget build(BuildContext context) {
-    final settleButtonWidth = 150.0;
-    final settleButtonHeight = 45.0;
-    final settleButtonTextStyle =
-        new TextStyle(fontSize: 16.4, color: Colors.white);
-    final joinSettleButton = SizedBox(
-      width: settleButtonWidth,
-      height: settleButtonHeight,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-        color: Colors.blue,
-        onPressed: _joinASettlePressed,
-        child: Text(AppLocalizations.of(context).translate("joinasettle"),
-          style: settleButtonTextStyle),
-      ),
-    );
     final settleButtonMargin = EdgeInsets.all(18.0);
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -78,7 +63,7 @@ class _JoinSettle extends State<JoinSettle> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              AppLocalizations.of(context).translate("entercode"),
+              getText(context, "entercode"),
               style: TextStyle(fontSize: 25),
               textAlign: TextAlign.center,
             ),
@@ -90,7 +75,8 @@ class _JoinSettle extends State<JoinSettle> {
             ),
             Container(
               margin: settleButtonMargin,
-              child: joinSettleButton,
+              child:
+                  AppTheme.button(context, "joinasettle", _joinASettlePressed),
             )
           ],
         ),

@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'dart:math' as math;
+import 'package:flutter/material.dart';
 
 //https://codepen.io/SkysRad/pen/vYNxJwM
 
@@ -22,6 +22,7 @@ class AutomatedAnimator extends StatefulWidget {
   @override
   _AutomatedAnimatorState createState() => _AutomatedAnimatorState();
 }
+
 class _AutomatedAnimatorState extends State<AutomatedAnimator> with SingleTickerProviderStateMixin {
   _AutomatedAnimatorState();
   AnimationController controller;
@@ -29,7 +30,8 @@ class _AutomatedAnimatorState extends State<AutomatedAnimator> with SingleTicker
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: widget.duration)..addListener(() => setState(() {}));
+    controller = AnimationController(vsync: this, duration: widget.duration)
+      ..addListener(() => setState(() {}));
     if (widget.animateToggle == true) controller.forward();
     if (widget.doRepeatAnimation == true) controller.repeat();
   }
@@ -57,7 +59,8 @@ double reversingSplitParameters({
   @required double parameterVariation,
   @required double reversalPoint,
 }) {
-  assert(reversalPoint <= 1.0 && reversalPoint >= 0.0, "reversalPoint must be a number between 0.0 and 1.0");
+  assert(reversalPoint <= 1.0 && reversalPoint >= 0.0,
+      "reversalPoint must be a number between 0.0 and 1.0");
   final double finalAnimationPosition = breakAnimationPosition(position, numberBreaks);
 
   if (finalAnimationPosition <= 0.5) {
@@ -196,7 +199,14 @@ class WaveLoadingBubblePainter extends CustomPainter {
       phaseShift: -period * 2 * 5,
     ).build();
 
-    Path circleClip = Path()..addRRect(RRect.fromLTRBXY(-waveBubbleRadius, -waveBubbleRadius, waveBubbleRadius, waveBubbleRadius, waveBubbleRadius, waveBubbleRadius));
+    Path circleClip = Path()
+      ..addRRect(RRect.fromLTRBXY(
+          -waveBubbleRadius,
+          -waveBubbleRadius,
+          waveBubbleRadius,
+          waveBubbleRadius,
+          waveBubbleRadius,
+          waveBubbleRadius));
 
     //Path insetCirclePath = Path()..addRRect(RRect.fromLTRBXY(-insetBubbleRadius, -insetBubbleRadius, insetBubbleRadius, insetBubbleRadius, insetBubbleRadius, insetBubbleRadius));
     //Path loadingCirclePath = Path()..addRRect(RRect.fromLTRBXY(-loadingBubbleRadius, -loadingBubbleRadius, loadingBubbleRadius, loadingBubbleRadius, loadingBubbleRadius, loadingBubbleRadius));
@@ -223,14 +233,16 @@ class WavePathHorizontal {
     this.phaseShift = 0.0,
     this.doClosePath = false,
     this.crossAxisEndPoint = 0,
-  }) : assert(crossAxisEndPoint != null || doClosePath == false, "if doClosePath is true you must provide an end point (crossAxisEndPoint)");
+  }) : assert(crossAxisEndPoint != null || doClosePath == false,
+            "if doClosePath is true you must provide an end point (crossAxisEndPoint)");
 
   final double width;
   final double amplitude;
   final double period;
   final Offset startPoint;
-  final double crossAxisEndPoint; //*
-  final double phaseShift; //* shift the starting value of the wave, in radians, repeats every 2 radians
+  final double crossAxisEndPoint;
+  // shift the starting value of the wave, in radians, repeats every 2 radians
+  final double phaseShift;
   final bool doClosePath;
 
   Path build() {
@@ -242,7 +254,10 @@ class WavePathHorizontal {
     for (double i = 0; i <= width; i++) {
       returnPath.lineTo(
         i + startPointX,
-        startPointY + amplitude * math.sin((i * 2 * period * math.pi / width) + phaseShift * math.pi),
+        startPointY +
+            amplitude *
+                math.sin(
+                    (i * 2 * period * math.pi / width) + phaseShift * math.pi),
       );
     }
     if (doClosePath == true) {

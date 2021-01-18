@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:http/http.dart' as http;
 import 'package:device_info/device_info.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'Settle.dart';
 
 // A class to handle communications with the backend server
@@ -31,7 +30,6 @@ class Server {
   // responds with OK (status 200), return null otherwise.
   static Future<Settle> createSettle(
       String hostName, SettleType option, bool customAllowed) async {
-
     String optionString = option.name;
     String customString = customAllowed ? 'true' : 'false';
 
@@ -86,7 +84,7 @@ class Server {
   }
 
   // If a code parameter is provided, return the Settle object for that code.
-  // Otherwrise return the Settle object for the Settle created by the calls 
+  // Otherwrise return the Settle object for the Settle created by the calls
   // to createSettle() or joinSettle().
   static Future<Settle> getSettle([String code]) async {
     code = code ?? settleCode;
@@ -105,7 +103,7 @@ class Server {
     }
   }
 
-  // Ask the server to add an Option to the Settle. Return a List of all the 
+  // Ask the server to add an Option to the Settle. Return a List of all the
   // options in the Settle after the request was handled.
   // createSettle() or joinSettle() must have been called before this method.
   static Future<Settle> addOption(String option, [String code]) async {

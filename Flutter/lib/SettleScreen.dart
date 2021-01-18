@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tcard/tcard.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
+import 'package:tcard/tcard.dart';
+import 'localization/lang_constants.dart';
 import 'widgets/settle_card.dart';
+import 'AppTheme.dart';
 import 'ResultScreen.dart';
 import 'Settle.dart';
 
@@ -9,7 +12,7 @@ class SettleScreen extends StatefulWidget {
   final Settle settle;
 
   const SettleScreen(this.settle);
-  
+
   @override
   _SettleScreenState createState() => _SettleScreenState(settle);
 }
@@ -45,45 +48,96 @@ class _SettleScreenState extends State<SettleScreen> {
               onBack: (index) {
                 setState(() {});
               },
-              onEnd: () { // TODO: go to result screen
+              onEnd: () {
+                // TODO: go to result screen
                 print('end');
                 settle.userFinished();
-                Navigator.push( // Go to results screen
-                  context,
-                  MaterialPageRoute(builder: (context) => ResultScreen(settle))
-                );
+                Navigator.push(
+                    // Go to results screen
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ResultScreen(settle)));
               },
             ),
             SizedBox(height: 70),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                FloatingActionButton(
-                  heroTag: Text("nope"),
-                  // this will be forward and it should indicate user didn't
-                  // like it. For demo, it's set to back
-                  onPressed: () {
-                    _controller.back();
-                  },
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.close, color: Colors.red),
+                NeumorphicButton(
+                  onPressed: _controller.back,
+                  style: NeumorphicStyle(
+                    depth: 2.7,
+                    intensity: 0.35,
+                    surfaceIntensity: 0.5,
+                    lightSource: LightSource.topLeft,
+                    shadowLightColor: AppTheme.isDarkTheme()
+                        ? Colors.white
+                        : Colors.black,
+                    shadowDarkColor: Colors.grey[900],
+                    color: AppTheme.isDarkTheme()
+                        ? Color(0xff1E1E1E)
+                        : Colors.grey[200],
+                    shape: NeumorphicShape.flat,
+                    boxShape: NeumorphicBoxShape.circle(),
+                  ),
+                  padding: const EdgeInsets.all(15.0),
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.red,
+                    size: 35,
+                  ),
                 ),
-                FloatingActionButton(
-                  heroTag: Text("about"),
-                  mini: true,
-                  onPressed: _aboutPressed, // TODO
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.info_outline_rounded, color: Colors.blue),
+                NeumorphicButton(
+                  onPressed: _aboutPressed,
+                  style: NeumorphicStyle(
+                    depth: 2.7,
+                    intensity: 0.35,
+                    surfaceIntensity: 0.5,
+                    lightSource: LightSource.topLeft,
+                    shadowLightColor: AppTheme.isDarkTheme()
+                        ? Colors.white
+                        : Colors.black,
+                    shadowDarkColor: Colors.grey[900],
+                    color: AppTheme.isDarkTheme()
+                        ? Color(0xff1E1E1E)
+                        : Colors.grey[200],
+                    shape: NeumorphicShape.flat,
+                    boxShape: NeumorphicBoxShape.circle(),
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    Icons.info_outline_rounded,
+                    color: Colors.blue,
+                    size: 25,
+                  ),
                 ),
-                FloatingActionButton(
-                  heroTag: Text("yep"),
+                NeumorphicButton(
                   onPressed: () {
                     int index = _controller.index;
                     settle.submitVote(settleCards[index].title);
                     _controller.forward();
                   },
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.favorite, color: Colors.green),
+                  style: NeumorphicStyle(
+                    depth: 2.7,
+                    intensity: 0.35,
+                    surfaceIntensity: 0.5,
+                    lightSource: LightSource.topLeft,
+                    shadowLightColor: AppTheme.isDarkTheme()
+                        ? Colors.white
+                        : Colors.black,
+                    shadowDarkColor: Colors.grey[900],
+                    color: AppTheme.isDarkTheme()
+                        ? Color(0xff1E1E1E)
+                        : Colors.grey[200],
+                    shape: NeumorphicShape.flat,
+                    boxShape: NeumorphicBoxShape.circle(),
+                  ),
+                  padding: const EdgeInsets.all(15.0),
+                  child: Icon(
+                    Icons.favorite,
+                    color: Colors.green,
+                    size: 35,
+                  ),
                 ),
               ],
             ),
@@ -118,7 +172,7 @@ class _SettleScreenState extends State<SettleScreen> {
                 padding: EdgeInsets.all(10),
               ),
               Text(
-                "Coming Soon...",
+                getText(context, "soon"),
                 style: TextStyle(fontSize: 15),
               ),
               Padding(
