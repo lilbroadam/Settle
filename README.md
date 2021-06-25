@@ -5,7 +5,8 @@
 
 Group can't decide what restaurant to eat at? Partner can't agree on a movie to watch? What you're experiencing may be known as "indecisiveness". Symptoms may include minor feelings of frustration, annoyance, or being stuck. Luckily for you, computer scientists have beat doctors to the cure this time around. Introducing ✨Settle✨ -- an app to help you finally make a joint decision.
 
-Development of Settle is currently paused while the Settle team attends the Spring 2021 semester. We plan on resuming development this summer!
+
+Development of Settle is currently paused while the Settle team attends school and internships. However, we plan on resuming development in the future!
 
 # Developers 💻
 
