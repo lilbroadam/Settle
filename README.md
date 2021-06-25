@@ -1,53 +1,37 @@
 ![](https://img.shields.io/github/issues/lilbroadam/Settle)
 ![](https://img.shields.io/github/issues-pr/lilbroadam/Settle)
 
-# Table of contents
+# What is Settle? 🤔
 
-- [Table of contents](#table-of-contents)
-- [Settle](#settle)
-- [Authors](#authors)
-- [Features](#features)
-- [Contribute](#contribute)
-- [Bugs and Requests](#bugs-and-requests)
-- [Contact Us](#contact-us)
-- [Licenses](#licenses)
-- [Acknowledgment](#acknowledgment)
+Group can't decide what restaurant to eat at? Partner can't agree on a movie to watch? What you're experiencing may be known as "indecisiveness". Symptoms may include minor feelings of frustration, annoyance, or being stuck. Luckily for you, computer scientists have beat doctors to the cure this time around. Introducing ✨Settle✨ -- an app to help you finally make a joint decision.
 
 
-# Settle
+Development of Settle is currently paused while the Settle team attends school and internships. However, we plan on resuming development in the future!
 
-Yo, our app is lit ;)
-> TODO
+# Developers 💻
 
-# Authors
-
+Settle is brought to you by:
 - Adam Samuelson
-
 - Alejandor Balderas
-
 - Ali Al-Adhami
-
 - Rodrigo Estrella
 
-# Features
+# Features 🏆
 
 - A modern and simplistic design
 - Light and dark themes
-- Join and play with your friends and family members
 - Support for English and Spanish (more coming soon)
 
-# Contribute
+# Bugs and Requests 🐞
 
-> TODO: add instructions on how others can contribute to this project
+If you encounter a bug or have a suggestion or idea to implement, then please open a [GitHub issue](https://github.com/lilbroadam/Settle/issues). Our team will give its best to accommodate your requests.
 
-# Bugs and Requests
+# Contact Us 📧
 
-If you encounter a bug or have a suggestion or idea to implement, then please open a [GitHub issue](https://github.com/lilbroadam/Settle/issues), and our team will give its best to accommodate your requests.
-
-# Contact Us
 For any questions, concerns, or inquires that are not bugs or suggestions, please email us at settleitapplication@gmail.com.
 
-# Licenses
+# Licenses 📃
+
 Google Fonts
 > Copyright (c) 2004 Google.
 > Licensed under the [Apache](http://www.apache.org/licenses/). 
@@ -114,8 +98,6 @@ Flutter Icon:
 > (See the [License](https://github.com/ilikerobots/fluttericon_pkg/blob/master/LICENSE) file for the whole license text)
 
 
-# Acknowledgment
+# Acknowledgments 🙏
 
 Thanks to [Adrian Ivascu](https://github.com/Ivaskuu) for allowing us to use a portion of his [repository](https://github.com/Ivaskuu/tinder_cards).
-
-<!-- ## Contributers -->
