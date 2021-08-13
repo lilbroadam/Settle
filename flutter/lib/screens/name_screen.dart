@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'localization/lang_constants.dart';
-import 'AppTheme.dart';
-import 'CreateSettle.dart';
-import 'JoinSettle.dart';
+import 'package:settle/config/localization/lang_constants.dart';
+import 'package:settle/config/themes/app_theme.dart';
+import 'package:settle/screens/create_settle_screen.dart';
+import 'package:settle/screens/join_settle_screen.dart';
 
 class NameScreen extends StatefulWidget {
   final bool newSession;

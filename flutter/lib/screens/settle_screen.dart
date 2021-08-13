@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
+import 'package:settle/config/localization/lang_constants.dart';
+import 'package:settle/config/themes/app_theme.dart';
+import 'package:settle/protos/settle.dart';
+import 'package:settle/screens/result_screen.dart';
+import 'package:settle/widgets/settle_card.dart';
 import 'package:tcard/tcard.dart';
-import 'localization/lang_constants.dart';
-import 'widgets/settle_card.dart';
-import 'AppTheme.dart';
-import 'ResultScreen.dart';
-import 'Settle.dart';
 
 class SettleScreen extends StatefulWidget {
   final Settle settle;

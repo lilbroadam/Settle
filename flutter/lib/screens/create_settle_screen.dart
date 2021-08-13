@@ -2,12 +2,12 @@ import 'package:animated_dialog_box/animated_dialog_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:settle/cloud/settle_server/settle_server.dart';
+import 'package:settle/config/localization/lang_constants.dart';
+import 'package:settle/config/themes/app_theme.dart';
+import 'package:settle/protos/settle.dart';
+import 'package:settle/screens/lobby_screen.dart';
 import 'package:share/share.dart';
-import 'localization/lang_constants.dart';
-import 'AppTheme.dart';
-import 'LobbyScreen.dart';
-import 'Server.dart';
-import 'Settle.dart';
 
 typedef void SettleTypePressedCallback(SettleType settleType);
 typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
