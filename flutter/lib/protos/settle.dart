@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'Server.dart';
+import 'package:settle/cloud/settle_server/settle_server.dart';
 
 enum SettleType { custom, movies, restaurants }
 

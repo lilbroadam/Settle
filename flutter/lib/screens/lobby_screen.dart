@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'Animation.dart';
-import 'AppTheme.dart';
-import 'Settle.dart';
-import 'SettleScreen.dart';
-import 'localization/lang_constants.dart';
+import 'package:settle/config/localization/lang_constants.dart';
+import 'package:settle/config/themes/app_theme.dart';
+import 'package:settle/protos/settle.dart';
+import 'package:settle/screens/settle_screen.dart';
+import 'package:settle/widgets/animation.dart';
 
 class LobbyScreen extends StatefulWidget {
   final Settle settle;

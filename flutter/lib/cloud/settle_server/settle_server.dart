@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'Settle.dart';
+import 'package:settle/protos/settle.dart';
 
 // A class to handle communications with the backend server
 class Server {
-  static const server_info_file = 'assets/serverInfo.json';
+  static const server_info_file = 'assets/servers/settle_server.json';
   static const server_create_path = 'createsettle';
   static const server_join_path = 'joinsettle';
   static const server_info_path = 'info';

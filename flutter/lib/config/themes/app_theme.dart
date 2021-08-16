@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:settle/config/localization/lang_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'localization/lang_constants.dart';
 
 class AppTheme {
   static final DarkThemeProvider themeChange = new DarkThemeProvider();
@@ -103,7 +103,7 @@ class AppTheme {
   }
 
   static String namescreenBackgroundURI() {
-    return themeChange.darkTheme ? 'assets/background-dark.png' : 'assets/background.png';
+    return themeChange.darkTheme ? 'assets/images/background-dark.png' : 'assets/images/background.png';
   }
 }
 

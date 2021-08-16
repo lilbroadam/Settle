@@ -8,12 +8,12 @@ import 'package:fluttericon/typicons_icons.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:settle/config/localization/app_localizations.dart';
+import 'package:settle/config/localization/lang_constants.dart';
+import 'package:settle/config/localization/language.dart';
+import 'package:settle/config/themes/app_theme.dart';
+import 'package:settle/screens/name_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'localization/app_localizations.dart';
-import 'localization/lang_constants.dart';
-import 'localization/language.dart';
-import 'AppTheme.dart';
-import 'NameScreen.dart';
 
 void main() {
   LicenseRegistry.addLicense(() async* {

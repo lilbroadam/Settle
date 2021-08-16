@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Settle.dart';
+import 'package:settle/protos/settle.dart';
 
 class ResultScreen extends StatefulWidget {
   final Settle settle;

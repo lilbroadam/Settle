@@ -10,4 +10,5 @@ flutter_04.png
 
 **/.vscode/
 **/serverInfo.json
-
+serverInfo.json
+*server*.json
