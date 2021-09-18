@@ -21,6 +21,10 @@ void main() {
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
 
+  // TODO add debug settings that can make the development process easier
+  // such as auto-filling a name on the name screen or starting the app on
+  // a certain screen.
+
   runApp(SettleApp());
 
   // not working properly...may get scrapped or replaced with something else

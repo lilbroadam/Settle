@@ -79,13 +79,14 @@ class AppTheme {
             onPressed: fun));
   }
 
+  // TODO RaisedButton is deprecated, use ElevatedButton instead
   static RaisedButton rawButton(BuildContext context, String text, Function fun) {
     return RaisedButton(
       elevation: 5,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(40),
       ),
-      color: Colors.blue,
+      color: Colors.blue, // TODO move to variable for theme
       child: Text(
         getText(context, text),
         style: TextStyle(color: Colors.white),
