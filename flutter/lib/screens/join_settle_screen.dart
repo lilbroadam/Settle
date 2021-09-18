@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'localization/lang_constants.dart';
-import 'AppTheme.dart';
-import 'LobbyScreen.dart';
-import 'Server.dart';
-import 'Settle.dart';
+import 'package:settle/cloud/settle_server/settle_server.dart';
+import 'package:settle/config/localization/lang_constants.dart';
+import 'package:settle/config/themes/app_theme.dart';
+import 'package:settle/protos/settle.dart';
+import 'package:settle/screens/lobby_screen.dart';
 
 class JoinSettle extends StatefulWidget {
   final String hostName;

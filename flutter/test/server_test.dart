@@ -1,8 +1,8 @@
 // import 'package:test/test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:Settle/Server.dart';
-import 'package:Settle/Settle.dart';
-import 'package:Settle/CreateSettle.dart';
+import 'package:settle/cloud/settle_server/settle_server.dart';
+import 'package:settle/protos/settle.dart';
+import 'package:settle/screens/create_settle_screen.dart';
 
 // void main() {
 //   TestWidgetsFlutterBinding.ensureInitialized();
