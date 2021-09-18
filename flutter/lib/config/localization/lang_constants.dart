@@ -29,6 +29,9 @@ Locale _locale(String languageCode) {
   }
 }
 
+// TODO change key from strings into a LocalizedText enum or something similar
+// so we can get autocomplete and compilers for keys to prevent typos.
+// Ex: getText(contex, LocalizedText.CREATESETTLE_PROMPT);
 String getText(BuildContext context, String key) {
   return AppLocalizations.of(context).translate(key);
 }

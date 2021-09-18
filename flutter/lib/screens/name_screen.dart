@@ -19,7 +19,7 @@ class _NameScreenState extends State<NameScreen> {
       Navigator.push(
         widget.context,
         MaterialPageRoute(
-            builder: (context) => CreateSettle(name)),
+            builder: (context) => CreateSettleScreen(name)),
       );
     } else {
       Navigator.push(

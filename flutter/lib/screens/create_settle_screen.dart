@@ -9,49 +9,42 @@ import 'package:settle/protos/settle.dart';
 import 'package:settle/screens/lobby_screen.dart';
 import 'package:share/share.dart';
 
-typedef void SettleTypePressedCallback(SettleType settleType);
+typedef void SettleTypePressedCallback();
 typedef void CustomOptionsPressedCallback(bool customOptionsAllowed);
 
-class CreateSettle extends StatefulWidget {
+class CreateSettleScreen extends StatefulWidget {
   final String hostName;
 
-  CreateSettle(this.hostName);
+  CreateSettleScreen(this.hostName);
 
   @override
-  _CreateSettle createState() => _CreateSettle(hostName);
+  _CreateSettleScreen createState() => _CreateSettleScreen(hostName);
 }
 
-class _CreateSettle extends State<CreateSettle> {
+class _CreateSettleScreen extends State<CreateSettleScreen> {
   final String hostName;
-  SettleType _settleType;
-  bool _customOptionsAllowed = false;
   bool gotCode = false;
   Settle settle;
+  SettleTypeMenu settleTypeMenu;
 
-  _CreateSettle(this.hostName);
-
-  // Call this function when a Settle type is pressed.
-  void _settleTypePressed(SettleType settleType) {
-    _settleType = settleType;
-
-    if (settleType == SettleType.custom) {
-      // TODO make checkbox checked if 'Custom choices only' is clicked
-    }
-
-    setState(() {});
+  _CreateSettleScreen(this.hostName) {
+    settleTypeMenu = SettleTypeMenu(_onSettleTypePressed);
   }
 
-  // Call this function when the "custom options allowed" checkbox is pressed.
-  void _customOptionsPressed(bool customOptionsAllowed) {
-    _customOptionsAllowed = customOptionsAllowed;
+  // Callback function to call when a Settle Type is clicked in SettleTypeMenu.
+  // Mainly for calling setState() so the Create Settle Button can be updated
+  // based on the menu selection.
+  void _onSettleTypePressed() {
     setState(() {});
   }
 
   // Call this function when the "Create this Settle" button is pressed.
   // This function will ask the server to create a new Settle.
-  Future<Settle> _createSettleButtonPressed() async {
-    settle =
-        await Server.createSettle(hostName, _settleType, _customOptionsAllowed);
+  Future<Settle> _onCreateSettlePressed() async {
+    // TODO make sure a Settle type is selected, else pop up notification
+
+    settle = await Server.createSettle(hostName,
+        settleTypeMenu.selectedSettleType, settleTypeMenu.customOptionsAllowed);
 
     if (settle == null) {
       // TODO error handling
@@ -61,103 +54,114 @@ class _CreateSettle extends State<CreateSettle> {
     return settle;
   }
 
-  // Return true if at least one option has been selected.
-  bool _isAnOptionSelected() {
-    return (_settleType != null) || _customOptionsAllowed;
-  }
-
   Future<void> showPopup() async {
+    Widget popupTitleText = Text(getText(context, "getcode"));
+    Widget goToLobbyButton = AppTheme.rawButton(context, "golobby", () {
+      if (gotCode) {
+        // TODO update Navigator stack so that when user backs out of the
+        // lobby, they go back to the home screen instead of this screen
+        return Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LobbyScreen(settle, hostName, true)),
+        );
+      } else {
+        return null;
+      }
+    });
+    // TODO build button from theme
+    // TODO RaisedButton is deprecated, use ElevatedButton instead
+    Widget shareSettleCodeButton = RaisedButton(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(40),
+      ),
+      color: AppTheme.buttonColor(),
+      child: Text(
+        getText(context, "sharecopy"),
+      ),
+      onPressed: () {
+        if (gotCode) {
+          Clipboard.setData(ClipboardData(text: settle.settleCode));
+          Share.share(settle.settleCode);
+        } else {
+          return null;
+        }
+      },
+    );
+    Widget settleCodeText = FutureBuilder(
+      future: _onCreateSettlePressed(),
+      builder: (context, snapshot) {
+        if (snapshot.data != null) {
+          settle = snapshot.data;
+          gotCode = true;
+          // TODO get TextStyle from theme
+          return Text(settle.settleCode, style: TextStyle(fontSize: 19));
+        } else {
+          return SpinKitDualRing(
+            color: Colors.blue, // TODO get color from theme
+            size: 30,
+            lineWidth: 3,
+          );
+        }
+      },
+    );
+
     await animated_dialog_box.showScaleAlertBox(
-        title: Center(child: Text(getText(context, "getcode"))),
-        context: context,
-        firstButton: AppTheme.rawButton(context, "golobby", () {
-          if (gotCode) {
-            return Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LobbyScreen(settle, hostName, true)),
-            );
-          } else {
-            return null;
-          }
-        }),
-        secondButton: RaisedButton(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(40),
-          ),
-          color: AppTheme.buttonColor(),
-          child: Text(
-            getText(context, "sharecopy"),
-          ),
-          onPressed: () {
-            if (gotCode) {
-              Clipboard.setData(ClipboardData(text: settle.settleCode));
-              Share.share(settle.settleCode);
-            } else {
-              return null;
-            }
-          },
-        ),
-        icon: Icon(
-          Icons.check,
-          color: Colors.green,
-        ),
-        yourWidget: Container(
-          child: FutureBuilder(
-            future: _createSettleButtonPressed(),
-            builder: (context, snapshot) {
-              if (snapshot.data != null) {
-                settle = snapshot.data;
-                gotCode = true;
-                return Text(settle.settleCode, style: TextStyle(fontSize: 19));
-              } else {
-                return SpinKitDualRing(
-                  color: Colors.blue,
-                  size: 30,
-                  lineWidth: 3,
-                );
-              }
-            },
-          ),
-        ));
+      title: Center(child: popupTitleText),
+      context: context,
+      firstButton: goToLobbyButton,
+      secondButton: shareSettleCodeButton,
+      icon: Icon(
+        Icons.check,
+        color: Colors.green,
+      ),
+      yourWidget: settleCodeText,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final settleButtonWidth = 180.0;
-    final settleButtonHeight = 45.0;
-    final createSettleButton = SizedBox(
-      width: settleButtonWidth,
-      height: settleButtonHeight,
-      child: AppTheme.button(
-          context,
-          "createthissettle",
-          !_isAnOptionSelected()
-              ? null
-              : () async {
-                  await showPopup();
-                }),
+    // TODO get AppBar from theme
+    Widget createSettleScreenAppBar = AppBar(
+      backgroundColor: Colors.transparent,
+      automaticallyImplyLeading: true,
+      elevation: 0,
+      leading: IconButton(
+        padding: EdgeInsets.only(left: 20, top: 15),
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: Colors.blue,
+          size: 30,
+        ),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
     );
-    final settleButtonMargin = EdgeInsets.all(18.0);
+    Widget createSettlePromptText = Text(
+      getText(context, "createsettle-prompt"),
+      style: TextStyle(fontSize: 25),
+      textAlign: TextAlign.center,
+    );
+    // TODO build Create Settle Button from theme
+    Widget createSettleButton = Container(
+      margin: EdgeInsets.all(18.0),
+      child: SizedBox(
+        width: 180.0,
+        height: 45.0,
+        child: AppTheme.button(
+            context,
+            "createthissettle",
+            !settleTypeMenu.isSettleTypeSelected
+                ? null
+                : () async {
+                    await showPopup();
+                  }),
+      ),
+    );
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: true,
-        elevation: 0,
-        leading: IconButton(
-          padding: EdgeInsets.only(left: 20, top: 15),
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.blue,
-            size: 30,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
+      appBar: createSettleScreenAppBar,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -165,17 +169,9 @@ class _CreateSettle extends State<CreateSettle> {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(
-                  getText(context, "asktype"),
-                  style: TextStyle(fontSize: 25),
-                  textAlign: TextAlign.center,
-                ),
-                RadioButton(_settleTypePressed),
-                CheckBox(getText(context, "allowcustom"), _customOptionsPressed),
-                Container(
-                  margin: settleButtonMargin,
-                  child: createSettleButton,
-                )
+                createSettlePromptText,
+                settleTypeMenu,
+                createSettleButton,
               ],
             ),
           ],
@@ -185,89 +181,82 @@ class _CreateSettle extends State<CreateSettle> {
   }
 }
 
-class CheckBox extends StatefulWidget {
-  final String buttonTitle;
-  final CustomOptionsPressedCallback callback;
+class SettleTypeMenu extends StatefulWidget {
+  _SettleTypeMenu _settleTypeMenu;
+  final SettleTypePressedCallback _callback;
 
-  CheckBox(this.buttonTitle, this.callback, {Key key}) : super(key: key);
+  SettleTypeMenu(this._callback, {Key key}) : super(key: key) {
+    _settleTypeMenu = _SettleTypeMenu(_callback);
+  }
+
+  get isSettleTypeSelected => _settleTypeMenu.isSettleTypeSelected;
+  get customOptionsAllowed => _settleTypeMenu.customOptionsAllowed;
+  get selectedSettleType => _settleTypeMenu.selectedSettleType;
 
   @override
-  _CheckBox createState() => _CheckBox(buttonTitle, callback);
+  _SettleTypeMenu createState() => _settleTypeMenu;
 }
 
-class _CheckBox extends State<CheckBox> {
-  final String buttonTitle;
-  final CustomOptionsPressedCallback callback;
-  bool _customOption = false;
+class _SettleTypeMenu extends State<SettleTypeMenu> {
+  final SettleTypePressedCallback _callback;
+  SettleType _currentSettleType;
+  bool _customOptionsAllowed = false;
 
-  _CheckBox(this.buttonTitle, this.callback);
+  _SettleTypeMenu(this._callback);
 
-  @override
-  Widget build(BuildContext context) {
-    return CheckboxListTile(
-      title: Text(buttonTitle),
-      controlAffinity: ListTileControlAffinity.leading,
-      value: _customOption,
-      onChanged: (bool value) {
-        setState(() => _customOption = value);
-        callback(value);
-      },
-      activeColor: Colors.blue,
-      checkColor: Colors.black,
+  get isSettleTypeSelected => _currentSettleType != null;
+  get customOptionsAllowed => _customOptionsAllowed;
+  get selectedSettleType => _currentSettleType;
+
+  // Call when a [ListTile] is clicked to change the Settle type
+  void onSettleTypeChanged(SettleType settleType) {
+    // If a custom Settle is selected, enable Allow Custom Options button
+    if (settleType == SettleType.custom) {
+      _customOptionsAllowed = true;
+    }
+
+    setState(() => _currentSettleType = settleType);
+    _callback();
+  }
+
+  // Call when the [CheckboxListTile] for allowing custom options is clicked
+  void onCustomOptionsAllowedChanged(bool value) {
+    setState(() => _customOptionsAllowed = value);
+    _callback();
+  }
+
+  ListTile makeSettleTypeRadioButton(String text, SettleType settleType) {
+    return ListTile(
+      title: Text(getText(context, text)),
+      leading: Radio(
+        value: settleType,
+        groupValue: _currentSettleType,
+        // activeColor: ___, // TODO get from theme
+        onChanged: (settleType) => onSettleTypeChanged(settleType),
+      ),
     );
   }
-}
 
-class RadioButton extends StatefulWidget {
-  final SettleTypePressedCallback callback;
-  RadioButton(this.callback, {Key key}) : super(key: key);
-
-  @override
-  _RadioButton createState() => _RadioButton(callback);
-}
-
-class _RadioButton extends State<RadioButton> {
-  final SettleTypePressedCallback callback;
-  SettleType _currentOption;
-
-  _RadioButton(this.callback);
+  CheckboxListTile makeSettleTypeCheckBox(String text) {
+    return CheckboxListTile(
+      title: Text(getText(context, text)),
+      controlAffinity: ListTileControlAffinity.leading,
+      value: _customOptionsAllowed,
+      onChanged: (value) => onCustomOptionsAllowedChanged(value),
+      activeColor: Colors.blue, // TODO get from theme
+      checkColor: Colors.black, // TODO get from theme
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        ListTile(
-          title: Text(getText(context, "movies")),
-          leading: Radio(
-            value: SettleType.movies,
-            groupValue: _currentOption,
-            onChanged: (SettleType value) {
-              setState(() => _currentOption = value);
-              callback(value);
-            },
-          ),
-        ),
-        ListTile(
-          title: Text(getText(context, "rest")),
-          leading: Radio(
-            value: SettleType.restaurants,
-            groupValue: _currentOption,
-            onChanged: (SettleType value) {
-              setState(() => _currentOption = value);
-              callback(value);
-            },
-          ),
-        ),
-        ListTile(
-          title: Text(getText(context, "customonly")),
-          leading: Radio(
-              value: SettleType.custom,
-              groupValue: _currentOption,
-              onChanged: (SettleType value) {
-                setState(() => _currentOption = value);
-                callback(value);
-              }),
-        ),
+        makeSettleTypeRadioButton("settletype-movies", SettleType.movies),
+        makeSettleTypeRadioButton(
+            "settletype-restaurants", SettleType.restaurants),
+        makeSettleTypeRadioButton("settletype-customonly", SettleType.custom),
+        makeSettleTypeCheckBox("settletype-allowcustom"),
       ],
     );
   }
