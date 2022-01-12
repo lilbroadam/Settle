@@ -25,23 +25,9 @@ void main() {
   // such as auto-filling a name on the name screen or starting the app on
   // a certain screen.
 
-  runApp(SettleApp());
+  // TODO add a splash screen whose background can match the app theme
 
-  // not working properly...may get scrapped or replaced with something else
-  // Function duringSplash = () {
-  //   return 1;
-  // };
-  // Map<int, Widget> op = {1: SettleApp(), 2: SettleHomePage()};
-  // runApp(MaterialApp(
-  //   home: AnimatedSplash(
-  //     imagePath: 'assets/splashscreen.png',
-  //     home: SettleApp(),
-  //     customFunction: duringSplash,
-  //     type: AnimatedSplashType.BackgroundProcess,
-  //     duration: 1500,
-  //     outputAndHome: op,
-  //   ),
-  // ));
+  runApp(SettleApp());
 }
 
 class SettleApp extends StatefulWidget {
@@ -83,7 +69,6 @@ class _SettleAppState extends State<SettleApp> {
     super.didChangeDependencies();
   }
 
-  // This widget is the root of the app.
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -197,48 +182,43 @@ class _SettleHomePageState extends State<SettleHomePage> {
                 title: Text("Settle"),
                 subtitle: Text(getText(context, "version") + " 1.0"),
               ),
-              Material(
-                child: ListTile(
-                  leading: Icon(MdiIcons.github),
-                  title: Text(getText(context, "git")),
-                  subtitle: Text(getText(context, "gitsub")),
-                  onTap: () async {
-                    const url = "https://github.com/lilbroadam/Settle";
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                ),
+              ListTile(
+                leading: Icon(MdiIcons.github),
+                title: Text(getText(context, "git")),
+                subtitle: Text(getText(context, "gitsub")),
+                onTap: () async {
+                  var url = 'https://github.com/lilbroadam/Settle';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
               ),
-              Material(
-                child: ListTile(
-                  leading: Icon(MdiIcons.email),
-                  title: Text(getText(context, "contact")),
-                  subtitle: Text(getText(context, "contactsub")),
-                  onTap: () async {
-                    const emailAdrees = "settleitapplication@gmail.com";
-                    const subject = "Client Request";
-                    const url = 'mailto:$emailAdrees?subject=$subject';
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                ),
+              ListTile(
+                leading: Icon(MdiIcons.email),
+                title: Text(getText(context, "contact")),
+                subtitle: Text(getText(context, "contactsub")),
+                onTap: () async {
+                  const emailAdrees = "settleitapplication@gmail.com";
+                  const subject = "Client Request";
+                  const url = 'mailto:$emailAdrees?subject=$subject';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
               ),
-              Material(
-                child: ListTile(
-                    leading: Icon(
-                      MdiIcons.currencyUsd,
-                      size: 25,
-                    ),
-                    title: Text(getText(context, "support")),
-                    subtitle: Text(getText(context, "supportsub")),
-                    onTap: () {}),
-              )
+              ListTile(
+                leading: Icon(
+                  MdiIcons.currencyUsd,
+                  size: 25,
+                ),
+                title: Text(getText(context, "support")),
+                subtitle: Text(getText(context, "supportsub")),
+                onTap: () {}
+              ),
             ],
           ),
         );
