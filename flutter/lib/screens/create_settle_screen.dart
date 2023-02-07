@@ -70,13 +70,14 @@ class _CreateSettleScreen extends State<CreateSettleScreen> {
       }
     });
     // TODO build button from theme
-    // TODO RaisedButton is deprecated, use ElevatedButton instead
-    Widget shareSettleCodeButton = RaisedButton(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40),
+    Widget shareSettleCodeButton = ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40),
+        ),
+        backgroundColor: AppTheme.buttonColor(),
       ),
-      color: AppTheme.buttonColor(),
       child: Text(
         getText(context, "sharecopy"),
       ),

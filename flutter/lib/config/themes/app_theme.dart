@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:settle/config/localization/lang_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// TODO Look into using ThemeExtensions instead https://youtu.be/8-szcYzFVao
 class AppTheme {
   static final DarkThemeProvider themeChange = new DarkThemeProvider();
   static final double boxWidth = 55;
@@ -21,13 +22,14 @@ class AppTheme {
       primaryColor: isDarkTheme ? Colors.black : Colors.white,
       backgroundColor: isDarkTheme ? Colors.black : Color(0xffF1F5FB),
       indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
-      buttonColor: isDarkTheme ? Color(0xff3B3B3B) : Color(0xffF1F5FB),
       hintColor: isDarkTheme ? Color(0xff280C0B) : Color(0xffEECED3),
       highlightColor: isDarkTheme ? Color(0xff2C949A) : Color(0xff95F0F5),
       hoverColor: isDarkTheme ? Color(0xff3A3A3B) : Color(0xff4285F4),
       focusColor: isDarkTheme ? Color(0xff0B2512) : Color(0xffA8DAB5),
       disabledColor: Colors.grey,
-      textSelectionColor: isDarkTheme ? Colors.white : Colors.black,
+      textSelectionTheme: TextSelectionThemeData(
+        selectionColor: isDarkTheme ? Colors.white : Colors.black,
+      ),
       cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
       canvasColor: isDarkTheme ? Color(0xff1E1E1E) : Colors.grey[200],
       brightness: isDarkTheme ? Brightness.dark : Brightness.light,
@@ -47,12 +49,14 @@ class AppTheme {
     return SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
-      child: RaisedButton(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+          backgroundColor: Colors.blue
         ),
-        color: Colors.blue,
         onPressed: fun,
         child: Text(
           getText(context, text),
@@ -67,11 +71,13 @@ class AppTheme {
     return SizedBox(
         width: boxWidth,
         height: boxHeight,
-        child: RaisedButton(
-            shape: RoundedRectangleBorder(
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25.0)),
-            color: Colors.blue,
-            elevation: 5,
+              backgroundColor: Colors.blue,
+              elevation: 5,
+            ),
             child: Icon(
               Icons.arrow_forward_outlined,
               color: Colors.white,
@@ -79,14 +85,15 @@ class AppTheme {
             onPressed: fun));
   }
 
-  // TODO RaisedButton is deprecated, use ElevatedButton instead
-  static RaisedButton rawButton(BuildContext context, String text, Function fun) {
-    return RaisedButton(
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40),
+  static ElevatedButton rawButton(BuildContext context, String text, Function fun) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40),
+        ),
+        backgroundColor: Colors.blue // TODO move to variable for theme
       ),
-      color: Colors.blue, // TODO move to variable for theme
       child: Text(
         getText(context, text),
         style: TextStyle(color: Colors.white),
