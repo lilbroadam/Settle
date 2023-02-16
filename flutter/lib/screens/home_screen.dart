@@ -44,21 +44,19 @@ class _SettleHomePageState extends State<SettleHomePage> {
 
   // Called when 'Create a Settle' button is pressed
   void _createASettlePressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) {
-        return NameScreen(true, context);
-      }),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => NameScreen(true, context),
+      ),
     );
   }
 
   // Called when 'Join a Settle' button is pressed
   void _joinASettlePressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) {
-        return NameScreen(false, context);
-      }),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => NameScreen(false, context)
+      )
     );
   }
 

@@ -60,11 +60,8 @@ class _CreateSettleScreen extends State<CreateSettleScreen> {
       if (gotCode) {
         // TODO update Navigator stack so that when user backs out of the
         // lobby, they go back to the home screen instead of this screen
-        return Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => LobbyScreen(settle, hostName, true)),
-        );
+        return Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => LobbyScreen(settle, hostName, true)));
       } else {
         return null;
       }
