@@ -34,7 +34,7 @@ class Server {
     String customString = customAllowed ? 'true' : 'false';
 
     final http.Response response = await http.post(
-      await _getUrl(server_create_path),
+      Uri.parse(await _getUrl(server_create_path)),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
         'userName': hostName,
@@ -61,7 +61,7 @@ class Server {
   // TODO how to tell caller when join fails?
   static Future<Settle> joinSettle(String userName, String joinSettleCode) async {
     final http.Response response = await http.post(
-      await _getUrl(server_join_path),
+      Uri.parse(await _getUrl(server_join_path)),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
         'userName': userName,
@@ -90,7 +90,7 @@ class Server {
     code = code ?? settleCode;
 
     final http.Response response = await http.get(
-      await _getUri(server_info_path, code),
+      Uri.parse(await _getUri(server_info_path, code)),
       headers: http_default_header,
     );
 
@@ -110,7 +110,7 @@ class Server {
     code = code ?? settleCode;
 
     final http.Response response = await http.post(
-      await _getUri(server_options_path, code),
+      Uri.parse(await _getUri(server_options_path, code)),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
         'addOption': option,
@@ -133,7 +133,7 @@ class Server {
     code = code ?? settleCode;
 
     final http.Response response = await http.put(
-      await _getUri(server_state_path, code),
+      Uri.parse(await _getUri(server_state_path, code)),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
         'setState': state.name,
@@ -157,7 +157,7 @@ class Server {
     String finished = done == true ? "true" : "false";
 
     final http.Response response = await http.post(
-      await _getUri(server_voting_path, code),
+      Uri.parse(await _getUri(server_voting_path, code)),
       headers: http_default_header,
       body: jsonEncode(<String, String>{
         'voteOption': option,

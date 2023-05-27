@@ -45,7 +45,7 @@ class _SettleScreenState extends State<SettleScreen> {
                   settle.submitVote(settleCards[info.cardIndex].title);
                 setState(() {});
               },
-              onBack: (index) {
+              onBack: (index, info) {
                 setState(() {});
               },
               onEnd: () {

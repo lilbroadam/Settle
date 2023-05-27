@@ -1,4 +1,3 @@
-import 'package:animated_dialog_box/animated_dialog_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -105,17 +104,18 @@ class _CreateSettleScreen extends State<CreateSettleScreen> {
       },
     );
 
-    await animated_dialog_box.showScaleAlertBox(
-      title: Center(child: popupTitleText),
-      context: context,
-      firstButton: goToLobbyButton,
-      secondButton: shareSettleCodeButton,
-      icon: Icon(
-        Icons.check,
-        color: Colors.green,
-      ),
-      yourWidget: settleCodeText,
-    );
+    // TODO animated_dialog_box is dart3 incompatible. Replace commented code
+    // await animated_dialog_box.showScaleAlertBox(
+    //   title: Center(child: popupTitleText),
+    //   context: context,
+    //   firstButton: goToLobbyButton,
+    //   secondButton: shareSettleCodeButton,
+    //   icon: Icon(
+    //     Icons.check,
+    //     color: Colors.green,
+    //   ),
+    //   yourWidget: settleCodeText,
+    // );
   }
 
   @override
