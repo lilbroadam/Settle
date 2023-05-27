@@ -6,7 +6,7 @@ import 'package:settle/screens/settle_screen.dart';
 import 'package:settle/widgets/animation.dart';
 
 class LobbyScreen extends StatefulWidget {
-  final Settle settle;
+  final Settle? settle;
   final String userName;
   final bool isHost;
   // final DarkThemeProvider themeChange = new DarkThemeProvider();
@@ -14,21 +14,21 @@ class LobbyScreen extends StatefulWidget {
   const LobbyScreen(this.settle, this.userName, this.isHost);
 
   @override
-  _LobbyScreen createState() => _LobbyScreen(settle, userName, isHost);
+  _LobbyScreen createState() => _LobbyScreen(settle!, userName, isHost);
 }
 
 class _LobbyScreen extends State<LobbyScreen> {
   final String hostName;
   final bool isHost;
-  final bool isCustom;
-  final String code;
+  final bool? isCustom;
+  final String? code;
   final Settle settle;
   final String userName;
   var myControler = TextEditingController();
   bool _validate = false;
 
   _LobbyScreen(this.settle, this.userName, this.isHost)
-      : this.hostName = settle.users.first,
+      : this.hostName = settle.users!.first,
         this.isCustom = settle.customAllowed,
         this.code = settle.settleCode;
 
@@ -49,7 +49,7 @@ class _LobbyScreen extends State<LobbyScreen> {
   Widget build(BuildContext context) {
     Widget customBox = Column(children: [
       Container(height: 30),
-      Text(getText(context, "entercustom"),
+      Text(getText(context, "entercustom")!,
           style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
       Padding(
         padding: const EdgeInsets.all(15.0),
@@ -80,7 +80,7 @@ class _LobbyScreen extends State<LobbyScreen> {
           elevation: 0.0,
           centerTitle: true,
           title: Text(
-            getText(context, "lobbycode") + " $code",
+            getText(context, "lobbycode")! + " $code",
             style: TextStyle(fontSize: 18),
           ),
           actions: [
@@ -110,7 +110,7 @@ class _LobbyScreen extends State<LobbyScreen> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(getText(context, "welcome"),
+              Text(getText(context, "welcome")!,
                   style: TextStyle(fontSize: 30), textAlign: TextAlign.center),
               Text(
                 '$userName',
@@ -127,17 +127,17 @@ class _LobbyScreen extends State<LobbyScreen> {
                     height: 200,
                     child: Column(
                       children: [
-                        Text(getText(context, "lobbyguests"),
+                        Text(getText(context, "lobbyguests")!,
                             style: TextStyle(fontSize: 20)),
                         Padding(padding: EdgeInsets.all(3)),
                         Expanded(
                             child: ListView.builder(
-                                itemCount: settle.users.length,
+                                itemCount: settle.users!.length,
                                 itemBuilder: (context, index) {
                                   return _CardsItem(
                                       AppTheme.isDarkTheme(),
                                       str: settle
-                                          .users[index % settle.users.length]);
+                                          .users![index % settle.users!.length]);
                                 }))
                       ],
                     ),
@@ -153,7 +153,7 @@ class _LobbyScreen extends State<LobbyScreen> {
                     child: Column(
                       children: [
                         Text(
-                          getText(context, "lobbyoptions"),
+                          getText(context, "lobbyoptions")!,
                           style: TextStyle(fontSize: 20),
                         ),
                         Padding(
@@ -161,19 +161,19 @@ class _LobbyScreen extends State<LobbyScreen> {
                         ),
                         Expanded(
                             child: ListView.builder(
-                                itemCount: settle.options.length,
+                                itemCount: settle.options!.length,
                                 itemBuilder: (context, index) {
                                   return _CardsItem(
                                       AppTheme.isDarkTheme(),
-                                      str: settle.options[
-                                          index % settle.options.length]);
+                                      str: settle.options![
+                                          index % settle.options!.length]);
                                 }))
                       ],
                     ),
                   ),
                 ],
               ),
-              if (settle.customAllowed) customBox,
+              if (settle.customAllowed!) customBox,
               Container(height: 75),
               if (isHost)
                 startButton()
@@ -181,7 +181,7 @@ class _LobbyScreen extends State<LobbyScreen> {
                 Column(children: [
                   animation(),
                   Container(height: 80),
-                  Text(getText(context, "waithost"),
+                  Text(getText(context, "waithost")!,
                       style: TextStyle(fontSize: 15),
                       textAlign: TextAlign.center)
                 ])
@@ -285,9 +285,9 @@ class _LobbyScreen extends State<LobbyScreen> {
 }
 
 class _CardsItem extends StatelessWidget {
-  final String str;
+  final String? str;
   final bool isDark;
-  const _CardsItem(this.isDark, {Key key, this.str}) : super(key: key);
+  const _CardsItem(this.isDark, {Key? key, this.str}) : super(key: key);
 
   Widget build(BuildContext context) {
     return Padding(
@@ -299,18 +299,18 @@ class _CardsItem extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(30)),
             boxShadow: [
               BoxShadow(
-                  color: isDark ? Colors.grey[900] : Colors.grey[500],
+                  color: isDark ? Colors.grey[900]! : Colors.grey[500]!,
                   offset: Offset(2, 2),
                   blurRadius: 5,
                   spreadRadius: 1),
               BoxShadow(
-                  color: isDark ? Colors.grey[800] : Colors.white70,
+                  color: isDark ? Colors.grey[800]! : Colors.white70,
                   offset: Offset(-2, -2),
                   blurRadius: 5,
                   spreadRadius: 1),
             ]),
         child: Text(
-          str,
+          str!,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),

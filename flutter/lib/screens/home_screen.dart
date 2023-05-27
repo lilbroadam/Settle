@@ -14,9 +14,9 @@ import 'package:settle/screens/name_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettleHomePage extends StatefulWidget {
-  SettleHomePage({Key key, this.title}) : super(key: key);
+  SettleHomePage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _SettleHomePageState createState() => _SettleHomePageState();
@@ -85,12 +85,12 @@ class _SettleHomePageState extends State<SettleHomePage> {
               ListTile(
                 leading: Icon(Icons.info_outline),
                 title: Text("Settle"),
-                subtitle: Text(getText(context, "version") + " 1.0"),
+                subtitle: Text(getText(context, "version")! + " 1.0"),
               ),
               ListTile(
                 leading: Icon(MdiIcons.github),
-                title: Text(getText(context, "git")),
-                subtitle: Text(getText(context, "gitsub")),
+                title: Text(getText(context, "git")!),
+                subtitle: Text(getText(context, "gitsub")!),
                 onTap: () async {
                   var url = 'https://github.com/lilbroadam/Settle';
                   if (await canLaunch(url)) {
@@ -102,8 +102,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
               ),
               ListTile(
                 leading: Icon(MdiIcons.email),
-                title: Text(getText(context, "contact")),
-                subtitle: Text(getText(context, "contactsub")),
+                title: Text(getText(context, "contact")!),
+                subtitle: Text(getText(context, "contactsub")!),
                 onTap: () async {
                   const emailAdrees = "settleitapplication@gmail.com";
                   const subject = "Client Request";
@@ -120,8 +120,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                   MdiIcons.currencyUsd,
                   size: 25,
                 ),
-                title: Text(getText(context, "support")),
-                subtitle: Text(getText(context, "supportsub")),
+                title: Text(getText(context, "support")!),
+                subtitle: Text(getText(context, "supportsub")!),
                 onTap: () {}
               ),
             ],
@@ -145,7 +145,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
               Align(
                 alignment: Alignment.center,
                 child: Text(
-                  getText(context, "home"),
+                  getText(context, "home")!,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
@@ -233,7 +233,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
                     ),
                     iconSize: miscButtonSize,
                     tooltip:
-                        AppLocalizations.of(context).translate("settleinfo"),
+                        AppLocalizations.of(context)!.translate("settleinfo"),
                     onPressed: _informationPressed,
                   ),
                   IconButton(
@@ -303,8 +303,8 @@ class _SettleHomePageState extends State<SettleHomePage> {
                   offset: Offset(1, 0),
                   child: ListTile(
                     leading: Icon(MdiIcons.earth),
-                    title: Text(getText(context, "lang")),
-                    subtitle: Text(getText(context, "langsub")),
+                    title: Text(getText(context, "lang")!),
+                    subtitle: Text(getText(context, "langsub")!),
                   ),
                   elevation: 3,
                   initialValue: Language.languageList().first,

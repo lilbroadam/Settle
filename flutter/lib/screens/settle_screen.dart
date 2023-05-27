@@ -23,7 +23,7 @@ class _SettleScreenState extends State<SettleScreen> {
   TCardController _controller = TCardController();
 
   _SettleScreenState(this.settle) {
-    settle.options.forEach((option) {
+    settle.options!.forEach((option) {
       settleCards.add(SettleCard(option));
     });
   }
@@ -172,7 +172,7 @@ class _SettleScreenState extends State<SettleScreen> {
                 padding: EdgeInsets.all(10),
               ),
               Text(
-                getText(context, "soon"),
+                getText(context, "soon")!,
                 style: TextStyle(fontSize: 15),
               ),
               Padding(

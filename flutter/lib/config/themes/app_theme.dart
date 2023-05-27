@@ -45,7 +45,7 @@ class AppTheme {
     return DarkThemeProvider().darkTheme;
   }
 
-  static SizedBox button(BuildContext context, String text, Function fun) {
+  static SizedBox button(BuildContext context, String text, Function? fun) {
     return SizedBox(
       width: settleButtonWidth,
       height: settleButtonHeight,
@@ -57,9 +57,9 @@ class AppTheme {
           ),
           backgroundColor: Colors.blue
         ),
-        onPressed: fun,
+        onPressed: fun as void Function()?,
         child: Text(
-          getText(context, text),
+          getText(context, text)!,
           style: settleButtonTextStyle,
           textAlign: TextAlign.center,
         ),
@@ -82,7 +82,7 @@ class AppTheme {
               Icons.arrow_forward_outlined,
               color: Colors.white,
             ),
-            onPressed: fun));
+            onPressed: fun as void Function()?));
   }
 
   static ElevatedButton rawButton(BuildContext context, String text, Function fun) {
@@ -95,10 +95,10 @@ class AppTheme {
         backgroundColor: Colors.blue // TODO move to variable for theme
       ),
       child: Text(
-        getText(context, text),
+        getText(context, text)!,
         style: TextStyle(color: Colors.white),
       ),
-      onPressed: fun,
+      onPressed: fun as void Function()?,
     );
   }
 
