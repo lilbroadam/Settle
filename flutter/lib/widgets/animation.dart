@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 //Animation class
 class AutomatedAnimator extends StatefulWidget {
   AutomatedAnimator({
-    @required this.buildWidget,
-    @required this.animateToggle,
+    required this.buildWidget,
+    required this.animateToggle,
     this.duration = const Duration(milliseconds: 300),
     this.doRepeatAnimation = false,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final Widget Function(double animationValue) buildWidget;
@@ -25,7 +25,7 @@ class AutomatedAnimator extends StatefulWidget {
 
 class _AutomatedAnimatorState extends State<AutomatedAnimator> with SingleTickerProviderStateMixin {
   _AutomatedAnimatorState();
-  AnimationController controller;
+  late AnimationController controller;
 
   @override
   void initState() {
@@ -53,11 +53,11 @@ class _AutomatedAnimatorState extends State<AutomatedAnimator> with SingleTicker
 }
 
 double reversingSplitParameters({
-  @required double position,
-  @required double numberBreaks,
-  @required double parameterBase,
-  @required double parameterVariation,
-  @required double reversalPoint,
+  required double position,
+  required double numberBreaks,
+  required double parameterBase,
+  required double parameterVariation,
+  required double reversalPoint,
 }) {
   assert(reversalPoint <= 1.0 && reversalPoint >= 0.0,
       "reversalPoint must be a number between 0.0 and 1.0");
@@ -96,7 +96,7 @@ class WaveLoadingBubble extends StatelessWidget {
     this.foregroundWaveVerticalOffset = 10.0,
     this.backgroundWaveVerticalOffset = 0.0,
     this.period = 0.0,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final double bubbleDiameter;
@@ -131,16 +131,16 @@ class WaveLoadingBubble extends StatelessWidget {
 
 class WaveLoadingBubblePainter extends CustomPainter {
   WaveLoadingBubblePainter({
-    this.bubbleDiameter,
+    required this.bubbleDiameter,
     this.loadingCircleWidth,
     this.waveInsetWidth,
     this.waveHeight,
-    this.foregroundWaveColor,
-    this.backgroundWaveColor,
-    this.loadingWheelColor,
+    required this.foregroundWaveColor,
+    required this.backgroundWaveColor,
+    required this.loadingWheelColor,
     this.foregroundWaveVerticalOffset,
     this.backgroundWaveVerticalOffset,
-    this.period,
+    required this.period,
   })  : foregroundWavePaint = Paint()..color = foregroundWaveColor,
         backgroundWavePaint = Paint()..color = backgroundWaveColor,
         loadingCirclePaint = Paint()
@@ -160,29 +160,29 @@ class WaveLoadingBubblePainter extends CustomPainter {
           ));
 
   final double bubbleDiameter;
-  final double loadingCircleWidth;
-  final double waveInsetWidth;
-  final double waveHeight;
+  final double? loadingCircleWidth;
+  final double? waveInsetWidth;
+  final double? waveHeight;
   final Paint foregroundWavePaint;
   final Paint backgroundWavePaint;
   final Paint loadingCirclePaint;
   final Color foregroundWaveColor;
   final Color backgroundWaveColor;
   final Color loadingWheelColor;
-  final double foregroundWaveVerticalOffset;
-  final double backgroundWaveVerticalOffset;
+  final double? foregroundWaveVerticalOffset;
+  final double? backgroundWaveVerticalOffset;
   final double period;
 
   @override
   void paint(Canvas canvas, Size size) {
     final double loadingBubbleRadius = (bubbleDiameter / 2);
-    final double insetBubbleRadius = loadingBubbleRadius - waveInsetWidth;
-    final double waveBubbleRadius = insetBubbleRadius - loadingCircleWidth;
+    final double insetBubbleRadius = loadingBubbleRadius - waveInsetWidth!;
+    final double waveBubbleRadius = insetBubbleRadius - loadingCircleWidth!;
 
     Path backgroundWavePath = WavePathHorizontal(
       amplitude: waveHeight,
       period: 1.0,
-      startPoint: Offset(0.0 - waveBubbleRadius, 0.0 + backgroundWaveVerticalOffset),
+      startPoint: Offset(0.0 - waveBubbleRadius, 0.0 + backgroundWaveVerticalOffset!),
       width: bubbleDiameter,
       crossAxisEndPoint: waveBubbleRadius,
       doClosePath: true,
@@ -192,7 +192,7 @@ class WaveLoadingBubblePainter extends CustomPainter {
     Path foregroundWavePath = WavePathHorizontal(
       amplitude: waveHeight,
       period: 1.0,
-      startPoint: Offset(0.0 - waveBubbleRadius, 0.0 + foregroundWaveVerticalOffset),
+      startPoint: Offset(0.0 - waveBubbleRadius, 0.0 + foregroundWaveVerticalOffset!),
       width: bubbleDiameter,
       crossAxisEndPoint: waveBubbleRadius,
       doClosePath: true,
@@ -226,10 +226,10 @@ class WaveLoadingBubblePainter extends CustomPainter {
 
 class WavePathHorizontal {
   WavePathHorizontal({
-    @required this.width,
-    @required this.amplitude,
-    @required this.period,
-    @required this.startPoint,
+    required this.width,
+    required this.amplitude,
+    required this.period,
+    required this.startPoint,
     this.phaseShift = 0.0,
     this.doClosePath = false,
     this.crossAxisEndPoint = 0,
@@ -237,7 +237,7 @@ class WavePathHorizontal {
             "if doClosePath is true you must provide an end point (crossAxisEndPoint)");
 
   final double width;
-  final double amplitude;
+  final double? amplitude;
   final double period;
   final Offset startPoint;
   final double crossAxisEndPoint;
@@ -255,7 +255,7 @@ class WavePathHorizontal {
       returnPath.lineTo(
         i + startPointX,
         startPointY +
-            amplitude *
+            amplitude! *
                 math.sin(
                     (i * 2 * period * math.pi / width) + phaseShift * math.pi),
       );

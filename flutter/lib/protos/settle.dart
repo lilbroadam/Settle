@@ -6,7 +6,7 @@ enum SettleType { custom, movies, restaurants }
 extension SettleTypeExt on SettleType {
   String get name => describeEnum(this);
 
-  static SettleType toSettleType(String settleType) {
+  static SettleType toSettleType(String? settleType) {
     if (settleType == 'custom') return SettleType.custom;
     if (settleType == 'movies') return SettleType.movies;
     if (settleType == 'restaurants') return SettleType.restaurants;
@@ -19,7 +19,7 @@ enum SettleState { lobby, settling, complete }
 extension SettleStateExt on SettleState {
   String get name => describeEnum(this);
 
-  static SettleState toSettleState(String settleState) {
+  static SettleState toSettleState(String? settleState) {
     if (settleState == 'lobby') return SettleState.lobby;
     if (settleState == 'settling') return SettleState.settling;
     if (settleState == 'complete') return SettleState.complete;
@@ -28,13 +28,13 @@ extension SettleStateExt on SettleState {
 }
 
 class Settle {
-  final String settleCode;
+  final String? settleCode;
   final SettleType settleType;
-  final bool customAllowed;
+  final bool? customAllowed;
   SettleState _settleState;
-  List<String> _users = new List<String>();
-  List<String> _options = new List<String>();
-  String _result;
+  List<String>? _users = <String>[];
+  List<String>? _options = <String>[];
+  String? _result;
 
   Settle.fromJson(Map<String, dynamic> json)
       : this.settleCode = json['settleCode'],
@@ -50,36 +50,36 @@ class Settle {
   }
 
   SettleState get settleState => _settleState;
-  List<String> get users => _users;
-  String get hostUser => _users.first;
-  List<String> get options => _options;
-  String get result => _result;
+  List<String>? get users => _users;
+  String get hostUser => _users!.first;
+  List<String>? get options => _options;
+  String? get result => _result;
 
   // TODO make option it's own object
   // TODO make this method not async so caller doesn't have to await
   // Add an option to this Settle.
   Future<Settle> addOption(String option) async {
-    Settle settle = await Server.addOption(option, settleCode);
+    Settle settle = (await Server.addOption(option, settleCode))!;
     _update(settle);
     return settle;
   }
 
   // TODO make this method not async so caller doesn't have to await
   Future<Settle> setState(SettleState state) async {
-    Settle settle = await Server.setState(state, settleCode);
+    Settle settle = (await Server.setState(state, settleCode))!;
     _update(settle);
     return settle;
   }
 
   // TODO make this method not async so caller doesn't have to await
   Future<Settle> submitVote(String option) async {
-    Settle settle = await Server.submitVote(option, false, settleCode);
+    Settle settle = (await Server.submitVote(option, false, settleCode))!;
     _update(settle);
     return settle;
   }
 
   Future<Settle> userFinished() async {
-    Settle settle = await Server.submitVote("null", true, settleCode);
+    Settle settle = (await Server.submitVote("null", true, settleCode))!;
     _update(settle);
     return settle;
   } 

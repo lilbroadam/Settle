@@ -25,7 +25,7 @@ void main() {
 
 class SettleApp extends StatefulWidget {
   static void setLocale(BuildContext context, Locale locale) {
-    _SettleAppState state = context.findAncestorStateOfType<_SettleAppState>();
+    _SettleAppState state = context.findAncestorStateOfType<_SettleAppState>()!;
     state.setLocale(locale);
   }
 
@@ -33,7 +33,7 @@ class SettleApp extends StatefulWidget {
 }
 
 class _SettleAppState extends State<SettleApp> {
-  Locale _locale;
+  Locale? _locale;
   DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
   void initState() {
@@ -69,7 +69,7 @@ class _SettleAppState extends State<SettleApp> {
         return themeChangeProvider;
       },
       child: Consumer<DarkThemeProvider>(
-        builder: (BuildContext context, value, Widget child) {
+        builder: (BuildContext context, value, Widget? child) {
           return MaterialApp(
             locale: _locale,
             localizationsDelegates: [
@@ -84,7 +84,7 @@ class _SettleAppState extends State<SettleApp> {
             ],
             localeResolutionCallback: (locale, suportedLocales) {
               for (var suportedLocale in suportedLocales) {
-                if (suportedLocale.languageCode == locale.languageCode &&
+                if (suportedLocale.languageCode == locale!.languageCode &&
                     suportedLocale.countryCode == locale.countryCode) {
                   return suportedLocale;
                 }

@@ -59,7 +59,7 @@ class _JoinSettle extends State<JoinSettle> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              getText(context, "entercode"),
+              getText(context, "entercode")!,
               style: TextStyle(fontSize: 25),
               textAlign: TextAlign.center,
             ),

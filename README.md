@@ -57,11 +57,6 @@ Ayush Agarwal:
 > Licensed under the [MIT](https://opensource.org/licenses/MIT). 
 > (See the [License](https://github.com/aagarwal1012/Animated-Text-Kit/blob/master/LICENSE) file for the whole license text)
 
-Animated Dialog Box:
-> Copyright (c) 2020 Shubham Narkhede.
-> Licensed under the [MIT](https://opensource.org/licenses/MIT). 
-> (See the [License](https://github.com/Shubham-Narkhede/animated_dialog_box/blob/master/LICENSE) file for the whole license text)
-
 Share:
 > Copyright 2017, the Flutter project authors.
 > Licensed under the [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause). 

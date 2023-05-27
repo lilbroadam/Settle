@@ -44,7 +44,7 @@ class _NameScreenState extends State<NameScreen> {
       width: width,
       height: height,
       child: AppTheme.nextButton(context, () {
-        if (_formKey.currentState.validate()) _navigate(myControler.text);
+        if (_formKey.currentState!.validate()) _navigate(myControler.text);
       }),
     );
 
@@ -79,7 +79,7 @@ class _NameScreenState extends State<NameScreen> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Text(getText(context, "getname"),
+                  Text(getText(context, "getname")!,
                       style: TextStyle(fontSize: 25)),
                   Padding(
                     padding: const EdgeInsets.all(16),
@@ -87,7 +87,7 @@ class _NameScreenState extends State<NameScreen> {
                       controller: myControler,
                       textAlign: TextAlign.center,
                       validator: (text) {
-                        myControler.text = text.trim();
+                        myControler.text = text!.trim();
                         text = text.trim();
                         if (text.isEmpty) {
                           return getText(context, "invalidname");

@@ -19,11 +19,11 @@ class SettleScreen extends StatefulWidget {
 
 class _SettleScreenState extends State<SettleScreen> {
   Settle settle;
-  List<SettleCard> settleCards = List();
+  List<SettleCard> settleCards = [];
   TCardController _controller = TCardController();
 
   _SettleScreenState(this.settle) {
-    settle.options.forEach((option) {
+    settle.options!.forEach((option) {
       settleCards.add(SettleCard(option));
     });
   }
@@ -45,7 +45,7 @@ class _SettleScreenState extends State<SettleScreen> {
                   settle.submitVote(settleCards[info.cardIndex].title);
                 setState(() {});
               },
-              onBack: (index) {
+              onBack: (index, info) {
                 setState(() {});
               },
               onEnd: () {
@@ -172,7 +172,7 @@ class _SettleScreenState extends State<SettleScreen> {
                 padding: EdgeInsets.all(10),
               ),
               Text(
-                getText(context, "soon"),
+                getText(context, "soon")!,
                 style: TextStyle(fontSize: 15),
               ),
               Padding(
