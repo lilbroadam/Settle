@@ -79,7 +79,7 @@ class _CreateSettleScreen extends State<CreateSettleScreen> {
       ),
       onPressed: () {
         if (gotCode) {
-          Clipboard.setData(ClipboardData(text: settle!.settleCode));
+          Clipboard.setData(ClipboardData(text: settle!.settleCode!));
           Share.share(settle!.settleCode!);
         } else {
           return null;
@@ -90,7 +90,7 @@ class _CreateSettleScreen extends State<CreateSettleScreen> {
       future: _onCreateSettlePressed(),
       builder: (context, snapshot) {
         if (snapshot.data != null) {
-          settle = snapshot.data;
+          settle = snapshot.data as Settle?;
           gotCode = true;
           // TODO get TextStyle from theme
           return Text(settle!.settleCode!, style: TextStyle(fontSize: 19));

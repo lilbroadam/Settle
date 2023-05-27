@@ -19,7 +19,7 @@ class SettleScreen extends StatefulWidget {
 
 class _SettleScreenState extends State<SettleScreen> {
   Settle settle;
-  List<SettleCard> settleCards = List();
+  List<SettleCard> settleCards = [];
   TCardController _controller = TCardController();
 
   _SettleScreenState(this.settle) {

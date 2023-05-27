@@ -32,8 +32,8 @@ class Settle {
   final SettleType settleType;
   final bool? customAllowed;
   SettleState _settleState;
-  List<String>? _users = new List<String>();
-  List<String>? _options = new List<String>();
+  List<String>? _users = <String>[];
+  List<String>? _options = <String>[];
   String? _result;
 
   Settle.fromJson(Map<String, dynamic> json)
