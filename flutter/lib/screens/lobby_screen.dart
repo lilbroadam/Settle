@@ -40,10 +40,9 @@ class _LobbyScreen extends State<LobbyScreen> {
     }
 
     // Go to the Settle screen
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SettleScreen(settle)));
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => SettleScreen(settle)
+    ));
   }
 
   @override

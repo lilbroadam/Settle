@@ -60,23 +60,21 @@ class _CreateSettleScreen extends State<CreateSettleScreen> {
       if (gotCode) {
         // TODO update Navigator stack so that when user backs out of the
         // lobby, they go back to the home screen instead of this screen
-        return Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => LobbyScreen(settle, hostName, true)),
-        );
+        return Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => LobbyScreen(settle, hostName, true)));
       } else {
         return null;
       }
     });
     // TODO build button from theme
-    // TODO RaisedButton is deprecated, use ElevatedButton instead
-    Widget shareSettleCodeButton = RaisedButton(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40),
+    Widget shareSettleCodeButton = ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40),
+        ),
+        backgroundColor: AppTheme.buttonColor(),
       ),
-      color: AppTheme.buttonColor(),
       child: Text(
         getText(context, "sharecopy"),
       ),

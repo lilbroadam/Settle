@@ -25,12 +25,8 @@ class _JoinSettle extends State<JoinSettle> {
 
     Settle settle = await Server.joinSettle(userName, joinSettleCode);
     if (settle != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                LobbyScreen(settle, userName, false)),
-      );
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => LobbyScreen(settle, userName, false)));
     } else {
       // TODO popup that the user couldn't be joined
       print('Could not join the user to $joinSettleCode');
