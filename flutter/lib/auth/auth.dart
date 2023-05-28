@@ -17,12 +17,18 @@ class FirebaseAuthWrapper {
 
   static signInAnonymously() async {
     final userCredential = await FirebaseAuth.instance.signInAnonymously();
-    print('uid: $userCredential');
+    print('Signed in anonymously as uid ${userCredential.user?.uid}');
   }
 
-  // TODO
-  static getUid() async {
-    print(await FirebaseAuth.instance.currentUser);
-    throw UnimplementedError();
+  static String? getUid() {
+    return FirebaseAuth.instance.currentUser?.uid;
+  }
+
+  static setDisplayName(String displayName) async {
+    FirebaseAuth.instance.currentUser?.updateDisplayName(displayName);
+  }
+
+  static String? getDisplayName() {
+    return FirebaseAuth.instance.currentUser?.displayName ?? '';
   }
 }
