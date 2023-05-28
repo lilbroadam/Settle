@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:settle/cloud/clerk.dart';
 import 'package:settle/cloud/settle_server/settle_server.dart';
 import 'package:settle/config/localization/lang_constants.dart';
 import 'package:settle/config/themes/app_theme.dart';
