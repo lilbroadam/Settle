@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:settle/config/localization/lang_constants.dart';
 import 'package:settle/config/themes/app_theme.dart';
 import 'package:settle/screens/create_settle_screen.dart';
 import 'package:settle/screens/join_settle_screen.dart';
+import '../auth/auth.dart';
 
 class NameScreen extends StatefulWidget {
   final bool newSession;
@@ -15,6 +18,8 @@ class _NameScreenState extends State<NameScreen> {
   final _formKey = GlobalKey<FormState>();
 
   void _navigate(String name) {
+    FirebaseAuthWrapper.setDisplayName(name);
+
     if (widget.newSession) {
       Navigator.push(
         widget.context,
@@ -84,7 +89,7 @@ class _NameScreenState extends State<NameScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: TextFormField(
-                      controller: myControler,
+                      initialValue: FirebaseAuthWrapper.getDisplayName(),
                       textAlign: TextAlign.center,
                       validator: (text) {
                         myControler.text = text!.trim();
