@@ -127,6 +127,60 @@ class _SettleHomePageState extends State<SettleHomePage> {
     );
   }
 
+  void _settingMenu() {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      builder: (builder) {
+        return Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ModalDrawerHandle(
+                  handleColor: Colors.black38,
+                  handleWidth: 35,
+                ),
+              ),
+              Material(
+                child: PopupMenuButton(
+                  offset: Offset(1, 0),
+                  child: ListTile(
+                    leading: Icon(MdiIcons.earth),
+                    title: Text(getText(context, "lang")!),
+                    subtitle: Text(getText(context, "langsub")!),
+                  ),
+                  elevation: 3,
+                  initialValue: Language.languageList().first,
+                  onSelected: _changeLang,
+                  itemBuilder: (BuildContext context) {
+                    return Language.languageList().map((Language l) {
+                      return PopupMenuItem(
+                        value: l,
+                        child: Text(l.name),
+                      );
+                    }).toList();
+                  },
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.info_outline),
+                title: Text("More features..."),
+                subtitle: Text("Coming soon..."),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return Scaffold(
@@ -196,7 +250,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
           SizedBox(height: 60), // Add some vertical spacing between the buttons
           ElevatedButton(
             onPressed: () {
-              _joinASettlePressed();
+              _createASettlePressed();
             },
             //styling for first button
             child: Text('Create a Settle'),
@@ -220,7 +274,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
           SizedBox(height: 30), // Add some vertical spacing between the buttons
           ElevatedButton(
             onPressed: () {
-              _createASettlePressed();
+              _joinASettlePressed();
             },
             //styling for second button
             child: Text('Join a Settle'),
@@ -243,204 +297,6 @@ class _SettleHomePageState extends State<SettleHomePage> {
           ),
         ],
       )),
-    );
-  }
-
-  // Widget build(BuildContext context) {
-  //   final themeChange = Provider.of<DarkThemeProvider>(context);
-  //   final settleButtonMargin = EdgeInsets.all(18.0);
-  //   final miscButtonSize = 30.0;
-
-  //   return Scaffold(
-  //     backgroundColor: themeChange.darkTheme ? Colors.black : Colors.grey[200],
-  //     appBar: AppBar(
-  //       actions: [
-  //         Row(
-  //           children: [
-  //             Align(
-  //               alignment: Alignment.center,
-  //               child: Text(
-  //                 getText(context, "home")!,
-  //                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-  //               ),
-  //             ),
-  //             Padding(
-  //               padding: EdgeInsets.all(63),
-  //             ),
-  //             IconButton(
-  //               icon: Icon(
-  //                 FontAwesome5.share_alt,
-  //                 color: themeChange.darkTheme ? Colors.blue : Colors.black,
-  //                 size: 20,
-  //               ),
-  //               tooltip: getText(context, "tipback"),
-  //               onPressed: () {},
-  //             )
-  //           ],
-  //         )
-  //       ],
-  //       backgroundColor: themeChange.darkTheme ? Colors.black : Colors.white,
-  //       automaticallyImplyLeading: true,
-  //       elevation: 0,
-  //     ),
-  //     body: SafeArea(
-  //         child: Column(
-  //       children: [
-  //         Padding(
-  //           padding: EdgeInsets.all(10),
-  //         ),
-  //         Flexible(
-  //           child: Container(
-  //             margin: EdgeInsets.only(left: 5, right: 5),
-  //             decoration: BoxDecoration(
-  //                 color: AppTheme.backgroundColor(),
-  //                 borderRadius: BorderRadius.circular(25)),
-  //             child: Column(
-  //               children: <Widget>[
-  //                 Expanded(
-  //                   child: Stack(
-  //                     alignment: Alignment.center,
-  //                     children: <Widget>[
-  //                       Column(
-  //                         // Settle buttons in the center
-  //                         mainAxisSize:
-  //                             MainAxisSize.min, // Size to only needed space
-  //                         children: <Widget>[
-  //                           Container(
-  //                             margin: settleButtonMargin,
-  //                             child: AppTheme.button(context, "createsettle",
-  //                                 _createASettlePressed),
-  //                           ),
-  //                           Container(
-  //                             margin: settleButtonMargin,
-  //                             child: AppTheme.button(
-  //                                 context, "joinsettle", _joinASettlePressed),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: EdgeInsets.all(10),
-  //         ),
-  //         Spacer(),
-  //         Flexible(
-  //           child: Container(
-  //             margin: EdgeInsets.only(left: 5, right: 5),
-  //             decoration: BoxDecoration(
-  //                 color: AppTheme.backgroundColor(),
-  //                 borderRadius: BorderRadius.circular(25)),
-  //             child: Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //               children: [
-  //                 IconButton(
-  //                   icon: Icon(
-  //                     Typicons.info,
-  //                     size: 33,
-  //                     color: Colors.lightBlue[400],
-  //                   ),
-  //                   iconSize: miscButtonSize,
-  //                   tooltip:
-  //                       AppLocalizations.of(context)!.translate("settleinfo"),
-  //                   onPressed: _informationPressed,
-  //                 ),
-  //                 IconButton(
-  //                   icon: themeChange.darkTheme
-  //                       ? Icon(
-  //                           FontAwesome5.moon,
-  //                           color: themeChange.darkTheme
-  //                               ? Colors.lightBlue[400]
-  //                               : Colors.grey[850],
-  //                           size: 30,
-  //                         )
-  //                       : Icon(
-  //                           FontAwesome5.lightbulb,
-  //                           color: themeChange.darkTheme
-  //                               ? Colors.lightBlue[400]
-  //                               : Colors.yellow[800],
-  //                         ),
-  //                   color: Colors.black,
-  //                   onPressed: () {
-  //                     setState(() {
-  //                       themeChange.darkTheme = !themeChange.darkTheme;
-  //                     });
-  //                   },
-  //                 ),
-  //                 IconButton(
-  //                   icon: Icon(
-  //                     Linecons.cog,
-  //                     size: 35,
-  //                     color: Colors.lightBlue[400],
-  //                   ),
-  //                   iconSize: miscButtonSize,
-  //                   tooltip: getText(context, "setting"),
-  //                   onPressed: _settingMenu,
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     )),
-  //   );
-  // }
-
-  void _settingMenu() {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-      ),
-      builder: (builder) {
-        return Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ModalDrawerHandle(
-                  handleColor: Colors.black38,
-                  handleWidth: 35,
-                ),
-              ),
-              Material(
-                child: PopupMenuButton(
-                  offset: Offset(1, 0),
-                  child: ListTile(
-                    leading: Icon(MdiIcons.earth),
-                    title: Text(getText(context, "lang")!),
-                    subtitle: Text(getText(context, "langsub")!),
-                  ),
-                  elevation: 3,
-                  initialValue: Language.languageList().first,
-                  onSelected: _changeLang,
-                  itemBuilder: (BuildContext context) {
-                    return Language.languageList().map((Language l) {
-                      return PopupMenuItem(
-                        value: l,
-                        child: Text(l.name),
-                      );
-                    }).toList();
-                  },
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.info_outline),
-                title: Text("More features..."),
-                subtitle: Text("Coming soon..."),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }
