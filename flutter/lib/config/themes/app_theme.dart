@@ -17,7 +17,8 @@ class AppTheme {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     return ThemeData(
       inputDecorationTheme: InputDecorationTheme(
-          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
+          focusedBorder:
+              UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
       primarySwatch: Colors.blue,
       primaryColor: isDarkTheme ? Colors.black : Colors.white,
       backgroundColor: isDarkTheme ? Colors.black : Color(0xffF1F5FB),
@@ -51,12 +52,11 @@ class AppTheme {
       height: settleButtonHeight,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          elevation: 5,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-          backgroundColor: Colors.blue
-        ),
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
+            backgroundColor: Colors.blue),
         onPressed: fun as void Function()?,
         child: Text(
           getText(context, text)!,
@@ -74,7 +74,7 @@ class AppTheme {
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25.0)),
+                  borderRadius: BorderRadius.circular(25.0)),
               backgroundColor: Colors.blue,
               elevation: 5,
             ),
@@ -85,15 +85,16 @@ class AppTheme {
             onPressed: fun as void Function()?));
   }
 
-  static ElevatedButton rawButton(BuildContext context, String text, Function fun) {
+  static ElevatedButton rawButton(
+      BuildContext context, String text, Function fun) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40),
-        ),
-        backgroundColor: Colors.blue // TODO move to variable for theme
-      ),
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40),
+          ),
+          backgroundColor: Colors.blue // TODO move to variable for theme
+          ),
       child: Text(
         getText(context, text)!,
         style: TextStyle(color: Colors.white),
@@ -111,7 +112,9 @@ class AppTheme {
   }
 
   static String namescreenBackgroundURI() {
-    return themeChange.darkTheme ? 'assets/images/background-dark.png' : 'assets/images/background.png';
+    return themeChange.darkTheme
+        ? 'assets/images/background-dark.png'
+        : 'assets/images/background.png';
   }
 }
 

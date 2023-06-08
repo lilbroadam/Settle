@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/linecons_icons.dart';
@@ -10,6 +9,7 @@ import 'package:settle/config/localization/app_localizations.dart';
 import 'package:settle/config/localization/lang_constants.dart';
 import 'package:settle/config/localization/language.dart';
 import 'package:settle/config/themes/app_theme.dart';
+import 'package:settle/protos/settle.dart';
 import 'package:settle/screens/name_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -54,10 +54,7 @@ class _SettleHomePageState extends State<SettleHomePage> {
   // Called when 'Join a Settle' button is pressed
   void _joinASettlePressed() {
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => NameScreen(false, context)
-      )
-    );
+        MaterialPageRoute(builder: (context) => NameScreen(false, context)));
   }
 
   // Called when the information button is pressed
@@ -116,164 +113,17 @@ class _SettleHomePageState extends State<SettleHomePage> {
                 },
               ),
               ListTile(
-                leading: Icon(
-                  MdiIcons.currencyUsd,
-                  size: 25,
-                ),
-                title: Text(getText(context, "support")!),
-                subtitle: Text(getText(context, "supportsub")!),
-                onTap: () {}
-              ),
+                  leading: Icon(
+                    MdiIcons.currencyUsd,
+                    size: 25,
+                  ),
+                  title: Text(getText(context, "support")!),
+                  subtitle: Text(getText(context, "supportsub")!),
+                  onTap: () {}),
             ],
           ),
         );
       },
-    );
-  }
-
-  Widget build(BuildContext context) {
-    final themeChange = Provider.of<DarkThemeProvider>(context);
-    final settleButtonMargin = EdgeInsets.all(18.0);
-    final miscButtonSize = 30.0;
-
-    return Scaffold(
-      backgroundColor: themeChange.darkTheme ? Colors.black : Colors.grey[200],
-      appBar: AppBar(
-        actions: [
-          Row(
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  getText(context, "home")!,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(63),
-              ),
-              IconButton(
-                icon: Icon(
-                  FontAwesome5.share_alt,
-                  color: themeChange.darkTheme ? Colors.blue : Colors.black,
-                  size: 20,
-                ),
-                tooltip: getText(context, "tipback"),
-                onPressed: () {},
-              )
-            ],
-          )
-        ],
-        backgroundColor: themeChange.darkTheme ? Colors.black : Colors.white,
-        automaticallyImplyLeading: true,
-        elevation: 0,
-      ),
-      body: SafeArea(
-          child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(10),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 5, right: 5),
-            decoration: BoxDecoration(
-                color: AppTheme.backgroundColor(),
-                borderRadius: BorderRadius.circular(25)),
-            child: SizedBox(
-              height: 500,
-              width: double.infinity,
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        Column(
-                          // Settle buttons in the center
-                          mainAxisSize:
-                              MainAxisSize.min, // Size to only needed space
-                          children: <Widget>[
-                            Container(
-                              margin: settleButtonMargin,
-                              child: AppTheme.button(context, "createsettle",
-                                  _createASettlePressed),
-                            ),
-                            Container(
-                              margin: settleButtonMargin,
-                              child: AppTheme.button(
-                                  context, "joinsettle", _joinASettlePressed),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 5, right: 5),
-            decoration: BoxDecoration(
-                color: AppTheme.backgroundColor(),
-                borderRadius: BorderRadius.circular(25)),
-            child: SizedBox(
-              height: 150,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Typicons.info,
-                      size: 33,
-                      color: Colors.lightBlue[400],
-                    ),
-                    iconSize: miscButtonSize,
-                    tooltip:
-                        AppLocalizations.of(context)!.translate("settleinfo"),
-                    onPressed: _informationPressed,
-                  ),
-                  IconButton(
-                    icon: themeChange.darkTheme
-                        ? Icon(
-                            FontAwesome5.moon,
-                            color: themeChange.darkTheme
-                                ? Colors.lightBlue[400]
-                                : Colors.grey[850],
-                            size: 30,
-                          )
-                        : Icon(
-                            FontAwesome5.lightbulb,
-                            color: themeChange.darkTheme
-                                ? Colors.lightBlue[400]
-                                : Colors.yellow[800],
-                          ),
-                    color: Colors.black,
-                    onPressed: () {
-                      setState(() {
-                        themeChange.darkTheme = !themeChange.darkTheme;
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Linecons.cog,
-                      size: 35,
-                      color: Colors.lightBlue[400],
-                    ),
-                    iconSize: miscButtonSize,
-                    tooltip: getText(context, "setting"),
-                    onPressed: _settingMenu,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      )),
     );
   }
 
@@ -328,6 +178,125 @@ class _SettleHomePageState extends State<SettleHomePage> {
           ),
         );
       },
+    );
+  }
+
+  Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Settle'),
+        titleTextStyle: TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 30,
+          fontFamily: 'Open Sans',
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.deepPurple, //change color
+      ),
+      drawer: Drawer(
+          child: Container(
+        color: Colors.deepPurpleAccent, //change color
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Center(child: Text('PUT SETTLE LOGO HERE')),
+            ),
+            ListTile(
+              leading: Icon(Linecons.cog),
+              title: Text(
+                'Settings',
+                style: TextStyle(fontSize: 20),
+              ),
+              onTap: () {
+                _settingMenu();
+              },
+            ),
+            ListTile(
+              leading: Icon(Typicons.info),
+              title: Text(
+                'Info',
+                style: TextStyle(fontSize: 20),
+              ),
+              onTap: () {
+                _informationPressed();
+              },
+            )
+          ],
+        ),
+      )),
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          //styling for quote
+          Text(
+            'Tired of Indecision?',
+            style: TextStyle(
+              fontSize: 24,
+              fontFamily: 'Pacifico', // Custom font family
+              color: Colors.purple, // Text color
+              shadows: [
+                Shadow(
+                  color: Colors.black,
+                  offset: Offset(2, 2),
+                  blurRadius: 4,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 60), // Add some vertical spacing between the buttons
+          ElevatedButton(
+            onPressed: () {
+              _createASettlePressed();
+            },
+            //styling for first button
+            child: Text('Create a Settle'),
+            style: ButtonStyle(
+              textStyle: MaterialStateProperty.all<TextStyle>(
+                TextStyle(fontSize: 24),
+              ),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.deepPurple),
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              ),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 30), // Add some vertical spacing between the buttons
+          ElevatedButton(
+            onPressed: () {
+              _joinASettlePressed();
+            },
+            //styling for second button
+            child: Text('Join a Settle'),
+            style: ButtonStyle(
+              textStyle: MaterialStateProperty.all<TextStyle>(
+                TextStyle(fontSize: 24),
+              ),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.deepPurple),
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+              ),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+            ),
+          ),
+        ],
+      )),
     );
   }
 }
