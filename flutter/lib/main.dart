@@ -11,6 +11,7 @@ import 'package:settle/screens/home_screen.dart';
 import 'auth/auth.dart';
 import 'cloud/clerk.dart';
 import 'firebase_options.dart';
+import 'cloud/ringmaster.dart';
 
 void main() async {
   LicenseRegistry.addLicense(() async* {
@@ -26,8 +27,9 @@ void main() async {
   FirebaseAuthWrapper.signInAnonymously();
 
   Clerk.setUp();
-  Clerk.createSettle();
-  Clerk.testWrite('name', 'adam');
+  Ringmaster.setUp();
+
+  Ringmaster.createSettle(null);
 
   // TODO add debug settings that can make the development process easier
   // such as auto-filling a name on the name screen or starting the app on

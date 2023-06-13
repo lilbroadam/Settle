@@ -1,11 +1,14 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
+import 'package:settle/cloud/ringmaster.dart';
+import 'package:settle/protos/settle_session.dart';
 
 class Clerk {
 
   static late final DatabaseReference _testRef;
   static late final DatabaseReference _clerkRef;
   static late final DatabaseReference _codesRef;
+  static late final DatabaseReference _settlesRef;
 
   static setUp() {
     if (kDebugMode) {
@@ -15,6 +18,13 @@ class Clerk {
     _testRef = FirebaseDatabase.instance.ref('test');
     _clerkRef = FirebaseDatabase.instance.ref('clerk');
     _codesRef = FirebaseDatabase.instance.ref('clerk/codes/');
+    _settlesRef = FirebaseDatabase.instance.ref('clerk/settles/');
+  }
+
+  static void _initCodes() {
+    _codesRef.push().set({
+      'code': 1
+    });
   }
 
   static Future<int> _getLatestCode() async {
@@ -22,28 +32,18 @@ class Clerk {
         await _codesRef.orderByKey().limitToLast(1).get();
     if (latestCodeSnapshot.exists) {
       return (latestCodeSnapshot.children.first.value as Map)['code'];
+    } else {
+      _initCodes();
+      return _getLatestCode();
     }
-    
-    _initCodes();
-    return _getLatestCode();
   }
 
-  static void _initCodes() {
-    DatabaseReference codesPushRef = _codesRef.push();
-    codesPushRef.set({
-      'code': 1
-    });
-  }
-
-  // TODO make this atomic with TransactionResult
-  static Future<int> createSettle() async {
+  // TODO change to use /clerk/codes/nextCode counter
+  static Future<int> getNewCode() async {
     final newCode = 1 + await _getLatestCode();
-    DatabaseReference codesPushRef = _codesRef.push();
-    codesPushRef.set({
+    _codesRef.push().set({
       'code': newCode
     });
-    
-    print('Created Settle with code $newCode');
     return newCode;
   }
 

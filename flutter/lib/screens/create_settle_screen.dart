@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:settle/cloud/clerk.dart';
+import 'package:settle/cloud/ringmaster.dart';
 import 'package:settle/cloud/settle_server/settle_server.dart';
 import 'package:settle/config/localization/lang_constants.dart';
 import 'package:settle/config/themes/app_theme.dart';
@@ -40,18 +40,23 @@ class _CreateSettleScreen extends State<CreateSettleScreen> {
 
   // Call this function when the "Create this Settle" button is pressed.
   // This function will ask the server to create a new Settle.
+  // Future<Settle?> _onCreateSettlePressed() async {
+  //   // TODO make sure a Settle type is selected, else pop up notification
+
+  //   settle = await Server.createSettle(hostName,
+  //       settleTypeMenu.selectedSettleType, settleTypeMenu.customOptionsAllowed);
+
+  //   if (settle == null) {
+  //     // TODO error handling
+  //     return Future<Settle>.value(null);
+  //   }
+
+  //   return settle;
+  // }
+
   Future<Settle?> _onCreateSettlePressed() async {
-    // TODO make sure a Settle type is selected, else pop up notification
-
-    settle = await Server.createSettle(hostName,
-        settleTypeMenu.selectedSettleType, settleTypeMenu.customOptionsAllowed);
-
-    if (settle == null) {
-      // TODO error handling
-      return Future<Settle>.value(null);
-    }
-
-    return settle;
+    // TODO pass in sessionOptions
+    var settleCode = await Ringmaster.createSettle(null);
   }
 
   Future<void> showPopup() async {
