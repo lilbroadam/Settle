@@ -38,8 +38,12 @@ class _CreateSettleScreen extends State<CreateSettleScreen> {
     setState(() {});
   }
 
-  // TODO show pop up with settle code when the create settle button is pressed
+  // Call this function when the "Create this Settle" button is pressed.
+  // This function will ask the server to create a new Settle.
   Future<Settle?> _onCreateSettlePressed() async {
+    // TODO show pop up with settle code when the create settle button is pressed
+    // TODO make sure a Settle type is selected, else pop up notification
+
     // TODO pass in sessionOptions
     var settleCode = await Ringmaster.createSettle(null);
   }
