@@ -9,7 +9,9 @@ import 'package:settle/config/localization/lang_constants.dart';
 import 'package:settle/config/themes/app_theme.dart';
 import 'package:settle/screens/home_screen.dart';
 import 'auth/auth.dart';
+import 'cloud/clerk.dart';
 import 'firebase_options.dart';
+import 'cloud/ringmaster.dart';
 
 void main() async {
   LicenseRegistry.addLicense(() async* {
@@ -21,8 +23,13 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FirebaseAuthWrapper.init();
+  FirebaseAuthWrapper.setUp();
   FirebaseAuthWrapper.signInAnonymously();
+
+  Clerk.setUp();
+  Ringmaster.setUp();
+
+  Ringmaster.createSettle(null);
 
   // TODO add debug settings that can make the development process easier
   // such as auto-filling a name on the name screen or starting the app on

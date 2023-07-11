@@ -9,6 +9,10 @@
     "ui": {
       "enabled": true
     },
-    "singleProjectMode": true
+    "singleProjectMode": true,
+    "rules": {
+      ".read": "now < 1687762800000",
+      ".write": "now < 1687762800000"
+    }
   }
 }
